@@ -45,15 +45,26 @@ create table location (
         references state(state_id)
 );
 
+create table species (
+	species_id int primary key auto_increment,
+    species_short_name varchar(250),
+    species_long_name varchar (250)
+);
+
 create table post (
-  post_id INT PRIMARY KEY auto_increment,
-  app_poster_id int not null,
-  `name` VARCHAR(255),
-  image BLOB,
-  created_at timestamp default NOW(),
-  constraint fk_app_poster_id
+	post_id INT PRIMARY KEY auto_increment,
+    location_id int not null,
+	app_poster_id int not null,
+	post_body VARCHAR(255),
+	image BLOB,
+	created_at timestamp default NOW(),
+	species_id int not null,
 	foreign key (app_poster_id)
-    references app_user(app_user_id)
+		references app_user(app_user_id),
+	foreign key (location_id)
+		references location(location_id),
+	foreign key (species_id)
+		references species(species_id)
 );
 
 create table post_like (
@@ -72,36 +83,11 @@ create table post_comment (
     comment_text varchar(250) not null,
     user_commenter_id int not null,
     post_id int not null,
+    created_at timestamp default now(),
 	foreign key (user_commenter_id)
 		references app_user(app_user_id),
 	foreign key (post_id)
 		references post(post_id)
-);
-
-CREATE TABLE messages (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	sender_id INT NOT NULL,
-	recipient_id INT NOT NULL,
-	message_body varchar(2048) NOT NULL,
-	sent_at TIMESTAMP DEFAULT NOW(),
-	foreign key (sender_id)
-		references app_user(app_user_id),
-	foreign key (recipient_id)
-		references app_user(app_user_id)
-);
-
-CREATE TABLE tags (
-  tag_id INT AUTO_INCREMENT PRIMARY KEY,
-  tag_name VARCHAR(250) UNIQUE,
-  created_at TIMESTAMP DEFAULT NOW()
-);
- 
-CREATE TABLE photo_tags (
-    post_id INT NOT NULL,
-    tag_id INT NOT NULL,
-    FOREIGN KEY(post_id) REFERENCES post(post_id),
-    FOREIGN KEY(tag_id) REFERENCES tags(tag_id),
-    PRIMARY KEY(post_id, tag_id)
 );
 
 create table followers (
