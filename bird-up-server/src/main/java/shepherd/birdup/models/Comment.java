@@ -1,20 +1,23 @@
 package shepherd.birdup.models;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Comment {
     private int commentId;
     private String commentText;
     private int postId;
-    private int commenterId;
+    private Profile commenterProfile;
+    private LocalDateTime createdAt;
 
     public Comment() {}
 
-    public Comment(int commentId, String commentText, int postId, int commenterId) {
+    public Comment(int commentId, String commentText, int postId, Profile commenterProfile, LocalDateTime createdAt) {
         this.commentId = commentId;
         this.commentText = commentText;
         this.postId = postId;
-        this.commenterId = commenterId;
+        this.commenterProfile = commenterProfile;
+        this.createdAt = createdAt;
     }
 
     public int getCommentId() {
@@ -41,12 +44,20 @@ public class Comment {
         this.postId = postId;
     }
 
-    public int getCommenterId() {
-        return commenterId;
+    public Profile getCommenterProfile() {
+        return commenterProfile;
     }
 
-    public void setCommenterId(int commenterId) {
-        this.commenterId = commenterId;
+    public void setCommenterProfile(Profile commenterProfile) {
+        this.commenterProfile = commenterProfile;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
@@ -54,12 +65,12 @@ public class Comment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Comment comment = (Comment) o;
-        return commentId == comment.commentId && postId == comment.postId && commenterId == comment.commenterId && Objects.equals(commentText, comment.commentText);
+        return commentId == comment.commentId && postId == comment.postId && Objects.equals(commentText, comment.commentText) && Objects.equals(commenterProfile, comment.commenterProfile) && Objects.equals(createdAt, comment.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(commentId, commentText, postId, commenterId);
+        return Objects.hash(commentId, commentText, postId, commenterProfile, createdAt);
     }
 
     @Override
@@ -68,7 +79,8 @@ public class Comment {
                 "commentId=" + commentId +
                 ", commentText='" + commentText + '\'' +
                 ", postId=" + postId +
-                ", commenterId=" + commenterId +
+                ", commenterProfile=" + commenterProfile +
+                ", createdAt=" + createdAt +
                 '}';
     }
 }

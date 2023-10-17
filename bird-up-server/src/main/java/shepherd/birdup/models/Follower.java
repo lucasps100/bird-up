@@ -4,32 +4,32 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Follower {
-    private int followerid;
-    private int followeeId;
+    private Profile followerProfile;
+    private Profile followeeProfile;
     private LocalDateTime createdAt;
 
     public Follower() {}
 
-    public Follower(int followerid, int followeeId, LocalDateTime createdAt) {
-        this.followerid = followerid;
-        this.followeeId = followeeId;
+    public Follower(Profile followerProfile, Profile followeeProfile, LocalDateTime createdAt) {
+        this.followerProfile = followerProfile;
+        this.followeeProfile = followeeProfile;
         this.createdAt = createdAt;
     }
 
-    public int getFollowerid() {
-        return followerid;
+    public Profile getFollowerProfile() {
+        return followerProfile;
     }
 
-    public void setFollowerid(int followerid) {
-        this.followerid = followerid;
+    public void setFollowerProfile(Profile followerProfile) {
+        this.followerProfile = followerProfile;
     }
 
-    public int getFolloweeId() {
-        return followeeId;
+    public Profile getFolloweeProfile() {
+        return followeeProfile;
     }
 
-    public void setFolloweeId(int followeeId) {
-        this.followeeId = followeeId;
+    public void setFolloweeProfile(Profile followeeProfile) {
+        this.followeeProfile = followeeProfile;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -45,19 +45,19 @@ public class Follower {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Follower follower = (Follower) o;
-        return followerid == follower.followerid && followeeId == follower.followeeId && Objects.equals(createdAt, follower.createdAt);
+        return Objects.equals(followerProfile, follower.followerProfile) && Objects.equals(followeeProfile, follower.followeeProfile) && Objects.equals(createdAt, follower.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(followerid, followeeId, createdAt);
+        return Objects.hash(followerProfile, followeeProfile, createdAt);
     }
 
     @Override
     public String toString() {
         return "Follower{" +
-                "followerid=" + followerid +
-                ", followeeId=" + followeeId +
+                "followerProfile=" + followerProfile +
+                ", followeeProfile=" + followeeProfile +
                 ", createdAt=" + createdAt +
                 '}';
     }

@@ -3,13 +3,29 @@ package shepherd.birdup.models;
 import java.util.Objects;
 
 public class Like {
-    private int likerId;
+    private Profile likerAccount;
     private int postId;
 
     public Like() {}
 
-    public Like(int likerId, int postId) {
-        this.likerId = likerId;
+    public Like(Profile likerAccount, int postId) {
+        this.likerAccount = likerAccount;
+        this.postId = postId;
+    }
+
+    public Profile getLikerAccount() {
+        return likerAccount;
+    }
+
+    public void setLikerAccount(Profile likerAccount) {
+        this.likerAccount = likerAccount;
+    }
+
+    public int getPostId() {
+        return postId;
+    }
+
+    public void setPostId(int postId) {
         this.postId = postId;
     }
 
@@ -18,18 +34,18 @@ public class Like {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Like like = (Like) o;
-        return likerId == like.likerId && postId == like.postId;
+        return postId == like.postId && Objects.equals(likerAccount, like.likerAccount);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(likerId, postId);
+        return Objects.hash(likerAccount, postId);
     }
 
     @Override
     public String toString() {
         return "Like{" +
-                "likerId=" + likerId +
+                "likerAccount=" + likerAccount +
                 ", postId=" + postId +
                 '}';
     }

@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Objects;
 
 public class Post {
-    private int posterId;
+    private Profile posterProfile;
     private int postId;
     private Blob image;
     private Location postLocation;
     private LocalDateTime createdAt;
-    private String species;
+    private Species species;
     private List<Like> likes;
     private List<Comment> comments;
 
@@ -19,8 +19,9 @@ public class Post {
 
     public Post() {}
 
-    public Post(int posterId, int postId, Blob image, Location postLocation, LocalDateTime createdAt, String species, List<Like> likes, List<Comment> comments, String postText) {
-        this.posterId = posterId;
+    public Post(Profile posterProfile, int postId, Blob image, Location postLocation,
+                LocalDateTime createdAt, Species species, List<Like> likes, List<Comment> comments, String postText) {
+        this.posterProfile = posterProfile;
         this.postId = postId;
         this.image = image;
         this.postLocation = postLocation;
@@ -31,12 +32,12 @@ public class Post {
         this.postText = postText;
     }
 
-    public int getPosterId() {
-        return posterId;
+    public Profile getPosterProfile() {
+        return posterProfile;
     }
 
-    public void setPosterId(int posterId) {
-        this.posterId = posterId;
+    public void setPosterProfile(Profile posterProfile) {
+        this.posterProfile = posterProfile;
     }
 
     public int getPostId() {
@@ -71,11 +72,11 @@ public class Post {
         this.createdAt = createdAt;
     }
 
-    public String getSpecies() {
+    public Species getSpecies() {
         return species;
     }
 
-    public void setSpecies(String species) {
+    public void setSpecies(Species species) {
         this.species = species;
     }
 
@@ -108,18 +109,18 @@ public class Post {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return posterId == post.posterId && postId == post.postId && Objects.equals(image, post.image) && Objects.equals(postLocation, post.postLocation) && Objects.equals(createdAt, post.createdAt) && Objects.equals(species, post.species) && Objects.equals(likes, post.likes) && Objects.equals(comments, post.comments) && Objects.equals(postText, post.postText);
+        return postId == post.postId && Objects.equals(posterProfile, post.posterProfile) && Objects.equals(image, post.image) && Objects.equals(postLocation, post.postLocation) && Objects.equals(createdAt, post.createdAt) && Objects.equals(species, post.species) && Objects.equals(likes, post.likes) && Objects.equals(comments, post.comments) && Objects.equals(postText, post.postText);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(posterId, postId, image, postLocation, createdAt, species, likes, comments, postText);
+        return Objects.hash(posterProfile, postId, image, postLocation, createdAt, species, likes, comments, postText);
     }
 
     @Override
     public String toString() {
         return "Post{" +
-                "posterId=" + posterId +
+                "posterProfile=" + posterProfile +
                 ", postId=" + postId +
                 ", image=" + image +
                 ", postLocation=" + postLocation +

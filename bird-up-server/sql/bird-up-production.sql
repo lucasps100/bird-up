@@ -6,7 +6,7 @@ create table app_user (
     app_user_id int primary key auto_increment,
     username varchar(50) not null unique,
     password_hash varchar(2048) not null,
-    enabled bit not null default(1)
+    enabled boolean not null default(true)
 );
 
 create table app_role (
@@ -27,12 +27,21 @@ create table app_user_role (
         references app_role(app_role_id)
 );
 
+create table `profile` (
+	app_user_id int primary key auto_increment,
+    first_name varchar(50),
+    last_name varchar(50),
+    bio varchar(250),
+    created_at timestamp default now(),
+    foreign key (app_user_id)
+		references app_user(app_user_id)
+);
+
 create table state (
 	state_id int primary key auto_increment,
     state_name varchar(50),
     state_abbrv varchar(3)
 );
-
 
 
 create table location (
@@ -59,6 +68,7 @@ create table post (
 	image BLOB,
 	created_at timestamp default NOW(),
 	species_id int not null,
+    enabled boolean not null default(true),
 	foreign key (app_poster_id)
 		references app_user(app_user_id),
 	foreign key (location_id)
@@ -68,11 +78,11 @@ create table post (
 );
 
 create table post_like (
-	app_liker_id int not null,
+	user_liker_id int not null,
     post_id int not null,
     constraint pk_liker_post
-		primary key (app_liker_id, post_id),
-	foreign key (app_liker_id)
+		primary key (user_liker_id, post_id),
+	foreign key (user_liker_id)
         references app_user(app_user_id),
 	foreign key (post_id)
         references post(post_id)
@@ -99,5 +109,65 @@ create table followers (
     PRIMARY KEY(follower_id, followee_id)
 );
 
+insert into state(state_name, state_abbrv) values
+	('Alabama','AL'),
+	('Alaska','AK'),
+	('Arizona','AZ'),
+	('Arkansas','AR'),
+	('California','CA'),
+	('Colorado','CO'),
+	('Connecticut','CT'),
+	('Delaware','DE'),
+	('Florida','FL'),
+	('Georgia','GA'),
+	('Hawaii','HI'),
+	('Idaho','ID'),
+	('Illinois','IL'),
+	('Indiana','IN'),
+	('Iowa','IA'),
+	('Kansas','KS'),
+	('Kentucky','KY'),
+	('Louisiana','LA'),
+	('Maine','ME'),
+	('Maryland','MD'),
+	('Massachusetts','MA'),
+	('Michigan','MI'),
+	('Minnesota','MN'),
+	('Mississippi','MS'),
+	('Missouri','MO'),
+	('Montana','MT'),
+	('Nebraska','NE'),
+	('Nevada','NV'),
+	('New Hampshire','NH'),
+	('New Jersey','NJ'),
+	('New Mexico','NM'),
+	('New York','NY'),
+	('North Carolina','NC'),
+	('North Dakota','ND'),
+	('Ohio','OH'),
+	('Oklahoma','OK'),
+	('Oregon','OR'),
+	('Pennsylvania','PA'),
+	('Rhode Island','RI'),
+	('South Carolina','SC'),
+	('South Dakota','SD'),
+	('Tennessee','TN'),
+	('Texas','TX'),
+	('Utah','UT'),
+	('Vermont','VT'),
+	('Virginia','VA'),
+	('Washington','WA'),
+	('West Virginia','WV'),
+	('Wisconsin','WI'),
+	('Wyoming','WY');
 
+SET @@GLOBAL.local_infile = 1;
+SHOW VARIABLES LIKE "local_infile";
+SHOW VARIABLES LIKE "secure_file_priv";
+-- Add csv to wd
 
+LOAD DATA INFILE "NACC_list_species.csv"
+INTO TABLE species
+IGNORE 1 ROWS;
+
+SELECT * FROM species;

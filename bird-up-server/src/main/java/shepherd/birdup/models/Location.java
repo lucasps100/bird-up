@@ -6,12 +6,12 @@ public class Location {
 
     private int locationId;
     private String city;
-    private String state;
+    private State state;
     private int postalCode;
 
     public Location() {}
 
-    public Location(int locationId, String city, String state, int postalCode) {
+    public Location(int locationId, String city, State state, int postalCode) {
         this.locationId = locationId;
         this.city = city;
         this.state = state;
@@ -34,11 +34,11 @@ public class Location {
         this.city = city;
     }
 
-    public String getState() {
+    public State getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(State state) {
         this.state = state;
     }
 
