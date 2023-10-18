@@ -168,8 +168,8 @@ insert into app_role (`name`) values
 -- passwords are set to "P@ssw0rd!"
 insert into app_user (username, password_hash, enabled)
     values
-    ('john@smith.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1),
-    ('sally@jones.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1),
+    ('jane@doe.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1),
+    ('fred@herbert.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1),
     ('jon@aol.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1);
 ;
 
@@ -230,10 +230,11 @@ begin
     (2, 1);
     
     insert into post_comment (comment_text, user_commenter_id, post_id, created_at) values
-    ("comment 1", 2, 1, timestamp("2023-10-01", "09:09:09")),
-	("comment 2", 3, 2, timestamp("2023-10-01", "09:09:10")),
-    ("comment 3", 2, 3, timestamp("2023-10-05", "10:10:10"));
+    ("comment", 1, 2, timestamp("2023-10-01", "09:09:09")),
+	("comment", 2, 2, timestamp("2023-10-01", "09:09:10")),
+    ("comment", 2, 3, timestamp("2023-10-05", "10:10:10"));
     
 end//
 delimiter ;
+
 

@@ -2,6 +2,8 @@ package shepherd.birdup;
 
 import shepherd.birdup.models.*;
 
+import java.time.LocalDateTime;
+
 public class TestHelper {
     public TestHelper () {}
 
@@ -19,6 +21,17 @@ public class TestHelper {
         liker.setUsername("jane@doe.com");
 
         return new Like(liker, postId);
+    }
+
+    public Comment createComment(int commentId, int postId) {
+        Profile commenter = new Profile();
+        commenter.setAppUserId(1);
+        commenter.setFirstName("Jane");
+        commenter.setLastName("Doe");
+        commenter.setBio("I like birds.");
+        commenter.setUsername("jane@doe.com");
+
+        return new Comment(commentId, "comment", postId, commenter, LocalDateTime.of(2023, 10, 1, 9, 9, 9));
     }
 
 

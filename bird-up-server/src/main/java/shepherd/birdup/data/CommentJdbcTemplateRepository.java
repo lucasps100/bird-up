@@ -25,16 +25,16 @@ public class CommentJdbcTemplateRepository implements CommentRepository {
     @Override
     public List<Comment> findByPostId(int postId) {
         final String sql = """
-                select a.app_user_id, username, first_name, last_name, bio, comment_id, comment_text, post_id, created_at, a.enabled, po.enabled
-                from comment
+                select a.app_user_id, username, first_name, last_name, bio, comment_id, comment_text, pc.post_id, pc.created_at
+                from post_comment pc
                 join app_user a
-                on comment.user_commenter_id = a.app_user_id
+                on pc.user_commenter_id = a.app_user_id
                 join profile
                 on a.app_user_id = profile.app_user_id
                 join post po
-                on po.post_id = comment.post_id
-                where post_id = ? AND a.enabled = true AND po.enabled=true
-                order by comment.created_at;
+                on po.post_id = pc.post_id
+                where pc.post_id = ? AND a.enabled = true AND po.enabled=true
+                order by pc.created_at;
                 """;
         return jdbcTemplate.query(sql, new CommentMapper(), postId);
     }
@@ -42,7 +42,7 @@ public class CommentJdbcTemplateRepository implements CommentRepository {
     @Override
     public Comment create(Comment comment) {
         final String sql = """
-        insert into comment (comment_text, user_commenter_id, post_id)
+        insert into post_comment (comment_text, user_commenter_id, post_id)
         value (?, ?, ?);
         """;
 
@@ -67,20 +67,17 @@ public class CommentJdbcTemplateRepository implements CommentRepository {
     @Override
     public boolean update(Comment comment) {
         final String sql = """
-                update comment set
-                comment_text = ?,
-                user_commenter_id = ?,
-                post_id = ?,
+                update post_comment set
+                comment_text = ?
                 where comment_id = ?;
                 """;
-        return jdbcTemplate.update(sql, comment.getCommentText(), comment.getCommenterProfile().getAppUserId(),
-                comment.getPostId(), comment.getCommentId()) > 0;
+        return jdbcTemplate.update(sql, comment.getCommentText(), comment.getCommentId()) > 0;
     }
 
     @Override
     public boolean deleteByCommentId(int commentId) {
         final String sql = """
-                delete from comment where comment_id = ?;
+                delete from post_comment where comment_id = ?;
                 """;
         return jdbcTemplate.update(sql, commentId) > 0;
     }
