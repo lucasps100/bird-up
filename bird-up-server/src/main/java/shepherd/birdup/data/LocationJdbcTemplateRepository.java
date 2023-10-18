@@ -19,7 +19,6 @@ public class LocationJdbcTemplateRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Transactional
     List<Location> findAll() {
         final String sql = "select location_id, city, postal_code, state_abbrv, l.state_id, state_name"
                 + "from location l" +
@@ -27,7 +26,8 @@ public class LocationJdbcTemplateRepository {
         return jdbcTemplate.query(sql, new LocationMapper());
     }
 
-    @Transactional
+
+
     Location findById(int locationId) {
         final String sql = "select location_id, city, postal_code, state_abbrv, l.state_id, state_name"
                 + "from location l" +
@@ -39,19 +39,30 @@ public class LocationJdbcTemplateRepository {
                 .orElse(null);
 
     }
-    @Transactional
-    List<Location> findByStateAbbv(String stateAbbv) {
+    List<Location> findByStateAbbv(String stateAbbrv) {
         final String sql = "select location_id, city, postal_code, state_abbrv, l.state_id, state_name"
                 + "from location l" +
                 "join state on location.state_id = state.state_id"
                 + "where state.state_abbv = ?;";
 
-        return jdbcTemplate.query(sql, new LocationMapper(), stateAbbv);
+        return jdbcTemplate.query(sql, new LocationMapper(), stateAbbrv);
+
+    }
+
+    List<Location> findByPartialName(String partialName) {
+        final String sql = "select location_id, city, postal_code, state_abbrv, l.state_id, state_name"
+                + "from location l" +
+                "join state on location.state_id = state.state_id"
+                + "where state.state_abbrv like ?" +
+                "OR state.state_name like ?" +
+                "OR l.city like ?;";
+
+        return jdbcTemplate.query(sql, new LocationMapper(), partialName);
 
     }
 
 
-    public Location add(Location location) {
+    public Location create(Location location) {
 
         final String sql = "insert into location (city, postal_code, state_id)"
                 + "values (?,?,?);";

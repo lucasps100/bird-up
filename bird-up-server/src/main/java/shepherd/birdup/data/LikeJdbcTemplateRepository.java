@@ -31,7 +31,7 @@ public class LikeJdbcTemplateRepository {
         return jdbcTemplate.query(sql, new LikeMapper(), postId);
     }
 
-    public Like add(Like like) {
+    public Like create(Like like) {
         final String sql = """
                 insert into like (user_liker_id, post_id) value(?, ?);
                 """;

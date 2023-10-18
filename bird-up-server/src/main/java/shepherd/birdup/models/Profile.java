@@ -13,14 +13,12 @@ public class Profile {
     private String bio;
     private List<Post> posts;
     private List<Profile> followers;
-    private List <Profile> followees;
-    private List<Post> likedPosts;
-
+    private List<Profile> followees;
     private LocalDateTime createdAt;
 
     public Profile() {}
 
-    public Profile(int appUserId, String username, String firstName, String lastName, String bio, List<Post> posts, List<Profile> followers, List<Profile> followees, List<Post> likedPosts, LocalDateTime createdAt) {
+    public Profile(int appUserId, String username, String firstName, String lastName, String bio, List<Post> posts, List<Profile> followers, List<Profile> followees, LocalDateTime createdAt) {
         this.appUserId = appUserId;
         this.username = username;
         this.firstName = firstName;
@@ -29,7 +27,6 @@ public class Profile {
         this.posts = posts;
         this.followers = followers;
         this.followees = followees;
-        this.likedPosts = likedPosts;
         this.createdAt = createdAt;
     }
 
@@ -97,14 +94,6 @@ public class Profile {
         this.followees = followees;
     }
 
-    public List<Post> getLikedPosts() {
-        return likedPosts;
-    }
-
-    public void setLikedPosts(List<Post> likedPosts) {
-        this.likedPosts = likedPosts;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -118,12 +107,12 @@ public class Profile {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Profile profile = (Profile) o;
-        return appUserId == profile.appUserId && Objects.equals(username, profile.username) && Objects.equals(firstName, profile.firstName) && Objects.equals(lastName, profile.lastName) && Objects.equals(bio, profile.bio) && Objects.equals(posts, profile.posts) && Objects.equals(followers, profile.followers) && Objects.equals(followees, profile.followees) && Objects.equals(likedPosts, profile.likedPosts) && Objects.equals(createdAt, profile.createdAt);
+        return appUserId == profile.appUserId && Objects.equals(username, profile.username) && Objects.equals(firstName, profile.firstName) && Objects.equals(lastName, profile.lastName) && Objects.equals(bio, profile.bio) && Objects.equals(posts, profile.posts) && Objects.equals(followers, profile.followers) && Objects.equals(followees, profile.followees) && Objects.equals(createdAt, profile.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(appUserId, username, firstName, lastName, bio, posts, followers, followees, likedPosts, createdAt);
+        return Objects.hash(appUserId, username, firstName, lastName, bio, posts, followers, followees, createdAt);
     }
 
     @Override
@@ -137,7 +126,6 @@ public class Profile {
                 ", posts=" + posts +
                 ", followers=" + followers +
                 ", followees=" + followees +
-                ", likedPosts=" + likedPosts +
                 ", createdAt=" + createdAt +
                 '}';
     }

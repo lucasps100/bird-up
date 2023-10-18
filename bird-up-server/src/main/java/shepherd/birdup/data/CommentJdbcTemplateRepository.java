@@ -35,11 +35,11 @@ public class CommentJdbcTemplateRepository {
         return jdbcTemplate.query(sql, new CommentMapper(), postId);
     }
 
-    public Comment add(Comment comment) {
+    public Comment create(Comment comment) {
         final String sql = """
-    insert into comment (comment_text, user_commenter_id, post_id, created_at)
-    value (?, ?, ?, ?);
-    """;
+        insert into comment (comment_text, user_commenter_id, post_id)
+        value (?, ?, ?);
+        """;
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = jdbcTemplate.update(connection -> {
@@ -47,7 +47,6 @@ public class CommentJdbcTemplateRepository {
             ps.setString(1, comment.getCommentText());
             ps.setInt(2, comment.getCommenterProfile().getAppUserId());
             ps.setInt(3, comment.getPostId());
-            ps.setTimestamp(4, comment.getCreatedAt() == null ? null : Timestamp.valueOf(comment.getCreatedAt()));
             return ps;
         }, keyHolder);
 
@@ -66,11 +65,10 @@ public class CommentJdbcTemplateRepository {
                 comment_text = ?,
                 user_commenter_id = ?,
                 post_id = ?,
-                created_at = ?
                 where comment_id = ?;
                 """;
         return jdbcTemplate.update(sql, comment.getCommentText(), comment.getCommenterProfile().getAppUserId(),
-                comment.getPostId(), Timestamp.valueOf(comment.getCreatedAt()), comment.getCommentId()) > 0;
+                comment.getPostId(), comment.getCommentId()) > 0;
     }
 
     public boolean deleteByCommentId(int commentId) {
