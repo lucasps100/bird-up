@@ -8,13 +8,14 @@ import shepherd.birdup.models.Species;
 import java.util.List;
 
 @Repository
-public class SpeciesJdbcTemplateRepository {
+public class SpeciesJdbcTemplateRepository implements SpeciesRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
     public SpeciesJdbcTemplateRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+    @Override
     public List<Species> findAll() {
         final String sql = """
                 select * from species;
@@ -23,7 +24,8 @@ public class SpeciesJdbcTemplateRepository {
         return jdbcTemplate.query(sql, new SpeciesMapper());
     }
 
-    public List<Species> findByPartialName (String partialName){
+    @Override
+    public List<Species> findByPartialName(String partialName){
         final String sql = """
                 select * from species
                 where species_short_name like ?
@@ -34,6 +36,7 @@ public class SpeciesJdbcTemplateRepository {
     }
 
 
+    @Override
     public Species findByShortName(String speciesShortName) {
         final String sql = """
                 select * from species

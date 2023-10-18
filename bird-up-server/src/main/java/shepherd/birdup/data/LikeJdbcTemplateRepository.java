@@ -9,13 +9,14 @@ import java.sql.PreparedStatement;
 import java.util.List;
 
 @Repository
-public class LikeJdbcTemplateRepository {
+public class LikeJdbcTemplateRepository implements LikeRepository {
     private final JdbcTemplate jdbcTemplate;
 
     public LikeJdbcTemplateRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Override
     public List<Like> findByPostId(int postId) {
         final String sql = """
                 select a.app_user_id, username, first_name, last_name, bio, created_at
@@ -31,6 +32,7 @@ public class LikeJdbcTemplateRepository {
         return jdbcTemplate.query(sql, new LikeMapper(), postId);
     }
 
+    @Override
     public Like create(Like like) {
         final String sql = """
                 insert into like (user_liker_id, post_id) value(?, ?);
@@ -48,6 +50,7 @@ public class LikeJdbcTemplateRepository {
         return like;
     }
 
+    @Override
     public boolean deleteByIds(int appUserId, int postId) {
         return jdbcTemplate.update("delete from like where user_liker_id = ? AND post_id = ?;",
                 appUserId,

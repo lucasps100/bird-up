@@ -3,6 +3,7 @@ package shepherd.birdup.data;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 import shepherd.birdup.data.mappers.CommentMapper;
 import shepherd.birdup.models.Comment;
 
@@ -12,7 +13,8 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class CommentJdbcTemplateRepository {
+@Repository
+public class CommentJdbcTemplateRepository implements CommentRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -20,6 +22,7 @@ public class CommentJdbcTemplateRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Override
     public List<Comment> findByPostId(int postId) {
         final String sql = """
                 select a.app_user_id, username, first_name, last_name, bio, comment_id, comment_text, post_id, created_at, a.enabled, po.enabled
@@ -30,11 +33,13 @@ public class CommentJdbcTemplateRepository {
                 on a.app_user_id = profile.app_user_id
                 join post po
                 on po.post_id = comment.post_id
-                where post_id = ? AND a.enabled = true AND po.enabled=true;
+                where post_id = ? AND a.enabled = true AND po.enabled=true
+                order by comment.created_at;
                 """;
         return jdbcTemplate.query(sql, new CommentMapper(), postId);
     }
 
+    @Override
     public Comment create(Comment comment) {
         final String sql = """
         insert into comment (comment_text, user_commenter_id, post_id)
@@ -59,6 +64,7 @@ public class CommentJdbcTemplateRepository {
         return comment;
     }
 
+    @Override
     public boolean update(Comment comment) {
         final String sql = """
                 update comment set
@@ -71,6 +77,7 @@ public class CommentJdbcTemplateRepository {
                 comment.getPostId(), comment.getCommentId()) > 0;
     }
 
+    @Override
     public boolean deleteByCommentId(int commentId) {
         final String sql = """
                 delete from comment where comment_id = ?;

@@ -13,13 +13,14 @@ import java.sql.Statement;
 import java.util.List;
 
 @Repository
-public class LocationJdbcTemplateRepository {
+public class LocationJdbcTemplateRepository implements LocationRepository {
     private final JdbcTemplate jdbcTemplate;
     public LocationJdbcTemplateRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    List<Location> findAll() {
+    @Override
+    public List<Location> findAll() {
         final String sql = "select location_id, city, postal_code, state_abbrv, l.state_id, state_name"
                 + "from location l" +
                 "join state on location.state_id = state.state_id;";
@@ -28,7 +29,8 @@ public class LocationJdbcTemplateRepository {
 
 
 
-    Location findById(int locationId) {
+    @Override
+    public Location findById(int locationId) {
         final String sql = "select location_id, city, postal_code, state_abbrv, l.state_id, state_name"
                 + "from location l" +
                 "join state on location.state_id = state.state_id"
@@ -39,7 +41,8 @@ public class LocationJdbcTemplateRepository {
                 .orElse(null);
 
     }
-    List<Location> findByStateAbbv(String stateAbbrv) {
+    @Override
+    public List<Location> findByStateAbbv(String stateAbbrv) {
         final String sql = "select location_id, city, postal_code, state_abbrv, l.state_id, state_name"
                 + "from location l" +
                 "join state on location.state_id = state.state_id"
@@ -49,7 +52,8 @@ public class LocationJdbcTemplateRepository {
 
     }
 
-    List<Location> findByPartialName(String partialName) {
+    @Override
+    public List<Location> findByPartialName(String partialName) {
         final String sql = "select location_id, city, postal_code, state_abbrv, l.state_id, state_name"
                 + "from location l" +
                 "join state on location.state_id = state.state_id"
@@ -62,6 +66,7 @@ public class LocationJdbcTemplateRepository {
     }
 
 
+    @Override
     public Location create(Location location) {
 
         final String sql = "insert into location (city, postal_code, state_id)"
@@ -84,6 +89,7 @@ public class LocationJdbcTemplateRepository {
         return location;
     }
 
+    @Override
     public boolean update(Location location) {
 
         final String sql = "update location set "
@@ -99,6 +105,7 @@ public class LocationJdbcTemplateRepository {
                 location.getLocationId()) > 0;
     }
 
+    @Override
     public boolean deleteById(int locationId) {
         return jdbcTemplate.update(
                 "delete from location where location_id = ?", locationId) > 0;

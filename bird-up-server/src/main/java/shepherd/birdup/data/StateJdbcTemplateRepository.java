@@ -8,7 +8,7 @@ import shepherd.birdup.models.State;
 import java.util.List;
 
 @Repository
-public class StateJdbcTemplateRepository {
+public class StateJdbcTemplateRepository implements StateRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -16,6 +16,7 @@ public class StateJdbcTemplateRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Override
     public List<State> findAll() {
         final String sql = """
                 select * from state;
@@ -24,6 +25,7 @@ public class StateJdbcTemplateRepository {
     }
 
 
+    @Override
     public State findStateByAbbrv(String stateAbbrv){
         final String sql = """
                 select * from state

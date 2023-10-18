@@ -3,6 +3,7 @@ package shepherd.birdup.data;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import shepherd.birdup.data.mappers.ProfileMapper;
 import shepherd.birdup.models.Post;
@@ -12,17 +13,19 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
 
-public class ProfileJdbcTemplateRepository {
+@Repository
+public class ProfileJdbcTemplateRepository implements ProfileRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final PostJdbcTemplateRepository postJdbcTemplateRepository;
+    private final PostRepository postJdbcTemplateRepository;
 
     public ProfileJdbcTemplateRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.postJdbcTemplateRepository = new PostJdbcTemplateRepository(jdbcTemplate);
     }
 
+    @Override
     @Transactional
     public Profile findByUsername(String username) {
         final String sql = """
@@ -51,7 +54,8 @@ public class ProfileJdbcTemplateRepository {
                 join likes on
                 follower
                 on a.app_user_id = a.follower_id
-                where followee_id = ?;
+                where followee_id = ?
+                and p.enabled = true;
                 """;
         List<Profile> followers = jdbcTemplate.query(sql, new ProfileMapper(), profile.getAppUserId());
         profile.setFollowers(followers);
@@ -66,25 +70,29 @@ public class ProfileJdbcTemplateRepository {
                 join likes on
                 follower
                 on a.app_user_id = a.followee_id
-                where follower_id = ?;
+                where follower_id = ?
+                and p.enabled = true;
                 """;
         List<Profile> followees = jdbcTemplate.query(sql, new ProfileMapper(), profile.getAppUserId());
         profile.setFollowees(followees);
     }
 
+    @Override
     public List<Profile> findByPartialName(String partialName) {
         final String sql = """
                 select a.app_user_id, username, first_name, last_name, bio, created_at
                 from profile p
                 join app_user a
                 on p.app_user_id = a.app_user_id
-                where username like ?
+                where (username like ?
                 or first_name like ?
-                or last_name like ?;
+                or last_name like ?)
+                and p.enabled = true;
                 """;
         return jdbcTemplate.query(sql, new ProfileMapper(), "%"+partialName+"%");
     }
 
+    @Override
     public Profile createProfile(Profile profile) {
         final String sql = """
             insert into profile (app_user_id, first_name, last_name, bio)
@@ -106,6 +114,7 @@ public class ProfileJdbcTemplateRepository {
         return profile;
     }
 
+    @Override
     public boolean updateProfile(Profile profile) {
         final String sql = """
                 update profile set
@@ -118,6 +127,7 @@ public class ProfileJdbcTemplateRepository {
                 profile.getLastName(), profile.getBio(), profile.getAppUserId()) > 0;
     }
 
+    @Override
     public boolean softDeleteProfileByUserId(int appUserId) {
         final String sql = """
                 update profile set
@@ -127,6 +137,7 @@ public class ProfileJdbcTemplateRepository {
         return jdbcTemplate.update(sql, appUserId) > 0;
     }
 
+    @Override
     public boolean restoreProfileByUserId(int appUserId) {
         final String sql = """
                 update profile set

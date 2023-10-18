@@ -13,12 +13,12 @@ import java.sql.Statement;
 import java.util.List;
 
 @Repository
-public class PostJdbcTemplateRepository {
+public class PostJdbcTemplateRepository implements PostRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final LikeJdbcTemplateRepository likeRepository;
-    private final CommentJdbcTemplateRepository commentRepository;
+    private final LikeRepository likeRepository;
+    private final CommentRepository commentRepository;
 
     public PostJdbcTemplateRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -26,6 +26,7 @@ public class PostJdbcTemplateRepository {
         this.commentRepository = new CommentJdbcTemplateRepository(jdbcTemplate);
     }
 
+    @Override
     @Transactional
     public List<Post> findByAppUserId(int appUserId) {
         final String sql = """
@@ -55,6 +56,7 @@ public class PostJdbcTemplateRepository {
         return posts;
     }
 
+    @Override
     @Transactional
     public List<Post> findByStateAbbrv(String stateAbbrv) {
         final String sql = """
@@ -74,6 +76,8 @@ public class PostJdbcTemplateRepository {
                 join state st
                 on st.state_id = l.state_id
                 where st.state_abbrv = ?
+                AND po.enabled = true
+                and p.enabled = true
                 order by po.created_at DESC;
                 """;
         List<Post> posts = jdbcTemplate.query(sql, new PostMapper(), stateAbbrv);
@@ -84,6 +88,7 @@ public class PostJdbcTemplateRepository {
         return posts;
     }
 
+    @Override
     @Transactional
     public List<Post> findBySpeciesShortName(String speciesShortName) {
         final String sql = """
@@ -103,6 +108,8 @@ public class PostJdbcTemplateRepository {
                 join state st
                 on st.state_id = l.state_id
                 where sp.species_short_name = ?
+                AND po.enabled = true
+                and p.enabled = true
                 order by po.created_at DESC;
                 """;
         List<Post> posts = jdbcTemplate.query(sql, new PostMapper(), speciesShortName);
@@ -113,6 +120,7 @@ public class PostJdbcTemplateRepository {
         return posts;
     }
 
+    @Override
     public List<Post> findByPostalCode(int postalCode) {
         final String sql = """
                 select po.post_id, po.post_body, po.image, po.created_at,
@@ -131,6 +139,8 @@ public class PostJdbcTemplateRepository {
                 join state st
                 on st.state_id = l.state_id
                 where l.postal_code = ?
+                AND po.enabled = true
+                and p.enabled = true
                 order by po.created_at DESC;
                 """;
         List<Post> posts = jdbcTemplate.query(sql, new PostMapper(), postalCode);
@@ -140,6 +150,7 @@ public class PostJdbcTemplateRepository {
         });
         return posts;
     }
+    @Override
     @Transactional
     public List<Post> getLikedPostsByLikerId(int likerId) {
         final String sql = """
@@ -161,6 +172,8 @@ public class PostJdbcTemplateRepository {
                 join like
                 on po.post_id = like.post_id
                 where like.liker_id = ?
+                AND po.enabled = true
+                and p.enabled = true
                 order by po.created_at DESC;
                 """;
         List<Post> posts = jdbcTemplate.query(sql, new PostMapper(), likerId);
@@ -171,6 +184,7 @@ public class PostJdbcTemplateRepository {
         return posts;
     }
 
+    @Override
     @Transactional
     public List<Post> findFolloweePostsByFollowerId(int followerId) {
         final String sql = """
@@ -192,6 +206,8 @@ public class PostJdbcTemplateRepository {
                 join follower f
                 on f.followee_id = a.app_user_id
                 where f.follower_id = ?
+                AND po.enabled = true
+                and p.enabled = true
                 order by po.created_at DESC;
                 """;
         List<Post> posts = jdbcTemplate.query(sql, new PostMapper(), followerId);
@@ -202,6 +218,7 @@ public class PostJdbcTemplateRepository {
         return posts;
     }
 
+    @Override
     @Transactional
     public List<Post> findByCityAndStateAbbrv(String city, String stateAbbrv) {
         final String sql = """
@@ -221,6 +238,8 @@ public class PostJdbcTemplateRepository {
                 join state st
                 on st.state_id = l.state_id
                 where l.city = ? AND st.state_abbrv = ?
+                AND po.enabled = true
+                and p.enabled = true
                 order by po.created_at DESC;
                 """;
         List<Post> posts = jdbcTemplate.query(sql, new PostMapper(), city, stateAbbrv);
@@ -231,6 +250,7 @@ public class PostJdbcTemplateRepository {
         return posts;
     }
 
+    @Override
     public Post create(Post post) {
 
         final String sql = """
@@ -256,6 +276,7 @@ public class PostJdbcTemplateRepository {
         return post;
     }
 
+    @Override
     public boolean update(Post post) {
         final String sql = """
                 update post set
@@ -275,6 +296,7 @@ public class PostJdbcTemplateRepository {
                 post.getPostId()) > 0;
     }
 
+    @Override
     public boolean softDeleteById(int postId) {
         final String sql = """
                 update post set
