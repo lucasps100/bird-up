@@ -221,8 +221,8 @@ begin
     
     insert into post(location_id, app_poster_id, post_body, created_at, species_id, enabled) values
     (1, 1, "Test text", timestamp("2023-09-09", "02:02:02"), 1, false),
-    (2, 1, "Test text 2", timestamp("2023-09-10", "07:07:07"), 2, true),
-    (2, 2, "Test text 3", timestamp("2023-09-10", "08:08:08"), 3, true);
+    (2, 1, "Test text", timestamp("2023-09-10", "07:07:07"), 2, true),
+    (2, 2, "Test text", timestamp("2023-09-10", "08:08:08"), 3, true);
     
     insert into post_like (user_liker_id, post_id) values
     (1, 1),

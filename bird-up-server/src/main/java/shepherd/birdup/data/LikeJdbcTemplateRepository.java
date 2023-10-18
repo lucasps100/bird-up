@@ -19,14 +19,15 @@ public class LikeJdbcTemplateRepository implements LikeRepository {
     @Override
     public List<Like> findByPostId(int postId) {
         final String sql = """
-                select a.app_user_id, username, first_name, last_name, bio, created_at
-                from like join app_user a
-                on like.user_liker_id = a.app_user_id
-                join profile
-                on a.app_user_id = profile.app_user_id
+                select a.app_user_id, username, first_name, last_name, bio, po.post_id
+                from post_like l
+                join app_user a
+                on a.app_user_id = l.user_liker_id
+                join profile pr
+                on pr.app_user_id = a.app_user_id
                 join post po
-                on post.post_id = like.post_id
-                where post_id = ? AND a.enabled = true AND po.enabled = true;
+                on po.post_id = l.post_id
+                where po.post_id = ? AND a.enabled = true AND po.enabled = true;
                 """;
 
         return jdbcTemplate.query(sql, new LikeMapper(), postId);
@@ -35,7 +36,7 @@ public class LikeJdbcTemplateRepository implements LikeRepository {
     @Override
     public Like create(Like like) {
         final String sql = """
-                insert into like (user_liker_id, post_id) value(?, ?);
+                insert into post_like (user_liker_id, post_id) value(?, ?);
                 """;
         int rowsAffected = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -52,7 +53,7 @@ public class LikeJdbcTemplateRepository implements LikeRepository {
 
     @Override
     public boolean deleteByIds(int appUserId, int postId) {
-        return jdbcTemplate.update("delete from like where user_liker_id = ? AND post_id = ?;",
+        return jdbcTemplate.update("delete from post_like where user_liker_id = ? AND post_id = ?;",
                 appUserId,
                 postId) > 0;
     }
