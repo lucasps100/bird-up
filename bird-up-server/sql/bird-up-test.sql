@@ -160,6 +160,80 @@ insert into state(state_name, state_abbrv) values
 	('West Virginia','WV'),
 	('Wisconsin','WI'),
 	('Wyoming','WY');
+    
+insert into app_role (`name`) values
+    ('USER'),
+    ('ADMIN');
 
--- Upload Species csv data with Table Data Import Wizard (right click on schema)
+-- passwords are set to "P@ssw0rd!"
+insert into app_user (username, password_hash, enabled)
+    values
+    ('john@smith.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1),
+    ('sally@jones.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1),
+    ('jon@aol.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1);
+;
+
+insert into app_user_role
+    values
+    (1, 2),
+    (2, 1);
+
+
+delimiter //
+create procedure set_known_good_state()
+begin
+    delete from follower;
+	delete from `profile`;
+    delete from post_like;
+    delete from post_comment;
+    delete from post;
+	delete from location;
+	delete from species;
+    
+	alter table `profile` auto_increment=1;
+	alter table location auto_increment=1;
+	alter table species auto_increment=1;
+    alter table post auto_increment=1;
+	alter table post_like auto_increment=1;
+	alter table post_comment auto_increment=1;
+	alter table follower auto_increment=1;
+    
+    insert into `profile` (app_user_id, first_name, last_name, bio, created_at)
+		values
+        (1, 'Jane', 'Doe', 'I like birds.', timestamp("2020-01-01", "02:02:02")),
+        (2, 'Fred', 'Herbert', 'Birds R cool.', timestamp("2010-10-10", "01:01:01")),
+        (3, 'Jon', 'Jonson', 'Testing 123', timestamp("2021-05-05", "05:05:05"));
+        
+	insert into location (city, postal_code, state_id) values
+		('Las Vegas', '04468', 28),
+		('Hilton Head Island', '29926', 40),
+        ("Kennebunk", "04043", 19);
+    
+    insert into follower (follower_id, followee_id, created_at) values 
+    (1, 2, timestamp("2022-01-01", "02:02:02")),
+    (2, 1, timestamp("2023-01-01", "04:04:04")),
+    (3, 1, timestamp("2023-04-04", "05:05:05"));
+    
+    insert into species(species_short_name, species_long_name) values
+    ("Duck", "Reginald Ducksworth"),
+    ("Pigeon", "Pigeus Maximus"),
+    ("Seagull", "Flying Beach Rat");
+    
+    insert into post(location_id, app_poster_id, post_body, created_at, species_id, enabled) values
+    (1, 1, "Test text", timestamp("2023-09-09", "02:02:02"), 1, false),
+    (2, 1, "Test text 2", timestamp("2023-09-10", "07:07:07"), 2, true),
+    (2, 2, "Test text 3", timestamp("2023-09-10", "08:08:08"), 3, true);
+    
+    insert into post_like (user_liker_id, post_id) values
+    (1, 1),
+    (1, 3),
+    (2, 1);
+    
+    insert into post_comment (comment_text, user_commenter_id, post_id, created_at) values
+    ("comment 1", 2, 1, timestamp("2023-10-01", "09:09:09")),
+	("comment 2", 3, 2, timestamp("2023-10-01", "09:09:10")),
+    ("comment 3", 2, 3, timestamp("2023-10-05", "10:10:10"));
+    
+end//
+delimiter ;
 

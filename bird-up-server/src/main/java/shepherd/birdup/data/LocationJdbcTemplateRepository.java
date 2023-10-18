@@ -21,9 +21,9 @@ public class LocationJdbcTemplateRepository implements LocationRepository {
 
     @Override
     public List<Location> findAll() {
-        final String sql = "select location_id, city, postal_code, state_abbrv, l.state_id, state_name"
-                + "from location l" +
-                "join state on location.state_id = state.state_id;";
+        final String sql = "select location_id, city, postal_code, state_abbrv, l.state_id, state_name "
+                + "from location l " +
+                "join state on l.state_id = state.state_id;";
         return jdbcTemplate.query(sql, new LocationMapper());
     }
 
@@ -31,9 +31,9 @@ public class LocationJdbcTemplateRepository implements LocationRepository {
 
     @Override
     public Location findById(int locationId) {
-        final String sql = "select location_id, city, postal_code, state_abbrv, l.state_id, state_name"
-                + "from location l" +
-                "join state on location.state_id = state.state_id"
+        final String sql = "select location_id, city, postal_code, state_abbrv, l.state_id, state_name "
+                + "from location l " +
+                "join state on l.state_id = state.state_id "
                 + "where location_id = ?;";
 
         return jdbcTemplate.query(sql, new LocationMapper(), locationId).stream()
@@ -43,10 +43,10 @@ public class LocationJdbcTemplateRepository implements LocationRepository {
     }
     @Override
     public List<Location> findByStateAbbv(String stateAbbrv) {
-        final String sql = "select location_id, city, postal_code, state_abbrv, l.state_id, state_name"
-                + "from location l" +
-                "join state on location.state_id = state.state_id"
-                + "where state.state_abbv = ?;";
+        final String sql = "select location_id, city, postal_code, state_abbrv, l.state_id, state_name "
+                + "from location l " +
+                "join state on l.state_id = state.state_id "
+                + "where state.state_abbrv like ?;";
 
         return jdbcTemplate.query(sql, new LocationMapper(), stateAbbrv);
 
@@ -54,14 +54,14 @@ public class LocationJdbcTemplateRepository implements LocationRepository {
 
     @Override
     public List<Location> findByPartialName(String partialName) {
-        final String sql = "select location_id, city, postal_code, state_abbrv, l.state_id, state_name"
-                + "from location l" +
-                "join state on location.state_id = state.state_id"
-                + "where state.state_abbrv like ?" +
-                "OR state.state_name like ?" +
+        final String sql = "select location_id, city, postal_code, state_abbrv, l.state_id, state_name "
+                + "from location l " +
+                "join state on l.state_id = state.state_id "
+                + "where state.state_abbrv like ? " +
+                "OR state.state_name like ? " +
                 "OR l.city like ?;";
 
-        return jdbcTemplate.query(sql, new LocationMapper(), partialName);
+        return jdbcTemplate.query(sql, new LocationMapper(), "%" + partialName +"%","%" + partialName +"%", "%" + partialName +"%");
 
     }
 
@@ -70,7 +70,7 @@ public class LocationJdbcTemplateRepository implements LocationRepository {
     public Location create(Location location) {
 
         final String sql = "insert into location (city, postal_code, state_id)"
-                + "values (?,?,?);";
+                + " values (?,?,?);";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = jdbcTemplate.update(connection -> {
@@ -95,7 +95,7 @@ public class LocationJdbcTemplateRepository implements LocationRepository {
         final String sql = "update location set "
                 + "city = ?, "
                 + "postal_code = ?, "
-                + "state_id = ?"
+                + "state_id = ? "
                 + "where location_id = ?;";
 
         return jdbcTemplate.update(sql,
