@@ -44,10 +44,22 @@ public class LocationRepositoryTest {
     }
 
     @Test
+    void shouldNotFindByInvalidId() {
+        Location actual = repository.findById(99);
+        assertNull(actual);
+    }
+
+    @Test
     void shouldFindByStateAbbrv() {
         List<Location> actual = repository.findByStateAbbv("ME");
         assertEquals(actual.size(), 1);
         assertEquals(actual.get(0).getCity(), "Kennebunk");
+    }
+
+    @Test
+    void shouldNotFindBYInvalidStateAbbrv() {
+        List<Location> actual = repository.findByStateAbbv("JW");
+        assertEquals(actual.size(), 0);
     }
 
     @Test
@@ -59,7 +71,7 @@ public class LocationRepositoryTest {
 
     @Test
     void shouldCreate() {
-     Location arg = th.createValidLocaiton(0);
+     Location arg = th.createLocation(0);
      Location actual = repository.create(arg);
      arg.setLocationId(NEXT_ID);
      assertEquals(actual, arg);
@@ -69,9 +81,16 @@ public class LocationRepositoryTest {
 
     @Test
     void shouldUpdate() {
-        Location arg = th.createValidLocaiton(1);
+        Location arg = th.createLocation(1);
         assertTrue(repository.update(arg));
         assertEquals(arg, repository.findById(1));
+    }
+
+    @Test
+    void shouldNotUpdateInvalidId() {
+        Location arg = th.createLocation(99);
+        assertFalse(repository.update(arg));
+        assertNull(repository.findById(99));
     }
 
     @Test
@@ -79,6 +98,11 @@ public class LocationRepositoryTest {
         assertTrue(repository.deleteById(3));
         assertEquals(repository.findAll().size(), 2);
 
+    }
+
+    @Test
+    void shouldNotDeleteByInvalidId() {
+        assertFalse(repository.deleteById(99));
     }
 
 
