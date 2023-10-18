@@ -32,7 +32,8 @@ public class SpeciesJdbcTemplateRepository implements SpeciesRepository {
                 OR species_long_name like ?;
                 """;
 
-        return jdbcTemplate.query(sql, new SpeciesMapper(), "%" +partialName + "%");
+        return jdbcTemplate.query(sql, new SpeciesMapper(), "%" +partialName + "%",
+                "%" +partialName + "%");
     }
 
 
@@ -40,7 +41,7 @@ public class SpeciesJdbcTemplateRepository implements SpeciesRepository {
     public Species findByShortName(String speciesShortName) {
         final String sql = """
                 select * from species
-                where species_short_name = ?;
+                where species_short_name like ?;
                 """;
 
         return jdbcTemplate.query(sql, new SpeciesMapper(), speciesShortName).stream()
