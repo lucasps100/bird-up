@@ -25,7 +25,7 @@ public class AppUser implements UserDetails {
         this.passwordHash = passwordHash;
         this.enabled = enabled;
         this.authorities = authorities.stream()
-                .map(r -> new SimpleGrantedAuthority(r))
+                .map(SimpleGrantedAuthority::new)
                 .toList();
     }
 
@@ -38,8 +38,8 @@ public class AppUser implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+    public Collection<GrantedAuthority> getAuthorities() {
+        return new ArrayList<>(authorities);
     }
 
     @Override
