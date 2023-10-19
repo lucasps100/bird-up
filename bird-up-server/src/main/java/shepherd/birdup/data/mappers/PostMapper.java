@@ -39,7 +39,7 @@ public class PostMapper implements RowMapper<Post> {
         location.setState(state);
         location.setLocationId(rs.getInt("location_id"));
         location.setCity(rs.getString("city"));
-        location.setPostalCode(rs.getInt("postal_code"));
+        location.setPostalCode(rs.getString("postal_code"));
         post.setPostLocation(location);
 
         return post;

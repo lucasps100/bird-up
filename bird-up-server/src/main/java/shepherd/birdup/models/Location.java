@@ -7,11 +7,11 @@ public class Location {
     private int locationId;
     private String city;
     private State state;
-    private int postalCode;
+    private String postalCode;
 
     public Location() {}
 
-    public Location(int locationId, String city, State state, int postalCode) {
+    public Location(int locationId, String city, State state, String postalCode) {
         this.locationId = locationId;
         this.city = city;
         this.state = state;
@@ -42,11 +42,11 @@ public class Location {
         this.state = state;
     }
 
-    public int getPostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(int postalCode) {
+    public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 
@@ -55,7 +55,7 @@ public class Location {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Location location = (Location) o;
-        return locationId == location.locationId && postalCode == location.postalCode && Objects.equals(city, location.city) && Objects.equals(state, location.state);
+        return locationId == location.locationId && Objects.equals(postalCode,location.postalCode) && Objects.equals(city, location.city) && Objects.equals(state, location.state);
     }
 
     @Override

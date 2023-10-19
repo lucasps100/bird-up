@@ -14,7 +14,7 @@ public class LocationMapper implements RowMapper<Location> {
         Location location = new Location();
         location.setLocationId(rs.getInt("location_id"));
         location.setCity(rs.getString("city"));
-        location.setPostalCode(rs.getInt("postal_code"));
+        location.setPostalCode(rs.getString("postal_code"));
 
         State state = new State();
         state.setStateId(rs.getInt("state_id"));

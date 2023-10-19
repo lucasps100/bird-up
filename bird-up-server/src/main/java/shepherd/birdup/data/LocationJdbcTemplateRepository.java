@@ -76,7 +76,7 @@ public class LocationJdbcTemplateRepository implements LocationRepository {
         int rowsAffected = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, location.getCity());
-            ps.setInt(2, location.getPostalCode());
+            ps.setString(2, location.getPostalCode());
             ps.setInt(3, location.getState().getStateId());
             return ps;
         }, keyHolder);

@@ -33,6 +33,7 @@ create table `profile` (
     last_name varchar(50),
     bio varchar(250),
     created_at timestamp default now(),
+    enabled boolean default(true),
     foreign key (app_user_id)
 		references app_user(app_user_id)
 );
@@ -48,7 +49,7 @@ create table location (
 	location_id int primary key auto_increment,
     city varchar(250) not null,
     state_id int,
-    postal_code int,
+    postal_code varchar(5),
     constraint fk_state_id
 		foreign key (state_id)
         references state(state_id)
@@ -232,7 +233,7 @@ begin
     insert into post_comment (comment_text, user_commenter_id, post_id, created_at) values
     ("comment", 1, 2, timestamp("2023-10-01", "09:09:09")),
 	("comment", 2, 2, timestamp("2023-10-01", "09:09:10")),
-    ("comment", 2, 3, timestamp("2023-10-05", "10:10:10"));
+    ("comment", 2, 1, timestamp("2023-10-05", "10:10:10"));
     
 end//
 delimiter ;

@@ -1,7 +1,6 @@
 drop database if exists bird_up;
 create database bird_up;
 use bird_up;
-
 create table app_user (
     app_user_id int primary key auto_increment,
     username varchar(50) not null unique,
@@ -33,6 +32,7 @@ create table `profile` (
     last_name varchar(50),
     bio varchar(250),
     created_at timestamp default now(),
+    enabled boolean default(true),
     foreign key (app_user_id)
 		references app_user(app_user_id)
 );
@@ -48,7 +48,7 @@ create table location (
 	location_id int primary key auto_increment,
     city varchar(250) not null,
     state_id int,
-    postal_code int,
+    postal_code varchar(5),
     constraint fk_state_id
 		foreign key (state_id)
         references state(state_id)
@@ -100,7 +100,7 @@ create table post_comment (
 		references post(post_id)
 );
 
-create table followers (
+create table follower (
 	follower_id INT NOT NULL,
     followee_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
@@ -161,13 +161,6 @@ insert into state(state_name, state_abbrv) values
 	('Wisconsin','WI'),
 	('Wyoming','WY');
 
-SET @@GLOBAL.local_infile = 1;
-SHOW VARIABLES LIKE "local_infile";
-SHOW VARIABLES LIKE "secure_file_priv";
--- Add csv to wd
+-- Upload Species csv data with Table Data Import Wizard (right click on schema)
 
-LOAD DATA INFILE "NACC_list_species.csv"
-INTO TABLE species
-IGNORE 1 ROWS;
 
-SELECT * FROM species;

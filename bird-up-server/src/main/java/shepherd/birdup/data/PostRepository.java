@@ -6,6 +6,12 @@ import shepherd.birdup.models.Post;
 import java.util.List;
 
 public interface PostRepository {
+
+    @Transactional
+    List<Post> findAll();
+
+    @Transactional
+    Post findByPostId(int postId);
     @Transactional
     List<Post> findByAppUserId(int appUserId);
 
@@ -15,10 +21,10 @@ public interface PostRepository {
     @Transactional
     List<Post> findBySpeciesShortName(String speciesShortName);
 
-    List<Post> findByPostalCode(int postalCode);
+    List<Post> findByPostalCode(String postalCode);
 
     @Transactional
-    List<Post> getLikedPostsByLikerId(int likerId);
+    List<Post> findLikedPostsByLikerId(int likerId);
 
     @Transactional
     List<Post> findFolloweePostsByFollowerId(int followerId);

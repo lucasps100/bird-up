@@ -26,6 +26,72 @@ public class PostJdbcTemplateRepository implements PostRepository {
         this.commentRepository = new CommentJdbcTemplateRepository(jdbcTemplate);
     }
 
+
+    @Override
+    public List<Post> findAll() {
+        final String sql = """
+                select po.post_id, po.post_body, po.image, po.created_at,
+                sp.species_id, species_short_name, species_long_name, a.app_user_id,
+                a.username, first_name, last_name, bio, l.state_id, state_abbrv, state_name,
+                l.location_id, city, postal_code
+                from post po
+                join profile p
+                on po.app_poster_id = p.app_user_id
+                join app_user a
+                on a.app_user_id = p.app_user_id
+                join location l
+                on po.location_id = l.location_id
+                join species sp
+                on sp.species_id = po.species_id
+                join state st
+                on st.state_id = l.state_id
+                where po.enabled = true
+                and p.enabled = true
+                order by po.created_at DESC;
+                """;
+
+        List<Post> posts = jdbcTemplate.query(sql, new PostMapper());
+        posts.forEach(p -> {
+            p.setComments(commentRepository.findByPostId(p.getPostId()));
+            p.setLikes(likeRepository.findByPostId(p.getPostId()));
+        });
+        return posts;
+    }
+
+
+    @Transactional
+    @Override
+    public Post findByPostId(int postId) {
+        final String sql = """
+                select po.post_id, po.post_body, po.image, po.created_at,
+                sp.species_id, species_short_name, species_long_name, a.app_user_id,
+                a.username, first_name, last_name, bio, l.state_id, state_abbrv, state_name,
+                l.location_id, city, postal_code
+                from post po
+                join profile p
+                on po.app_poster_id = p.app_user_id
+                join app_user a
+                on a.app_user_id = p.app_user_id
+                join location l
+                on po.location_id = l.location_id
+                join species sp
+                on sp.species_id = po.species_id
+                join state st
+                on st.state_id = l.state_id
+                where po.enabled = true
+                and p.enabled = true
+                and po.post_id = ?
+                order by po.created_at DESC;
+                """;
+
+        Post post = jdbcTemplate.query(sql, new PostMapper(), postId).stream().findFirst().orElse(null);
+        if(post != null) {
+            post.setComments(commentRepository.findByPostId(post.getPostId()));
+            post.setLikes(likeRepository.findByPostId(post.getPostId()));
+        }
+        return post;
+    }
+
     @Override
     @Transactional
     public List<Post> findByAppUserId(int appUserId) {
@@ -40,12 +106,14 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 join app_user a
                 on a.app_user_id = p.app_user_id
                 join location l
-                on po.location_id = location.location_id
+                on po.location_id = l.location_id
                 join species sp
-                on sp.species_id = po.species_id,
+                on sp.species_id = po.species_id
                 join state st
                 on st.state_id = l.state_id
-                where a.app_user_id
+                where a.app_user_id = ?
+                and po.enabled = true
+                and p.enabled = true
                 order by po.created_at DESC;
                 """;
         List<Post> posts = jdbcTemplate.query(sql, new PostMapper(), appUserId);
@@ -70,12 +138,12 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 join app_user a
                 on a.app_user_id = p.app_user_id
                 join location l
-                on po.location_id = location.location_id
+                on po.location_id = l.location_id
                 join species sp
-                on sp.species_id = po.species_id,
+                on sp.species_id = po.species_id
                 join state st
                 on st.state_id = l.state_id
-                where st.state_abbrv = ?
+                where st.state_abbrv like ?
                 AND po.enabled = true
                 and p.enabled = true
                 order by po.created_at DESC;
@@ -102,12 +170,12 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 join app_user a
                 on a.app_user_id = p.app_user_id
                 join location l
-                on po.location_id = location.location_id
+                on po.location_id = l.location_id
                 join species sp
-                on sp.species_id = po.species_id,
+                on sp.species_id = po.species_id
                 join state st
                 on st.state_id = l.state_id
-                where sp.species_short_name = ?
+                where sp.species_short_name like ?
                 AND po.enabled = true
                 and p.enabled = true
                 order by po.created_at DESC;
@@ -121,7 +189,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
     }
 
     @Override
-    public List<Post> findByPostalCode(int postalCode) {
+    public List<Post> findByPostalCode(String postalCode) {
         final String sql = """
                 select po.post_id, po.post_body, po.image, po.created_at,
                 sp.species_id, species_short_name, species_long_name, a.app_user_id,
@@ -133,12 +201,12 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 join app_user a
                 on a.app_user_id = p.app_user_id
                 join location l
-                on po.location_id = location.location_id
+                on po.location_id = l.location_id
                 join species sp
-                on sp.species_id = po.species_id,
+                on sp.species_id = po.species_id
                 join state st
                 on st.state_id = l.state_id
-                where l.postal_code = ?
+                where l.postal_code like ?
                 AND po.enabled = true
                 and p.enabled = true
                 order by po.created_at DESC;
@@ -152,7 +220,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
     }
     @Override
     @Transactional
-    public List<Post> getLikedPostsByLikerId(int likerId) {
+    public List<Post> findLikedPostsByLikerId(int likerId) {
         final String sql = """
                 select po.post_id, po.post_body, po.image, po.created_at,
                 sp.species_id, species_short_name, species_long_name, a.app_user_id,
@@ -164,14 +232,14 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 join app_user a
                 on a.app_user_id = p.app_user_id
                 join location l
-                on po.location_id = location.location_id
+                on po.location_id = l.location_id
                 join species sp
-                on sp.species_id = po.species_id,
+                on sp.species_id = po.species_id
                 join state st
                 on st.state_id = l.state_id
-                join like
-                on po.post_id = like.post_id
-                where like.liker_id = ?
+                join post_like
+                on po.post_id = post_like.post_id
+                where post_like.user_liker_id = ?
                 AND po.enabled = true
                 and p.enabled = true
                 order by po.created_at DESC;
@@ -198,9 +266,9 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 join app_user a
                 on a.app_user_id = p.app_user_id
                 join location l
-                on po.location_id = location.location_id
+                on po.location_id = l.location_id
                 join species sp
-                on sp.species_id = po.species_id,
+                on sp.species_id = po.species_id
                 join state st
                 on st.state_id = l.state_id
                 join follower f
@@ -232,12 +300,12 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 join app_user a
                 on a.app_user_id = p.app_user_id
                 join location l
-                on po.location_id = location.location_id
+                on po.location_id = l.location_id
                 join species sp
-                on sp.species_id = po.species_id,
+                on sp.species_id = po.species_id
                 join state st
                 on st.state_id = l.state_id
-                where l.city = ? AND st.state_abbrv = ?
+                where l.city like ? AND st.state_abbrv like ?
                 AND po.enabled = true
                 and p.enabled = true
                 order by po.created_at DESC;
@@ -300,7 +368,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
     public boolean softDeleteById(int postId) {
         final String sql = """
                 update post set
-                enabled = false,
+                enabled = false
                 where post_id = ?;
                 """;
         return jdbcTemplate.update(sql, postId) > 0;
