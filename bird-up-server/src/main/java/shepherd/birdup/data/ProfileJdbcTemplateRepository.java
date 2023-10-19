@@ -6,11 +6,9 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import shepherd.birdup.data.mappers.ProfileMapper;
-import shepherd.birdup.models.Post;
 import shepherd.birdup.models.Profile;
 
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.util.List;
 
 @Repository
@@ -33,7 +31,8 @@ public class ProfileJdbcTemplateRepository implements ProfileRepository {
                 from profile p
                 join app_user a
                 on p.app_user_id = a.app_user_id
-                where username = ?;
+                where username like ?
+                and a.enabled = true;
                 """;
         Profile profile = jdbcTemplate.query(sql, new ProfileMapper(), username).stream().findFirst().orElse(null);
         if(profile != null) {
@@ -51,11 +50,10 @@ public class ProfileJdbcTemplateRepository implements ProfileRepository {
                 from profile p
                 join app_user a
                 on p.app_user_id = a.app_user_id
-                join likes on
-                follower
-                on a.app_user_id = a.follower_id
-                where followee_id = ?
-                and p.enabled = true;
+                join follower f
+                on a.app_user_id = f.follower_id
+                where f.followee_id = ?
+                and a.enabled = true;
                 """;
         List<Profile> followers = jdbcTemplate.query(sql, new ProfileMapper(), profile.getAppUserId());
         profile.setFollowers(followers);
@@ -63,15 +61,14 @@ public class ProfileJdbcTemplateRepository implements ProfileRepository {
 
     private void addFollowees(Profile profile) {
         final String sql = """
-                select a.app_user_id, username, first_name, last_name, bio, created_at
+                select a.app_user_id, username, first_name, last_name, bio, p.created_at
                 from profile p
                 join app_user a
                 on p.app_user_id = a.app_user_id
-                join likes on
-                follower
-                on a.app_user_id = a.followee_id
-                where follower_id = ?
-                and p.enabled = true;
+                join follower f
+                on a.app_user_id = f.followee_id
+                where f.follower_id = ?
+                and a.enabled = true;
                 """;
         List<Profile> followees = jdbcTemplate.query(sql, new ProfileMapper(), profile.getAppUserId());
         profile.setFollowees(followees);
@@ -87,9 +84,9 @@ public class ProfileJdbcTemplateRepository implements ProfileRepository {
                 where (username like ?
                 or first_name like ?
                 or last_name like ?)
-                and p.enabled = true;
+                and a.enabled = true;
                 """;
-        return jdbcTemplate.query(sql, new ProfileMapper(), "%"+partialName+"%");
+        return jdbcTemplate.query(sql, new ProfileMapper(), "%"+partialName+"%", "%"+partialName+"%", "%"+partialName+"%");
     }
 
     @Override
@@ -98,7 +95,6 @@ public class ProfileJdbcTemplateRepository implements ProfileRepository {
             insert into profile (app_user_id, first_name, last_name, bio)
             value (?, ?, ?, ?);
             """;
-        KeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, profile.getAppUserId());
@@ -125,25 +121,5 @@ public class ProfileJdbcTemplateRepository implements ProfileRepository {
                 """;
         return jdbcTemplate.update(sql, profile.getFirstName(),
                 profile.getLastName(), profile.getBio(), profile.getAppUserId()) > 0;
-    }
-
-    @Override
-    public boolean softDeleteProfileByUserId(int appUserId) {
-        final String sql = """
-                update profile set
-                enabled = false
-                where app_user_id = ?;
-                """;
-        return jdbcTemplate.update(sql, appUserId) > 0;
-    }
-
-    @Override
-    public boolean restoreProfileByUserId(int appUserId) {
-        final String sql = """
-                update profile set
-                enabled = true
-                where app_user_id = ?;
-                """;
-        return jdbcTemplate.update(sql, appUserId) > 0;
     }
 }

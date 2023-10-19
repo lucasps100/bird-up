@@ -48,13 +48,15 @@ public class TestHelper {
                 postId,
                 null,
                 new Location(1, "Las Vegas", new State(28, "Nevada", "NV"), "04468"),
-                LocalDateTime.of(2023, 9, 10, 7, 7, 7),
+                null,
                 new Species(1, "Duck", "Reginald Ducksworth"),
                 null,
                 null,
                 "updated post text");
     }
 
-
+    public Profile createProfile(int appUserId) {
+        return new Profile(appUserId, "test@new.com", "John", "Smith", "New Bio", null, null, null, null);
+    }
 
 }

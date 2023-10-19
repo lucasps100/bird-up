@@ -15,7 +15,4 @@ public interface ProfileRepository {
 
     boolean updateProfile(Profile profile);
 
-    boolean softDeleteProfileByUserId(int appUserId);
-
-    boolean restoreProfileByUserId(int appUserId);
 }

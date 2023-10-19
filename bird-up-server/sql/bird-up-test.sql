@@ -171,7 +171,8 @@ insert into app_user (username, password_hash, enabled)
     values
     ('jane@doe.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1),
     ('fred@herbert.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1),
-    ('jon@aol.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1);
+    ('jon@aol.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1),
+    ('bob@aol.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1);
 ;
 
 insert into app_user_role
@@ -236,6 +237,6 @@ begin
     ("comment", 2, 1, timestamp("2023-10-05", "10:10:10"));
     
 end//
-delimiter ;
 
+delimiter ;
 

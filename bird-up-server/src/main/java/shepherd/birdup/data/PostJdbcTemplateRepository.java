@@ -46,7 +46,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 join state st
                 on st.state_id = l.state_id
                 where po.enabled = true
-                and p.enabled = true
+                and a.enabled = true
                 order by po.created_at DESC;
                 """;
 
@@ -79,7 +79,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 join state st
                 on st.state_id = l.state_id
                 where po.enabled = true
-                and p.enabled = true
+                and a.enabled = true
                 and po.post_id = ?
                 order by po.created_at DESC;
                 """;
@@ -113,7 +113,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 on st.state_id = l.state_id
                 where a.app_user_id = ?
                 and po.enabled = true
-                and p.enabled = true
+                and a.enabled = true
                 order by po.created_at DESC;
                 """;
         List<Post> posts = jdbcTemplate.query(sql, new PostMapper(), appUserId);
@@ -145,7 +145,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 on st.state_id = l.state_id
                 where st.state_abbrv like ?
                 AND po.enabled = true
-                and p.enabled = true
+                and a.enabled = true
                 order by po.created_at DESC;
                 """;
         List<Post> posts = jdbcTemplate.query(sql, new PostMapper(), stateAbbrv);
@@ -177,7 +177,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 on st.state_id = l.state_id
                 where sp.species_short_name like ?
                 AND po.enabled = true
-                and p.enabled = true
+                and a.enabled = true
                 order by po.created_at DESC;
                 """;
         List<Post> posts = jdbcTemplate.query(sql, new PostMapper(), speciesShortName);
@@ -208,7 +208,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 on st.state_id = l.state_id
                 where l.postal_code like ?
                 AND po.enabled = true
-                and p.enabled = true
+                and a.enabled = true
                 order by po.created_at DESC;
                 """;
         List<Post> posts = jdbcTemplate.query(sql, new PostMapper(), postalCode);
@@ -241,7 +241,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 on po.post_id = post_like.post_id
                 where post_like.user_liker_id = ?
                 AND po.enabled = true
-                and p.enabled = true
+                and a.enabled = true
                 order by po.created_at DESC;
                 """;
         List<Post> posts = jdbcTemplate.query(sql, new PostMapper(), likerId);
@@ -275,7 +275,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 on f.followee_id = a.app_user_id
                 where f.follower_id = ?
                 AND po.enabled = true
-                and p.enabled = true
+                and a.enabled = true
                 order by po.created_at DESC;
                 """;
         List<Post> posts = jdbcTemplate.query(sql, new PostMapper(), followerId);
@@ -307,7 +307,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 on st.state_id = l.state_id
                 where l.city like ? AND st.state_abbrv like ?
                 AND po.enabled = true
-                and p.enabled = true
+                and a.enabled = true
                 order by po.created_at DESC;
                 """;
         List<Post> posts = jdbcTemplate.query(sql, new PostMapper(), city, stateAbbrv);
