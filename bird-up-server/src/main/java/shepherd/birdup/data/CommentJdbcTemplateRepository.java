@@ -7,10 +7,8 @@ import org.springframework.stereotype.Repository;
 import shepherd.birdup.data.mappers.CommentMapper;
 import shepherd.birdup.models.Comment;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -59,9 +57,9 @@ public class CommentJdbcTemplateRepository implements CommentRepository {
     @Override
     public Comment create(Comment comment) {
         final String sql = """
-        insert into post_comment (comment_text, user_commenter_id, post_id)
-        value (?, ?, ?);
-        """;
+                insert into post_comment (comment_text, user_commenter_id, post_id)
+                value (?, ?, ?);
+                """;
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = jdbcTemplate.update(connection -> {

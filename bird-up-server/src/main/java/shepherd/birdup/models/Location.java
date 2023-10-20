@@ -13,16 +13,17 @@ public class Location {
     private int locationId;
     @NotNull
     @NotEmpty
-    @Size(max=250)
+    @Size(max = 250)
     private String city;
 
     @StateExists
     private State state;
-    @Size(max=5, min=5)
+    @Size(max = 5, min = 5)
     @PostalCode
     private String postalCode;
 
-    public Location() {}
+    public Location() {
+    }
 
     public Location(int locationId, String city, State state, String postalCode) {
         this.locationId = locationId;
@@ -68,7 +69,7 @@ public class Location {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Location location = (Location) o;
-        return locationId == location.locationId && Objects.equals(postalCode,location.postalCode) && Objects.equals(city, location.city) && Objects.equals(state, location.state);
+        return locationId == location.locationId && Objects.equals(postalCode, location.postalCode) && Objects.equals(city, location.city) && Objects.equals(state, location.state);
     }
 
     @Override

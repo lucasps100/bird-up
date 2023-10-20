@@ -5,7 +5,7 @@ import shepherd.birdup.models.Follower;
 
 import java.sql.PreparedStatement;
 
-public class FollowerJdbcTemplateRepository implements FollowerRepository{
+public class FollowerJdbcTemplateRepository implements FollowerRepository {
 
     private final JdbcTemplate jdbcTemplate;
 

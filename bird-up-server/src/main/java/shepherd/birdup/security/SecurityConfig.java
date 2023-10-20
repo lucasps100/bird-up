@@ -23,6 +23,7 @@ public class SecurityConfig {
         this.converter = converter;
         this.userDetailsService = userDetailsService;
     }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationConfiguration authConfig) throws Exception {
         // we're not using HTML forms in our app

@@ -36,7 +36,7 @@ public class StateJdbcTemplateRepository implements StateRepository {
 
 
     @Override
-    public State findStateByAbbrv(String stateAbbrv){
+    public State findStateByAbbrv(String stateAbbrv) {
         final String sql = """
                 select * from state
                 where state_abbrv = ?;

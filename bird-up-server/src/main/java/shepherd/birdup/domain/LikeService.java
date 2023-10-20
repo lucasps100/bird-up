@@ -27,7 +27,7 @@ public class LikeService {
 
     public Result<Like> create(Like like) {
         Result<Like> result;
-        if(like == null) {
+        if (like == null) {
             result = new Result<>();
             result.addMessage(ResultType.INVALID, "nothing to add");
             return result;

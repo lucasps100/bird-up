@@ -13,11 +13,12 @@ public class PostExistsValidator implements ConstraintValidator<PostExists, HasP
     private PostRepository repository;
 
     @Override
-    public void initialize(PostExists constraintAnnotation) {}
+    public void initialize(PostExists constraintAnnotation) {
+    }
 
     @Override
     public boolean isValid(HasPostId h, ConstraintValidatorContext constraintValidatorContext) {
-        if(h == null) {
+        if (h == null) {
             return false;
         }
         return repository.findByPostId(h.getPostId()) != null;

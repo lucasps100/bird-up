@@ -4,19 +4,19 @@ import shepherd.birdup.validation.DistinctLike;
 import shepherd.birdup.validation.PostExists;
 import shepherd.birdup.validation.ProfileExists;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @DistinctLike
 @PostExists
-public class Like implements HasPostId{
+public class Like implements HasPostId {
     @NotNull
     @ProfileExists(message = "liker profile must exist")
     private Profile likerAccount;
     private int postId;
 
-    public Like() {}
+    public Like() {
+    }
 
     public Like(Profile likerAccount, int postId) {
         this.likerAccount = likerAccount;

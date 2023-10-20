@@ -24,7 +24,7 @@ public class LikeRepositoryTest {
     TestHelper th = new TestHelper();
 
     @BeforeEach
-    void setup(){
+    void setup() {
         knownGoodState.set();
     }
 
@@ -52,7 +52,7 @@ public class LikeRepositoryTest {
 
     @Test
     void shouldDelete() {
-        assertTrue(repository.deleteByIds(1,3));
+        assertTrue(repository.deleteByIds(1, 3));
         assertEquals(0, repository.findByPostId(3).size());
     }
 

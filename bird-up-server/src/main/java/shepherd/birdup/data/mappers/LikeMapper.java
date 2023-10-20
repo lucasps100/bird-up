@@ -14,7 +14,7 @@ public class LikeMapper implements RowMapper<Like> {
         Like like = new Like();
         like.setPostId(rs.getInt("post_id"));
 
-        Profile profile= new Profile();
+        Profile profile = new Profile();
         profile.setAppUserId(rs.getInt("app_user_id"));
         profile.setUsername(rs.getString("username"));
         profile.setFirstName(rs.getString("first_name"));

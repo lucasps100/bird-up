@@ -85,7 +85,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 """;
 
         Post post = jdbcTemplate.query(sql, new PostMapper(), postId).stream().findFirst().orElse(null);
-        if(post != null) {
+        if (post != null) {
             post.setComments(commentRepository.findByPostId(post.getPostId()));
             post.setLikes(likeRepository.findByPostId(post.getPostId()));
         }
@@ -118,9 +118,9 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 """;
         List<Post> posts = jdbcTemplate.query(sql, new PostMapper(), appUserId);
         posts.forEach(p -> {
-                    p.setComments(commentRepository.findByPostId(p.getPostId()));
-                    p.setLikes(likeRepository.findByPostId(p.getPostId()));
-                });
+            p.setComments(commentRepository.findByPostId(p.getPostId()));
+            p.setLikes(likeRepository.findByPostId(p.getPostId()));
+        });
         return posts;
     }
 
@@ -218,6 +218,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
         });
         return posts;
     }
+
     @Override
     @Transactional
     public List<Post> findLikedPostsByLikerId(int likerId) {
@@ -322,9 +323,9 @@ public class PostJdbcTemplateRepository implements PostRepository {
     public Post create(Post post) {
 
         final String sql = """
-            insert into post (location_id, app_poster_id, post_body, image, species_id)
-            value (?, ?, ?, ?, ?);
-            """;
+                insert into post (location_id, app_poster_id, post_body, image, species_id)
+                value (?, ?, ?, ?, ?);
+                """;
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);

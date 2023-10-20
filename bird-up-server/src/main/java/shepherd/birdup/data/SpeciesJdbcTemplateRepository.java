@@ -15,6 +15,7 @@ public class SpeciesJdbcTemplateRepository implements SpeciesRepository {
     public SpeciesJdbcTemplateRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
     @Override
     public List<Species> findAll() {
         final String sql = """
@@ -25,15 +26,15 @@ public class SpeciesJdbcTemplateRepository implements SpeciesRepository {
     }
 
     @Override
-    public List<Species> findByPartialName(String partialName){
+    public List<Species> findByPartialName(String partialName) {
         final String sql = """
                 select * from species
                 where species_short_name like ?
                 OR species_long_name like ?;
                 """;
 
-        return jdbcTemplate.query(sql, new SpeciesMapper(), "%" +partialName + "%",
-                "%" +partialName + "%");
+        return jdbcTemplate.query(sql, new SpeciesMapper(), "%" + partialName + "%",
+                "%" + partialName + "%");
     }
 
     @Override
@@ -44,7 +45,8 @@ public class SpeciesJdbcTemplateRepository implements SpeciesRepository {
                 """;
 
         return jdbcTemplate.query(sql, new SpeciesMapper(), speciesId).stream()
-                .findFirst().orElse(null);    }
+                .findFirst().orElse(null);
+    }
 
 
     @Override

@@ -116,9 +116,9 @@ public class PostRepositoryTest {
         assertNull(repository.findByPostId(2));
     }
 
-   @Test
+    @Test
     void shouldNotDisableInvalidPost() {
         assertFalse(repository.softDeleteById(4));
-   }
+    }
 
 }

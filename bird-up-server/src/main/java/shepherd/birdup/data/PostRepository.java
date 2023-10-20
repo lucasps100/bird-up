@@ -12,6 +12,7 @@ public interface PostRepository {
 
     @Transactional
     Post findByPostId(int postId);
+
     @Transactional
     List<Post> findByAppUserId(int appUserId);
 

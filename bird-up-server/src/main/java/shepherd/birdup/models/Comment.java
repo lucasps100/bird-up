@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @PostExists
-public class Comment implements HasPostId{
+public class Comment implements HasPostId {
     private int commentId;
     @NotNull
     @NotBlank
-    @Size(max=250)
+    @Size(max = 250)
     private String commentText;
     @Min(1)
     private int postId;
@@ -25,7 +25,8 @@ public class Comment implements HasPostId{
     //read only parameter
     private LocalDateTime createdAt;
 
-    public Comment() {}
+    public Comment() {
+    }
 
     public Comment(int commentId, String commentText, int postId, Profile commenterProfile, LocalDateTime createdAt) {
         this.commentId = commentId;

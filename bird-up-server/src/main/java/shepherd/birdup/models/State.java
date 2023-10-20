@@ -1,7 +1,5 @@
 package shepherd.birdup.models;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class State {
@@ -16,7 +14,8 @@ public class State {
         this.stateAbbrv = stateAbbrv;
     }
 
-    public State() {}
+    public State() {
+    }
 
     public int getStateId() {
         return stateId;

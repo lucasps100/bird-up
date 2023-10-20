@@ -42,7 +42,7 @@ public class CommentRepositoryTest {
     }
 
     @Test
-    void shouldNotFindByInvalidPostId(){
+    void shouldNotFindByInvalidPostId() {
         List<Comment> actual = repository.findByPostId(33);
         assertEquals(0, actual.size());
     }
@@ -71,7 +71,7 @@ public class CommentRepositoryTest {
     }
 
     @Test
-    void shouldDelete(){
+    void shouldDelete() {
         assertTrue(repository.deleteByCommentId(1));
         assertEquals(repository.findByPostId(2).size(), 1);
     }

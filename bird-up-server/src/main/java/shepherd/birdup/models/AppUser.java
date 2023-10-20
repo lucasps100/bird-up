@@ -17,7 +17,8 @@ public class AppUser implements UserDetails {
 
     private List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-    public AppUser() {}
+    public AppUser() {
+    }
 
     public AppUser(int id, String username, String passwordHash, boolean enabled, List<String> authorities) {
         this.id = id;

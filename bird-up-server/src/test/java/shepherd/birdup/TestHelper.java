@@ -3,11 +3,10 @@ package shepherd.birdup;
 import shepherd.birdup.models.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TestHelper {
-    public TestHelper () {}
+    public TestHelper() {
+    }
 
     public Location createLocation(int locationId) {
         State state = new State(1, "Alabama", "AL");

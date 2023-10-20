@@ -8,7 +8,8 @@ public class Species {
     private String speciesShortName;
     private String speciesLongName;
 
-    public Species() {}
+    public Species() {
+    }
 
     public Species(int speciesId, String speciesShortName, String speciesLongName) {
         this.speciesId = speciesId;

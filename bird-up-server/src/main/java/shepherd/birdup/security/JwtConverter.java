@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 @Component
 public class JwtConverter {
 
-    private Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final String ISSUER = "bug-safari";
     private final int EXPIRATION_MINUTES = 15;
     private final int EXPIRATION_MILLIS = EXPIRATION_MINUTES * 60 * 1000;
+    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     // Take an instance of `AppUser` as a parameter, instead of `UserDetails`
     public String getTokenFromUser(AppUser user) {
@@ -52,7 +52,7 @@ public class JwtConverter {
 
             String username = jws.getBody().getSubject();
             // new... read the `appUserId` from the JWT body
-            int appUserId = (int)jws.getBody().get("app_user_id");
+            int appUserId = (int) jws.getBody().get("app_user_id");
             String authStr = (String) jws.getBody().get("authorities");
 
             // Replace the Spring Security `User` with our `AppUser`

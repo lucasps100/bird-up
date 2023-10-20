@@ -17,7 +17,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface LocationExists {
 
-    String message() default "{location must exist}";
+    String message() default "location must exist";
 
     Class<?>[] groups() default {};
 

@@ -18,7 +18,7 @@ public class CommentMapper implements RowMapper<Comment> {
         comment.setCommentText(rs.getString("comment_text"));
         comment.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
 
-        Profile profile= new Profile();
+        Profile profile = new Profile();
         profile.setAppUserId(rs.getInt("app_user_id"));
         profile.setUsername(rs.getString("username"));
         profile.setFirstName(rs.getString("first_name"));

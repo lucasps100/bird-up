@@ -22,7 +22,7 @@ public class PostMapper implements RowMapper<Post> {
         species.setSpeciesLongName(rs.getString("species_long_name"));
         post.setSpecies(species);
 
-        Profile profile= new Profile();
+        Profile profile = new Profile();
         profile.setAppUserId(rs.getInt("app_user_id"));
         profile.setUsername(rs.getString("username"));
         profile.setFirstName(rs.getString("first_name"));

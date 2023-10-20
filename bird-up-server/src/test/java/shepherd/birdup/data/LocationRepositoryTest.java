@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import shepherd.birdup.TestHelper;
 import shepherd.birdup.models.Location;
-import shepherd.birdup.models.State;
 
 import java.util.List;
 
@@ -29,6 +28,7 @@ public class LocationRepositoryTest {
     void setup() {
         knownGoodState.set();
     }
+
     @Test
     void shouldFindAll() {
         List<Location> actual = repository.findAll();
@@ -71,12 +71,12 @@ public class LocationRepositoryTest {
 
     @Test
     void shouldCreate() {
-     Location arg = th.createLocation(0);
-     Location actual = repository.create(arg);
-     arg.setLocationId(NEXT_ID);
-     assertEquals(actual, arg);
-     actual = repository.findById(NEXT_ID);
-     assertEquals(actual, arg);
+        Location arg = th.createLocation(0);
+        Location actual = repository.create(arg);
+        arg.setLocationId(NEXT_ID);
+        assertEquals(actual, arg);
+        actual = repository.findById(NEXT_ID);
+        assertEquals(actual, arg);
     }
 
     @Test
@@ -104,7 +104,6 @@ public class LocationRepositoryTest {
     void shouldNotDeleteByInvalidId() {
         assertFalse(repository.deleteById(99));
     }
-
 
 
 }

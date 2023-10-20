@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Repository
-public class AppUserJdbcTemplateRepository implements AppUserRepository{
+public class AppUserJdbcTemplateRepository implements AppUserRepository {
 
     private final JdbcTemplate jdbcTemplate;
 

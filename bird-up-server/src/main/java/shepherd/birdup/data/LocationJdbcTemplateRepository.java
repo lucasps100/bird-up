@@ -1,12 +1,11 @@
 package shepherd.birdup.data;
 
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import shepherd.birdup.data.mappers.LocationMapper;
 import shepherd.birdup.models.Location;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -15,6 +14,7 @@ import java.util.List;
 @Repository
 public class LocationJdbcTemplateRepository implements LocationRepository {
     private final JdbcTemplate jdbcTemplate;
+
     public LocationJdbcTemplateRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -26,7 +26,6 @@ public class LocationJdbcTemplateRepository implements LocationRepository {
                 "join state on l.state_id = state.state_id;";
         return jdbcTemplate.query(sql, new LocationMapper());
     }
-
 
 
     @Override
@@ -41,6 +40,7 @@ public class LocationJdbcTemplateRepository implements LocationRepository {
                 .orElse(null);
 
     }
+
     @Override
     public List<Location> findByStateAbbv(String stateAbbrv) {
         final String sql = "select location_id, city, postal_code, state_abbrv, l.state_id, state_name "
@@ -61,7 +61,7 @@ public class LocationJdbcTemplateRepository implements LocationRepository {
                 "OR state.state_name like ? " +
                 "OR l.city like ?;";
 
-        return jdbcTemplate.query(sql, new LocationMapper(), "%" + partialName +"%","%" + partialName +"%", "%" + partialName +"%");
+        return jdbcTemplate.query(sql, new LocationMapper(), "%" + partialName + "%", "%" + partialName + "%", "%" + partialName + "%");
 
     }
 

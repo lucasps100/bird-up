@@ -19,7 +19,7 @@ public class StateExistsValidator implements ConstraintValidator<StateExists, St
 
     @Override
     public boolean isValid(State state, ConstraintValidatorContext constraintValidatorContext) {
-        if(state == null) {
+        if (state == null) {
             return false;
         }
         return repository.findStateById(state.getStateId()) != null;

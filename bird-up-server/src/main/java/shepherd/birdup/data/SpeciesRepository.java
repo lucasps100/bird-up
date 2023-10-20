@@ -8,6 +8,8 @@ public interface SpeciesRepository {
     List<Species> findAll();
 
     List<Species> findByPartialName(String partialName);
+
     Species findById(int speciesId);
+
     Species findByShortName(String speciesShortName);
 }

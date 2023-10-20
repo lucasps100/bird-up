@@ -1,8 +1,6 @@
 package shepherd.birdup.data;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import shepherd.birdup.data.mappers.ProfileMapper;
@@ -35,7 +33,7 @@ public class ProfileJdbcTemplateRepository implements ProfileRepository {
                 and a.enabled = true;
                 """;
         Profile profile = jdbcTemplate.query(sql, new ProfileMapper(), username).stream().findFirst().orElse(null);
-        if(profile != null) {
+        if (profile != null) {
             profile.setPosts(postJdbcTemplateRepository.findByAppUserId(profile.getAppUserId()));
             addFollowees(profile);
             addFollowees(profile);
@@ -55,7 +53,7 @@ public class ProfileJdbcTemplateRepository implements ProfileRepository {
                 and a.enabled = true;
                 """;
         Profile profile = jdbcTemplate.query(sql, new ProfileMapper(), appUserId).stream().findFirst().orElse(null);
-        if(profile != null) {
+        if (profile != null) {
             profile.setPosts(postJdbcTemplateRepository.findByAppUserId(profile.getAppUserId()));
             addFollowees(profile);
             addFollowees(profile);
@@ -105,15 +103,15 @@ public class ProfileJdbcTemplateRepository implements ProfileRepository {
                 or last_name like ?)
                 and a.enabled = true;
                 """;
-        return jdbcTemplate.query(sql, new ProfileMapper(), "%"+partialName+"%", "%"+partialName+"%", "%"+partialName+"%");
+        return jdbcTemplate.query(sql, new ProfileMapper(), "%" + partialName + "%", "%" + partialName + "%", "%" + partialName + "%");
     }
 
     @Override
     public Profile createProfile(Profile profile) {
         final String sql = """
-            insert into profile (app_user_id, first_name, last_name, bio)
-            value (?, ?, ?, ?);
-            """;
+                insert into profile (app_user_id, first_name, last_name, bio)
+                value (?, ?, ?, ?);
+                """;
         int rowsAffected = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, profile.getAppUserId());
