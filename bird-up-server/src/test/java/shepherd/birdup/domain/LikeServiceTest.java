@@ -35,9 +35,7 @@ public class LikeServiceTest {
     @Test
     void shouldFindOneLikeForPost() {
         when(likeRepository.findByPostId(anyInt())).thenReturn(List.of(th.createLike(1)));
-
         List<Like> actual = service.findByPostId(1);
-
         assertEquals(List.of(th.createLike(1)), actual);
 
     }

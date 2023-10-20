@@ -14,13 +14,12 @@ import java.util.Objects;
 public class Comment implements HasPostId {
     private int commentId;
     @NotNull
-    @NotBlank
+    @NotBlank(message = "comment text is required")
     @Size(max = 250)
     private String commentText;
-    @Min(1)
     private int postId;
     @NotNull
-    @ProfileExists
+    @ProfileExists(message = "commenter profile must exist")
     private Profile commenterProfile;
     //read only parameter
     private LocalDateTime createdAt;
