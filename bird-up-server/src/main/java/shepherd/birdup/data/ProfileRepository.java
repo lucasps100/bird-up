@@ -9,6 +9,9 @@ public interface ProfileRepository {
     @Transactional
     Profile findByUsername(String username);
 
+    @Transactional
+    Profile findById(int appUserId);
+
     List<Profile> findByPartialName(String partialName);
 
     Profile createProfile(Profile profile);

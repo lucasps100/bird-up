@@ -24,6 +24,16 @@ public class StateJdbcTemplateRepository implements StateRepository {
         return jdbcTemplate.query(sql, new StateMapper());
     }
 
+    @Override
+    public State findStateById(int stateId) {
+        final String sql = """
+                select * from state
+                where state_id = ?;
+                """;
+        return jdbcTemplate.query(sql, new StateMapper(), stateId)
+                .stream().findFirst().orElse(null);
+    }
+
 
     @Override
     public State findStateByAbbrv(String stateAbbrv){

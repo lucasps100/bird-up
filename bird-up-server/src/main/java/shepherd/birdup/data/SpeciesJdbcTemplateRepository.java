@@ -36,6 +36,16 @@ public class SpeciesJdbcTemplateRepository implements SpeciesRepository {
                 "%" +partialName + "%");
     }
 
+    @Override
+    public Species findById(int speciesId) {
+        final String sql = """
+                select * from species
+                where species_id = ?;
+                """;
+
+        return jdbcTemplate.query(sql, new SpeciesMapper(), speciesId).stream()
+                .findFirst().orElse(null);    }
+
 
     @Override
     public Species findByShortName(String speciesShortName) {

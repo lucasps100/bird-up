@@ -1,13 +1,28 @@
 package shepherd.birdup.models;
 
+import shepherd.birdup.validation.PostExists;
+import shepherd.birdup.validation.ProfileExists;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Comment {
+@PostExists
+public class Comment implements HasPostId{
     private int commentId;
+    @NotNull
+    @NotBlank
+    @Size(max=250)
     private String commentText;
+    @Min(1)
     private int postId;
+    @NotNull
+    @ProfileExists
     private Profile commenterProfile;
+    //read only parameter
     private LocalDateTime createdAt;
 
     public Comment() {}

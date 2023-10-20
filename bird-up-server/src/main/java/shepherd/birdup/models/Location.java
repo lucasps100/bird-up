@@ -1,12 +1,25 @@
 package shepherd.birdup.models;
 
+import shepherd.birdup.validation.PostalCode;
+import shepherd.birdup.validation.StateExists;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 public class Location {
 
     private int locationId;
+    @NotNull
+    @NotEmpty
+    @Size(max=250)
     private String city;
+
+    @StateExists
     private State state;
+    @Size(max=5, min=5)
+    @PostalCode
     private String postalCode;
 
     public Location() {}

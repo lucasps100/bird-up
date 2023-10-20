@@ -23,6 +23,23 @@ public class CommentJdbcTemplateRepository implements CommentRepository {
     }
 
     @Override
+    public Comment findById(int commentId) {
+        final String sql = """
+                select a.app_user_id, username, first_name, last_name, bio, comment_id, comment_text, pc.post_id, pc.created_at
+                from post_comment pc
+                join app_user a
+                on pc.user_commenter_id = a.app_user_id
+                join profile
+                on a.app_user_id = profile.app_user_id
+                join post po
+                on po.post_id = pc.post_id
+                where pc.comment_id = ? AND a.enabled = true AND po.enabled=true
+                order by pc.created_at;
+                """;
+        return jdbcTemplate.query(sql, new CommentMapper(), commentId).stream().findFirst().orElse(null);
+    }
+
+    @Override
     public List<Comment> findByPostId(int postId) {
         final String sql = """
                 select a.app_user_id, username, first_name, last_name, bio, comment_id, comment_text, pc.post_id, pc.created_at
