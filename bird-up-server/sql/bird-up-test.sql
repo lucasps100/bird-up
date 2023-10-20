@@ -33,7 +33,6 @@ create table `profile` (
     last_name varchar(50),
     bio varchar(250),
     created_at timestamp default now(),
-    enabled boolean default(true),
     foreign key (app_user_id)
 		references app_user(app_user_id)
 );

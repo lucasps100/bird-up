@@ -31,8 +31,8 @@ public class FollowerJdbcTemplateRepository implements FollowerRepository{
 
         int rowsAffected = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1, follower.getFollowerId());
-            ps.setInt(2, follower.getFolloweeId());
+            ps.setInt(1, follower.getFollower().getAppUserId());
+            ps.setInt(2, follower.getFollowee().getAppUserId());
             return ps;
         });
 

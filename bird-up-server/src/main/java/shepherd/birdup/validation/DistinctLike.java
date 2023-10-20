@@ -7,16 +7,15 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Target({TYPE, FIELD})
+@Target({TYPE, ANNOTATION_TYPE, FIELD})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {DistinctLikeValidator.class})
 @Documented
 public @interface DistinctLike {
-    String message() default "{user already liked this image}";
+    String message() default "user already liked this post";
 
     Class<?>[] groups() default {};
 

@@ -9,12 +9,12 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Target({TYPE, FIELD})
+@Target({TYPE, ANNOTATION_TYPE, FIELD})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {ProfileExistsValidator.class})
 @Documented
 public @interface ProfileExists {
-    String message() default "{profile must exist}";
+    String message() default "profile must exist";
 
     Class<?>[] groups() default {};
 

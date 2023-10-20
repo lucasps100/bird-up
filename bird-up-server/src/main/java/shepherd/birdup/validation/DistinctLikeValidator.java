@@ -1,7 +1,9 @@
 package shepherd.birdup.validation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import shepherd.birdup.data.LikeJdbcTemplateRepository;
+import shepherd.birdup.data.LikeRepository;
 import shepherd.birdup.models.Like;
 import shepherd.birdup.models.Location;
 
@@ -12,12 +14,10 @@ import java.util.List;
 public class DistinctLikeValidator implements ConstraintValidator<DistinctLike, Like> {
 
     @Autowired
-    LikeJdbcTemplateRepository repository;
+    private LikeRepository repository;
 
     @Override
-    public void initialize(DistinctLike constraintAnnotation) {
-        ConstraintValidator.super.initialize(constraintAnnotation);
-    }
+    public void initialize(DistinctLike constraintAnnotation) {}
 
     @Override
     public boolean isValid(Like like, ConstraintValidatorContext constraintValidatorContext) {

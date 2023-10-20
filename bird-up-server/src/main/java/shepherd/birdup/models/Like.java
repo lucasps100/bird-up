@@ -1,5 +1,6 @@
 package shepherd.birdup.models;
 
+import shepherd.birdup.validation.DistinctLike;
 import shepherd.birdup.validation.PostExists;
 import shepherd.birdup.validation.ProfileExists;
 
@@ -7,12 +8,12 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+@DistinctLike
 @PostExists
 public class Like implements HasPostId{
     @NotNull
-    @ProfileExists
+    @ProfileExists(message = "liker profile must exist")
     private Profile likerAccount;
-    @Min(1)
     private int postId;
 
     public Like() {}

@@ -6,16 +6,15 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Target({TYPE, FIELD})
+@Target({TYPE, FIELD, ANNOTATION_TYPE})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {PostExistsValidator.class})
 @Documented
 public @interface PostExists {
-    String message() default "{post must exist}";
+    String message() default "post must exist";
 
     Class<?>[] groups() default {};
 
