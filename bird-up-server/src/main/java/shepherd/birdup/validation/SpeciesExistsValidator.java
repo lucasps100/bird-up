@@ -1,7 +1,7 @@
 package shepherd.birdup.validation;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import shepherd.birdup.data.SpeciesJdbcTemplateRepository;
+import shepherd.birdup.data.SpeciesRepository;
 import shepherd.birdup.models.Species;
 
 import javax.validation.ConstraintValidator;
@@ -10,7 +10,7 @@ import javax.validation.ConstraintValidatorContext;
 public class SpeciesExistsValidator implements ConstraintValidator<SpeciesExists, Species> {
 
     @Autowired
-    private SpeciesJdbcTemplateRepository repository;
+    private SpeciesRepository repository;
 
     @Override
     public void initialize(SpeciesExists constraintAnnotation) {

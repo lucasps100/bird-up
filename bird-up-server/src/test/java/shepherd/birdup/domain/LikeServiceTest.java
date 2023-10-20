@@ -103,7 +103,7 @@ public class LikeServiceTest {
     @Test
     void shouldDelete() {
         when(likeRepository.deleteByIds(anyInt(), anyInt())).thenReturn(true);
-        Result<?> actual = service.deletebyIds(1, 1);
+        Result<?> actual = service.deleteByIds(1, 1);
         assertTrue(actual.isSuccess());
 
     }
@@ -111,7 +111,7 @@ public class LikeServiceTest {
     @Test
     void shouldNotDelete() {
         when(likeRepository.deleteByIds(anyInt(), anyInt())).thenReturn(false);
-        Result<?> actual = service.deletebyIds(1, 1);
+        Result<?> actual = service.deleteByIds(1, 1);
         assertFalse(actual.isSuccess());
         assertEquals(1, actual.getMessages().size());
         assertEquals("User 1 never liked post 1", actual.getMessages().get(0));

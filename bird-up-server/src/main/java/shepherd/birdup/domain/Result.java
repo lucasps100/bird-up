@@ -1,5 +1,7 @@
 package shepherd.birdup.domain;
 
+import shepherd.birdup.models.Like;
+
 import java.util.ArrayList;
 import java.util.List;
 

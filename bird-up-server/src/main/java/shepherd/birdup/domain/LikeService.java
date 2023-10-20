@@ -14,11 +14,11 @@ public class LikeService {
 
     private final LikeRepository repository;
 
-    private final Validator validator;
+    private final ObjectValidator ov;
 
     public LikeService(LikeRepository repository, Validator validator) {
         this.repository = repository;
-        this.validator = validator;
+        this.ov = new ObjectValidator(validator);
     }
 
     public List<Like> findByPostId(int postId) {
@@ -32,7 +32,7 @@ public class LikeService {
             result.addMessage(ResultType.INVALID, "nothing to add");
             return result;
         }
-        result = validateLike(like);
+        result = (Result<Like>) ov.validate(like);
         if (result.isSuccess()) {
             like = repository.create(like);
             result.setPayload(like);
@@ -40,24 +40,11 @@ public class LikeService {
         return result;
     }
 
-    public Result<Like> deletebyIds(int appUserId, int postId) {
+    public Result<Like> deleteByIds(int appUserId, int postId) {
         Result<Like> result = new Result<>();
         if (!repository.deleteByIds(appUserId, postId)) {
             String msg = String.format("User %s never liked post %s", appUserId, postId);
             result.addMessage(ResultType.NOT_FOUND, msg);
-        }
-        return result;
-    }
-
-    private Result<Like> validateLike(Like like) {
-        Result<Like> result = new Result<>();
-
-        Set<ConstraintViolation<Like>> violations = validator.validate(like);
-
-        if (!violations.isEmpty()) {
-            for (ConstraintViolation<?> violation : violations) {
-                result.addMessage(ResultType.INVALID, violation.getMessage());
-            }
         }
         return result;
     }

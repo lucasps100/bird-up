@@ -15,7 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = {SpeciesExistsValidator.class})
 @Documented
 public @interface SpeciesExists {
-    String message() default "{species must exist}";
+    String message() default "species must exist";
 
     Class<?>[] groups() default {};
 

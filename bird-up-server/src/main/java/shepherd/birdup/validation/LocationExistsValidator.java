@@ -1,7 +1,7 @@
 package shepherd.birdup.validation;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import shepherd.birdup.data.LocationJdbcTemplateRepository;
+import shepherd.birdup.data.LocationRepository;
 import shepherd.birdup.models.Location;
 
 import javax.validation.ConstraintValidator;
@@ -10,7 +10,7 @@ import javax.validation.ConstraintValidatorContext;
 public class LocationExistsValidator implements ConstraintValidator<LocationExists, Location> {
 
     @Autowired
-    LocationJdbcTemplateRepository repository;
+    LocationRepository repository;
 
     @Override
     public void initialize(LocationExists constraintAnnotation) {
