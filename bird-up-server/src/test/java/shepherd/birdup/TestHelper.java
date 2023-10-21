@@ -58,4 +58,10 @@ public class TestHelper {
         return new Profile(appUserId, "test@new.com", "John", "Smith", "New Bio", null, null, null, null);
     }
 
+    public Follower createFollower(int followerId) {
+        Profile follower = createProfile(followerId);
+        Profile followee = createProfile(followerId + 1);
+        return new Follower(follower, followee, LocalDateTime.of(2021, 1,1,1,1, 1));
+    }
+
 }

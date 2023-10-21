@@ -1,6 +1,7 @@
 package shepherd.birdup.models;
 
 import shepherd.birdup.validation.DistinctFollow;
+import shepherd.birdup.validation.NoFollowingSelf;
 import shepherd.birdup.validation.ProfileExists;
 
 import javax.validation.constraints.Min;
@@ -8,11 +9,10 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @DistinctFollow
+@NoFollowingSelf
 public class Follower {
-    @Min(1)
     @ProfileExists(message="follower profile must exist")
     private Profile follower;
-    @Min(1)
     @ProfileExists(message="followed profile must exist")
     private Profile followee;
 
