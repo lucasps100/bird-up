@@ -5,13 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import shepherd.birdup.data.SpeciesRepository;
-import shepherd.birdup.data.StateRepository;
 import shepherd.birdup.models.Species;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class SpeciesServiceTest {
@@ -44,7 +44,5 @@ public class SpeciesServiceTest {
     void shouldFindById() {
         when(repository.findById(anyInt())).thenReturn(new Species(12, "Duck", "Duckington"));
         assertEquals(new Species(12, "Duck", "Duckington"), service.findById(12));
-
     }
-
 }
