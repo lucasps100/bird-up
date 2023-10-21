@@ -121,6 +121,98 @@ public class CommentServiceTest {
 
     // test update and delete
 
+    @Test
+    void shouldUpdate() {
+        when(commentRepository.update(any())).thenReturn(true);
+        when(commentRepository.findById(anyInt())).thenReturn(th.createComment(2,2));
+        when(profileRepository.findById(anyInt())).thenReturn(th.createProfile(1));
+        when(postRepository.findByPostId(anyInt())).thenReturn(th.createPost(1));
+        Comment arg = th.createComment(2,2);
+        Result<Comment> actual = service.update(arg);
+        System.out.println(actual.getMessages());
+        assertTrue(service.update(arg).isSuccess());
+    }
+
+    @Test
+    void shouldNotUpdateCommentWithNoText() {
+        when(commentRepository.update(any())).thenReturn(true);
+        when(commentRepository.findById(anyInt())).thenReturn(th.createComment(2,2));
+        when(profileRepository.findById(anyInt())).thenReturn(th.createProfile(1));
+        when(postRepository.findByPostId(anyInt())).thenReturn(th.createPost(1));
+        Comment arg = th.createComment(2,2);
+        arg.setCommentText("");
+        Result<Comment> actual = service.update(arg);
+        System.out.println(actual.getMessages());
+        assertEquals(1, actual.getMessages().size());
+        assertEquals("comment text is required", actual.getMessages().get(0));
+    }
+
+    @Test
+    void shouldNotUpdateCommentWithInvalidCommentId() {
+        when(profileRepository.findById(anyInt())).thenReturn(th.createProfile(1));
+        when(postRepository.findByPostId(anyInt())).thenReturn(th.createPost(1));
+        Comment arg = th.createComment(0,2);
+        Result<Comment> actual = service.update(arg);
+        System.out.println(actual.getMessages());
+        assertEquals(1, actual.getMessages().size());
+        assertEquals("comment id is required", actual.getMessages().get(0));
+    }
+
+    @Test
+    void shouldNotUpdateCommentWithNonexistentPost() {
+        when(profileRepository.findById(anyInt())).thenReturn(th.createProfile(1));
+        when(postRepository.findByPostId(anyInt())).thenReturn(null);
+        Comment arg = th.createComment(2,2);
+        Result<Comment> actual = service.update(arg);
+        System.out.println(actual.getMessages());
+        assertEquals(1, actual.getMessages().size());
+        assertEquals("post must exist", actual.getMessages().get(0));
+    }
+
+    @Test
+    void shouldNotUpdateCommentWithNonexistentCommenter() {
+        when(profileRepository.findById(anyInt())).thenReturn(null);
+        when(postRepository.findByPostId(anyInt())).thenReturn(th.createPost(1));
+        Comment arg = th.createComment(0,2);
+        Result<Comment> actual = service.update(arg);
+        assertEquals(1, actual.getMessages().size());
+        assertEquals("commenter profile must exist", actual.getMessages().get(0));
+    }
+
+    @Test
+    void shouldNotUpdateNonexistentComment() {
+        when(commentRepository.update(any())).thenReturn(false);
+        when(profileRepository.findById(anyInt())).thenReturn(th.createProfile(1));
+        when(postRepository.findByPostId(anyInt())).thenReturn(th.createPost(1));
+        Comment arg = th.createComment(3,2);
+        Result<Comment> actual = service.update(arg);
+        assertEquals(1, actual.getMessages().size());
+        assertEquals("comment 3 not found", actual.getMessages().get(0));
+    }
+
+    @Test
+    void shouldDeleteComment() {
+        when(commentRepository.deleteByCommentId(anyInt())).thenReturn(true);
+        Result<Comment> actual = service.deleteByCommentId(1);
+        assertTrue(actual.isSuccess());
+    }
+
+    @Test
+    void shouldNotDeleteNonexistentComment() {
+        when(commentRepository.deleteByCommentId(anyInt())).thenReturn(false);
+        Result<Comment> actual = service.deleteByCommentId(3);
+        assertEquals(1, actual.getMessages().size());
+        assertEquals("comment 3 not found", actual.getMessages().get(0));
+    }
+
+
+
+
+
+
+
+
+
 
 
 

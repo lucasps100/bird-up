@@ -49,7 +49,7 @@ public class CommentService {
     Result<Comment> update(Comment comment) {
         Result<Comment> result = new Result<>();
         if (comment == null) {
-            result.addMessage(ResultType.INVALID, "nothing to add");
+            result.addMessage(ResultType.INVALID, "nothing to update");
             return result;
         }
         result = validateComment(comment);
@@ -58,7 +58,7 @@ public class CommentService {
         }
 
         if (comment.getCommentId() < 1) {
-            result.addMessage(ResultType.INVALID, "comment `id` is required");
+            result.addMessage(ResultType.INVALID, "comment id is required");
             return result;
         }
         if (!repository.update(comment)) {
