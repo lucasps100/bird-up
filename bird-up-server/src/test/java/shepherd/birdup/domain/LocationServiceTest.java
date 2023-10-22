@@ -103,7 +103,17 @@ public class LocationServiceTest {
         assertEquals(1, actual.getMessages().size());
         assertEquals("state must exist", actual.getMessages().get(0));
     }
-    // TODO: Test update for location service
+    // TODO: Test negative update cases for location service
+
+    @Test
+    void shouldUpdate() {
+        when(locationRepository.update(any())).thenReturn(true);
+        when(stateRepository.findStateById(anyInt())).thenReturn(new State(12, "Maine", "ME"));
+        Location arg = th.createLocation(1);
+        Result<Location> actual = service.update(arg);
+        assertTrue(actual.isSuccess());
+    }
+
 
     @Test
     void shouldDelete() {
