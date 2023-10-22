@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Post implements HasPostId {
-    @ProfileExists(message = "{poster profile must exist}")
+    @ProfileExists(message = "poster profile must exist")
     private Profile posterProfile;
     private int postId;
     @NotNull
@@ -28,8 +28,6 @@ public class Post implements HasPostId {
     private List<Like> likes;
 
     private List<Comment> comments;
-
-    @NotNull
     @Size(max = 255)
     private String postText;
 

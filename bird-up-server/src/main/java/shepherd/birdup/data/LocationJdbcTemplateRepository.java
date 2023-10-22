@@ -42,7 +42,7 @@ public class LocationJdbcTemplateRepository implements LocationRepository {
     }
 
     @Override
-    public List<Location> findByStateAbbv(String stateAbbrv) {
+    public List<Location> findByStateAbbrv(String stateAbbrv) {
         final String sql = "select location_id, city, postal_code, state_abbrv, l.state_id, state_name "
                 + "from location l " +
                 "join state on l.state_id = state.state_id "

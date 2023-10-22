@@ -77,12 +77,10 @@ public class AuthController {
 
         Result<AppUser> result = appUserService.create(username, password);
 
-        // unhappy path...
         if (!result.isSuccess()) {
             return new ResponseEntity<>(result.getMessages(), HttpStatus.BAD_REQUEST);
         }
 
-        // happy path...
         HashMap<String, Integer> map = new HashMap<>();
         map.put("appUserId", result.getPayload().getId());
 

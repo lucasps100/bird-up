@@ -61,5 +61,4 @@ public class LikeService {
         }
         return result;
     }
-
 }

@@ -1,10 +1,12 @@
 package shepherd.birdup.data;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 import shepherd.birdup.models.Follower;
 
 import java.sql.PreparedStatement;
 
+@Repository
 public class FollowerJdbcTemplateRepository implements FollowerRepository {
 
     private final JdbcTemplate jdbcTemplate;

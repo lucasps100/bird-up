@@ -10,7 +10,6 @@ import java.util.List;
 public class StateService {
     private final StateRepository repository;
 
-
     public StateService(StateRepository repository) {
         this.repository = repository;
     }
@@ -24,6 +23,6 @@ public class StateService {
     }
 
     public State findByStateAbbrv(String stateAbbrv) {
-        return  repository.findStateByAbbrv(stateAbbrv);
+        return repository.findStateByAbbrv(stateAbbrv);
     }
 }

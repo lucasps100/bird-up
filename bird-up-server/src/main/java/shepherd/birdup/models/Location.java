@@ -11,14 +11,12 @@ import java.util.Objects;
 public class Location {
 
     private int locationId;
-    @NotNull
-    @NotEmpty
-    @Size(max = 250)
+    @Size(max = 250, message = "city name must be under 250 characters")
     private String city;
 
     @StateExists
     private State state;
-    @Size(max = 5, min = 5)
+    @Size(max = 5, min = 5, message = "postal code must be 5 digits")
     @PostalCode
     private String postalCode;
 

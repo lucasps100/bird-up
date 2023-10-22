@@ -21,7 +21,7 @@ public class FollowerServiceTest {
     FollowerRepository followerRepository;
 
     @MockBean
-    ProfileRepository profileReposiory;
+    ProfileRepository profileRepository;
 
     @Autowired
     FollowerService service;
@@ -36,7 +36,7 @@ public class FollowerServiceTest {
 
     @Test
     void shouldCreate() {
-        when(profileReposiory.findById(anyInt())).thenReturn(th.createProfile(1));
+        when(profileRepository.findById(anyInt())).thenReturn(th.createProfile(1));
         when(followerRepository.create(any())).thenReturn(th.createFollower(1));
         Follower arg = th.createFollower(2);
         assertTrue(service.create(arg).isSuccess());
@@ -44,7 +44,7 @@ public class FollowerServiceTest {
 
     @Test
     void shouldNotCreateNull() {
-        when(profileReposiory.findById(anyInt())).thenReturn(th.createProfile(1));
+        when(profileRepository.findById(anyInt())).thenReturn(th.createProfile(1));
         when(followerRepository.create(any())).thenReturn(th.createFollower(1));
         Result<Follower> actual = service.create(null);
         assertEquals(1, actual.getMessages().size());
@@ -53,7 +53,7 @@ public class FollowerServiceTest {
 
     @Test
     void shouldNotCreateFollowWithNullFollower() {
-        when(profileReposiory.findById(2)).thenReturn(th.createProfile(2));
+        when(profileRepository.findById(2)).thenReturn(th.createProfile(2));
         when(followerRepository.create(any())).thenReturn(th.createFollower(1));
         Follower arg = th.createFollower(1);
         Result<Follower> actual = service.create(arg);
@@ -63,7 +63,7 @@ public class FollowerServiceTest {
 
     @Test
     void shouldNotCreateFollowWithNullFollowee() {
-        when(profileReposiory.findById(1)).thenReturn(th.createProfile(1));
+        when(profileRepository.findById(1)).thenReturn(th.createProfile(1));
         when(followerRepository.create(any())).thenReturn(th.createFollower(1));
         Follower arg = th.createFollower(1);
         Result<Follower> actual = service.create(arg);
@@ -73,7 +73,7 @@ public class FollowerServiceTest {
 
     @Test
     void shouldNotCreateNonDistinctFollow() {
-        when(profileReposiory.findById(anyInt())).thenReturn(th.createProfile(1));
+        when(profileRepository.findById(anyInt())).thenReturn(th.createProfile(1));
         when(followerRepository.create(any())).thenReturn(th.createFollower(1));
         when(followerRepository.findByIds(anyInt(), anyInt())).thenReturn(th.createFollower(1));
         Follower arg = th.createFollower(1);
@@ -84,7 +84,7 @@ public class FollowerServiceTest {
 
     @Test
     void shouldNotFollowSelf() {
-        when(profileReposiory.findById(anyInt())).thenReturn(th.createProfile(1));
+        when(profileRepository.findById(anyInt())).thenReturn(th.createProfile(1));
         when(followerRepository.create(any())).thenReturn(th.createFollower(1));
         Follower arg = th.createFollower(1);
         arg.getFollowee().setAppUserId(1);
@@ -96,7 +96,7 @@ public class FollowerServiceTest {
     @Test
     void shouldDelete() {
         when(followerRepository.deleteByIds(anyInt(), anyInt())).thenReturn(true);
-        assertTrue(service.deleteByIds(1,2).isSuccess());
+        assertTrue(service.deleteByIds(1, 2).isSuccess());
     }
 
     @Test
@@ -104,5 +104,4 @@ public class FollowerServiceTest {
         when(followerRepository.deleteByIds(anyInt(), anyInt())).thenReturn(false);
         assertFalse(service.deleteByIds(1, 2).isSuccess());
     }
-
 }

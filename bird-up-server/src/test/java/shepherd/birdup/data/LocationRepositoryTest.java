@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class LocationRepositoryTest {
 
-
     int NEXT_ID = 4;
 
     TestHelper th = new TestHelper();
@@ -51,14 +50,14 @@ public class LocationRepositoryTest {
 
     @Test
     void shouldFindByStateAbbrv() {
-        List<Location> actual = repository.findByStateAbbv("ME");
+        List<Location> actual = repository.findByStateAbbrv("ME");
         assertEquals(actual.size(), 1);
         assertEquals(actual.get(0).getCity(), "Kennebunk");
     }
 
     @Test
     void shouldNotFindBYInvalidStateAbbrv() {
-        List<Location> actual = repository.findByStateAbbv("JW");
+        List<Location> actual = repository.findByStateAbbrv("JW");
         assertEquals(actual.size(), 0);
     }
 

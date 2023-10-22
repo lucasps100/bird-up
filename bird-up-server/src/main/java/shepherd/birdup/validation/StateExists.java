@@ -15,7 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface StateExists {
 
-    String message() default "species must exist";
+    String message() default "state must exist";
 
     Class<?>[] groups() default {};
 

@@ -1,13 +1,11 @@
 package shepherd.birdup.domain;
 
-import shepherd.birdup.models.Like;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Result<T> {
-    private ResultType status = ResultType.SUCCESS;
     private final ArrayList<String> messages = new ArrayList<>();
+    private ResultType status = ResultType.SUCCESS;
     private T payload;
 
     public ResultType getStatus() {

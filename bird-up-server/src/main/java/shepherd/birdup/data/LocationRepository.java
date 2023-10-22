@@ -9,7 +9,7 @@ public interface LocationRepository {
 
     Location findById(int locationId);
 
-    List<Location> findByStateAbbv(String stateAbbrv);
+    List<Location> findByStateAbbrv(String stateAbbrv);
 
     List<Location> findByPartialName(String partialName);
 

@@ -12,12 +12,9 @@ public class NoFollowingSelfValidator implements ConstraintValidator<NoFollowing
         if (follower == null) {
             return false;
         }
-        if(follower.getFollower() == null || follower.getFollowee() == null) {
+        if (follower.getFollower() == null || follower.getFollowee() == null) {
             return false;
         }
-        if(follower.getFollower().getAppUserId() == follower.getFollowee().getAppUserId()) {
-            return false;
-        }
-        return true;
+        return follower.getFollower().getAppUserId() != follower.getFollowee().getAppUserId();
     }
 }

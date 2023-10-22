@@ -3,7 +3,6 @@ package shepherd.birdup.domain;
 import org.springframework.stereotype.Service;
 import shepherd.birdup.data.FollowerRepository;
 import shepherd.birdup.models.Follower;
-import shepherd.birdup.models.Like;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -51,7 +50,7 @@ public class FollowerService {
     private Result<Follower> validateFollower(Follower follower) {
         Result<Follower> result = new Result<>();
 
-        Set<ConstraintViolation<Object>> violations = validator.validate(follower);
+        Set<ConstraintViolation<Follower>> violations = validator.validate(follower);
 
         if (!violations.isEmpty()) {
             for (ConstraintViolation<?> violation : violations) {
