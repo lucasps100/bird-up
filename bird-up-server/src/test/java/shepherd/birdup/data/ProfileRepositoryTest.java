@@ -72,4 +72,12 @@ public class ProfileRepositoryTest {
         assertFalse(repository.updateProfile(arg));
     }
 
+    @Test
+    void shouldDeleteThenRestore() {
+        assertTrue(repository.softDeleteById(1));
+        assertNull(repository.findById(1));
+        assertTrue(repository.restoreProfileById(1));
+        assertNotNull(repository.findById(1));
+    }
+
 }

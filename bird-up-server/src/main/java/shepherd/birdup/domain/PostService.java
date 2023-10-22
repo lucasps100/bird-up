@@ -2,7 +2,6 @@ package shepherd.birdup.domain;
 
 import org.springframework.stereotype.Service;
 import shepherd.birdup.data.PostRepository;
-import shepherd.birdup.models.Location;
 import shepherd.birdup.models.Post;
 
 import javax.validation.ConstraintViolation;

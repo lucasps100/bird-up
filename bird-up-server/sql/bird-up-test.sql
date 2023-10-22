@@ -46,7 +46,7 @@ create table state (
 
 create table location (
 	location_id int primary key auto_increment,
-    city varchar(250) not null,
+    city varchar(250),
     state_id int,
     postal_code varchar(5),
     constraint fk_state_id
@@ -168,7 +168,7 @@ insert into app_role (`name`) values
 -- passwords are set to "P@ssw0rd!"
 insert into app_user (username, password_hash, enabled)
     values
-    ('jane@doe.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1),
+    ('jane@doe.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 2),
     ('fred@herbert.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1),
     ('jon@aol.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1),
     ('bob@aol.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1);

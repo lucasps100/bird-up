@@ -139,4 +139,24 @@ public class ProfileJdbcTemplateRepository implements ProfileRepository {
         return jdbcTemplate.update(sql, profile.getFirstName(),
                 profile.getLastName(), profile.getBio(), profile.getAppUserId()) > 0;
     }
+
+    @Override
+    public boolean softDeleteById(int appUserId) {
+        final String sql = """
+                update app_user set
+                enabled = false
+                where app_user_id = ?;
+                """;
+        return jdbcTemplate.update(sql, appUserId) > 0;
+    }
+
+    @Override
+    public boolean restoreProfileById(int appUserId) {
+        final String sql = """
+                update app_user set
+                enabled = true
+                where app_user_id = ?;
+                """;
+        return jdbcTemplate.update(sql, appUserId) > 0;
+    }
 }
