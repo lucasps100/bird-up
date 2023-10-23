@@ -28,11 +28,10 @@ create table app_user_role (
 
 create table `profile` (
 	app_user_id int primary key auto_increment,
-    first_name varchar(50),
+    first_name varchar(50) not null,
     last_name varchar(50),
     bio varchar(250),
     created_at timestamp default now(),
-    enabled boolean default(true),
     foreign key (app_user_id)
 		references app_user(app_user_id)
 );
@@ -163,4 +162,7 @@ insert into state(state_name, state_abbrv) values
 
 -- Upload Species csv data with Table Data Import Wizard (right click on schema)
 
-
+insert into app_role (`name`) values
+    ('USER'),
+    ('ADMIN');
+    

@@ -8,10 +8,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class AppUserMapper implements RowMapper<AppUser> {
-    private final List<String> roles;
+    private final List<String> authorities;
 
-    public AppUserMapper(List<String> roles) {
-        this.roles = roles;
+    public AppUserMapper(List<String> authorities) {
+        this.authorities = authorities;
     }
 
     @Override
@@ -21,6 +21,6 @@ public class AppUserMapper implements RowMapper<AppUser> {
                 rs.getString("username"),
                 rs.getString("password_hash"),
                 rs.getBoolean("enabled"),
-                roles);
+                authorities);
     }
 }

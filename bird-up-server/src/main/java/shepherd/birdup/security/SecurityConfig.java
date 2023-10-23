@@ -37,18 +37,18 @@ public class SecurityConfig {
         // the order of the antMatchers() method calls is important
         // as they're evaluated in the order that they're added
         http.authorizeRequests()
-                .antMatchers("/api/bird-up/authenticate").permitAll()
-                .antMatchers("/api/bird-up/create_account", "api/bird-up/profile/create").permitAll()
-                .antMatchers("/api/bird-up/refresh_token").authenticated()
+                .antMatchers("/api/birdup/authenticate").permitAll()
+                .antMatchers("/api/birdup/register").permitAll()
+                .antMatchers("/api/birdup/login").permitAll()
+                .antMatchers("/api/birdup/refresh_token").authenticated()
                 .antMatchers(HttpMethod.GET,
-                        "/api/bird-up/post", "/api/bird-up/post/*", "/api/bird-up/post/*", "/api/bird-up/profile/*").permitAll()
+                        "/api/birdup/post", "/api/birdup/post/*", "/api/birdup/post/*", "/api/birdup/profile/*").permitAll()
                 .antMatchers(HttpMethod.POST,
-                        "/api/bird-up/post", "/api/bird-up/like/*", "/api/bird-up/comment/*", "/api/bird-up/follow/*").hasAnyAuthority("USER", "ADMIN")
+                        "/api/birdup/post", "/api/birdup/like", "/api/birdup/comment", "/api/birdup/follow", "api/birdup/profile").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers(HttpMethod.PUT,
-                        "/api/bird-up/post/*", "/api/bird-up/profile/*", "/api/bird-up/comment/*").hasAnyAuthority("USER", "ADMIN")
+                        "/api/birdup/post/*", "/api/birdup/profile/*", "/api/birdup/comment/*").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers(HttpMethod.DELETE,
-                        "/api/bird-up/like/*", "/api/bird-up/comment/*").hasAnyAuthority("ADMIN", "USER")
-                // if we get to this point, let's deny all requests
+                        "/api/birdup/like/*", "/api/birdup/comment/*").hasAnyAuthority("ADMIN", "USER")
                 .antMatchers("/**").denyAll()
                 .and()
                 .addFilter(new JwtRequestFilter(authenticationManager(authConfig), converter))

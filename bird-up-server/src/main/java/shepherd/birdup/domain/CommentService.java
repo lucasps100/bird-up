@@ -46,7 +46,7 @@ public class CommentService {
         return result;
     }
 
-    Result<Comment> update(Comment comment) {
+    public Result<Comment> update(Comment comment) {
         Result<Comment> result = new Result<>();
         if (comment == null) {
             result.addMessage(ResultType.INVALID, "nothing to update");

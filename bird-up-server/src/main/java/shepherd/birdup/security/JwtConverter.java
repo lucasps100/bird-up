@@ -2,6 +2,7 @@ package shepherd.birdup.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import shepherd.birdup.models.AppUser;
 
@@ -13,22 +14,20 @@ import java.util.stream.Collectors;
 @Component
 public class JwtConverter {
 
-    private final String ISSUER = "bug-safari";
+    private final String ISSUER = "bird-up";
     private final int EXPIRATION_MINUTES = 15;
     private final int EXPIRATION_MILLIS = EXPIRATION_MINUTES * 60 * 1000;
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    // Take an instance of `AppUser` as a parameter, instead of `UserDetails`
     public String getTokenFromUser(AppUser user) {
 
         String authorities = user.getAuthorities().stream()
-                .map(i -> i.getAuthority())
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
         return Jwts.builder()
                 .setIssuer(ISSUER)
                 .setSubject(user.getUsername())
-                // new... embed the `appUserId` in the JWT as a claim
                 .claim("app_user_id", user.getId())
                 .claim("authorities", authorities)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_MILLIS))
@@ -36,7 +35,6 @@ public class JwtConverter {
                 .compact();
     }
 
-    // Return an instance of `AppUser`
     public AppUser getUserFromToken(String token) {
 
         if (token == null || !token.startsWith("Bearer ")) {
@@ -51,11 +49,9 @@ public class JwtConverter {
                     .parseClaimsJws(token.substring(7));
 
             String username = jws.getBody().getSubject();
-            // new... read the `appUserId` from the JWT body
             int appUserId = (int) jws.getBody().get("app_user_id");
             String authStr = (String) jws.getBody().get("authorities");
 
-            // Replace the Spring Security `User` with our `AppUser`
             return new AppUser(appUserId, username, null, true,
                     Arrays.asList(authStr.split(",")));
 

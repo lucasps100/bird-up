@@ -13,7 +13,7 @@ public interface AppUserRepository {
     AppUser findById(int id);
 
     @Transactional
-    AppUser create(AppUser user);
+    AppUser add(AppUser user);
 
     @Transactional
     void update(AppUser user);

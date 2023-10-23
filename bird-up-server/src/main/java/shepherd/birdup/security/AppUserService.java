@@ -2,6 +2,7 @@ package shepherd.birdup.security;
 
 
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,75 +18,79 @@ import java.util.List;
 @Service
 public class AppUserService implements UserDetailsService {
 
-    private final AppUserRepository repository;
-    private final PasswordEncoder encoder;
+    private final AppUserRepository appUserRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AppUserService(AppUserRepository repository,
-                          PasswordEncoder encoder) {
-        this.repository = repository;
-        this.encoder = encoder;
+    public AppUserService(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder) {
+        this.appUserRepository = appUserRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // 1. Use the repository.
-        AppUser appUser = repository.findByUsername(username);
+    public AppUser loadUserByUsername(String username) throws UsernameNotFoundException {
+        AppUser appUser = appUserRepository.findByUsername(username);
 
-        // 2. Two failure scenarios.
         if (appUser == null || !appUser.isEnabled()) {
-            throw new UsernameNotFoundException(username + " not found");
+            throw new UsernameNotFoundException(String.format("%s not found.", username));
         }
 
-        // 3. Must return a UserDetails interface.
         return appUser;
     }
 
-    public Result<AppUser> create(String username, String password) {
+    public Result<AppUser> add(String username, String password) {
         Result<AppUser> result = validate(username, password);
         if (!result.isSuccess()) {
             return result;
         }
 
-        password = encoder.encode(password);
+        password = passwordEncoder.encode(password);
 
         AppUser appUser = new AppUser(0, username, password, true, List.of("USER"));
 
-        try {
-            appUser = repository.create(appUser);
-            result.setPayload(appUser);
-        } catch (DuplicateKeyException e) {
-            result.addMessage(ResultType.INVALID, "The provided username already exists");
-        }
+        result.setPayload(appUserRepository.add(appUser));
 
         return result;
     }
 
     private Result<AppUser> validate(String username, String password) {
         Result<AppUser> result = new Result<>();
+
         if (username == null || username.isBlank()) {
             result.addMessage(ResultType.INVALID, "username is required");
-            return result;
         }
 
-        if (password == null) {
-            result.addMessage(ResultType.INVALID, "password is required");
+        if (password == null || password.isBlank()) {
+            result.addMessage(ResultType.INVALID,"password is required");
+        }
+
+        if (!result.isSuccess()) {
             return result;
         }
 
         if (username.length() > 50) {
-            result.addMessage(ResultType.INVALID, "username must be less than 50 characters");
+            result.addMessage(ResultType.INVALID,"username must be 50 characters max");
         }
 
-        if (!isValidPassword(password)) {
-            result.addMessage(ResultType.INVALID,
-                    "password must be at least 8 character and contain a digit," +
-                            " a letter, and a non-digit/non-letter");
+        if (!validatePassword(password)) {
+            result.addMessage(ResultType.INVALID,"password must be at least 8 character and contain a digit, a letter, and a non-digit/non-letter");
+        }
+
+        if (!result.isSuccess()) {
+            return result;
+        }
+
+        try {
+            if (loadUserByUsername(username) != null) {
+                result.addMessage(ResultType.INVALID,"the provided username already exists");
+            }
+        } catch (UsernameNotFoundException e) {
+            // good!
         }
 
         return result;
     }
 
-    private boolean isValidPassword(String password) {
+    private boolean validatePassword(String password) {
         if (password.length() < 8) {
             return false;
         }
@@ -106,3 +111,4 @@ public class AppUserService implements UserDetailsService {
         return digits > 0 && letters > 0 && others > 0;
     }
 }
+
