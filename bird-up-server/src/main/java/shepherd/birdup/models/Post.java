@@ -15,13 +15,14 @@ public class Post implements HasPostId {
     @ProfileExists(message = "poster profile must exist")
     private Profile posterProfile;
     private int postId;
-    @NotNull
+    //@NotNull(message = "an image is required")
     private Blob image;
+    @NotNull
     @LocationExists
     private Location postLocation;
     //read only
     private LocalDateTime createdAt;
-    @NotNull
+    @NotNull(message = "a species label is required")
     @SpeciesExists
     private Species species;
 
