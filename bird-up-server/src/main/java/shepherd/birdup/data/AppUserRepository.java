@@ -10,6 +10,9 @@ public interface AppUserRepository {
     AppUser findByUsername(String username);
 
     @Transactional
+    AppUser findById(int id);
+
+    @Transactional
     AppUser create(AppUser user);
 
     @Transactional
@@ -18,6 +21,7 @@ public interface AppUserRepository {
     void updateRoles(AppUser user);
 
     List<String> getRolesByUsername(String username);
+    List<String> getRolesById(int id);
 
 
 }

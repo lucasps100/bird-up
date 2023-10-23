@@ -41,10 +41,15 @@ public class ProfileService {
             result.addMessage(ResultType.INVALID, "nothing to add");
             return result;
         }
-        if (profile.getAppUserId() > 0) {
-            result.addMessage(ResultType.INVALID, "profile id should not be set");
+        if (profile.getAppUserId() < 1) {
+            result.addMessage(ResultType.INVALID, "profile id should be set");
             return result;
         }
+        if(repository.findById(profile.getAppUserId()) != null) {
+            result.addMessage(ResultType.INVALID, "profile already exists for this account");
+            return result;
+        }
+
         result = validateProfile(profile);
         if (result.isSuccess()) {
             profile = repository.createProfile(profile);

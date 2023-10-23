@@ -1,11 +1,13 @@
 package shepherd.birdup.models;
 
+import shepherd.birdup.validation.AppUserExists;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-
+@AppUserExists
 public class Profile {
 
 
@@ -13,11 +15,10 @@ public class Profile {
 
     // Read only
     private String username;
-    @NotNull
-    @NotBlank
+    @NotNull(message = "first name is required")
+    @NotBlank(message = "first name is required")
     private String firstName;
-    @NotNull
-    @NotBlank
+
     private String lastName;
     @NotNull
     private String bio;
