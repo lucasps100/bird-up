@@ -8,6 +8,7 @@ import shepherd.birdup.domain.CommentService;
 import shepherd.birdup.domain.Result;
 import shepherd.birdup.models.AppUser;
 import shepherd.birdup.models.Comment;
+import shepherd.birdup.models.Profile;
 
 @RestController
 @RequestMapping("/api/birdup/comment")
@@ -25,9 +26,9 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<Object> create(@AuthenticationPrincipal AppUser appUser, @RequestBody Comment comment) {
-        if (comment.getCommenterProfile().getAppUserId() != appUser.getId()) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+        Profile commenter = new Profile();
+        commenter.setAppUserId(appUser.getId());
+        comment.setCommenterProfile(commenter);
         Result<Comment> result = service.create(comment);
         if (result.isSuccess()) {
             return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
@@ -37,10 +38,13 @@ public class CommentController {
 
     @PutMapping("/{commentId}")
     public ResponseEntity<Object> update(@AuthenticationPrincipal AppUser appUser, @PathVariable int commentId, @RequestBody Comment comment) {
-        if (commentId != comment.getCommentId() || appUser.getId() != comment.getCommentId()) {
+        if (commentId != comment.getCommentId() || service.findById(commentId) == null || service.findById(commentId).getCommenterProfile().getAppUserId() != appUser.getId()) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-
+        Profile commenter = new Profile();
+        commenter.setAppUserId(appUser.getId());
+        comment.setCommenterProfile(commenter);
+        comment.setPostId(service.findById(commentId).getPostId());
         Result<Comment> result = service.update(comment);
         if (result.isSuccess()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

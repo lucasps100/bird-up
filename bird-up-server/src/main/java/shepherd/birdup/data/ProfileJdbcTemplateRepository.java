@@ -56,7 +56,7 @@ public class ProfileJdbcTemplateRepository implements ProfileRepository {
         if (profile != null) {
             profile.setPosts(postJdbcTemplateRepository.findByAppUserId(profile.getAppUserId()));
             addFollowees(profile);
-            addFollowees(profile);
+            addFollowers(profile);
         }
         return profile;
     }

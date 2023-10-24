@@ -20,13 +20,13 @@ public class PostController {
         this.service = service;
     }
 
-    @GetMapping
-    public List<Post> findAll(@RequestParam(value = "posterId", required = false) int posterId,
+    @GetMapping("/{posterId}/{likerId}/{followerId}")
+    public List<Post> findAll(@PathVariable int posterId,
                               @RequestParam(value = "stateAbbrv", required = false) String stateAbbrv,
                               @RequestParam(value = "species", required = false) String species,
                               @RequestParam(value = "postalCode", required = false) String postalCode,
-                              @RequestParam(value = "likerId", required = false) int likerId,
-                              @RequestParam(value = "followerId", required = false) int followerId,
+                              @PathVariable int likerId,
+                              @PathVariable int followerId,
                               @RequestParam(value = "city", required = false) String city
 
                               ) {
@@ -54,10 +54,10 @@ public class PostController {
        return service.findAll();
     }
 
-    @GetMapping("/{postId}")
-    public Post findByPostId(@PathVariable int postId) {
-        return service.findByPostId(postId);
-    }
+//    @GetMapping("/{postId}")
+//    public Post findByPostId(@PathVariable int postId) {
+//        return service.findByPostId(postId);
+//    }
 
 //    @GetMapping
 //    public List<Post> findByAppUserId(@RequestParam int appUserId) {
@@ -94,11 +94,18 @@ public class PostController {
 //        return service.findByCityAndStateAbbrv(city, stateAbbrv);
 //    }
 
-    @PostMapping
-    public ResponseEntity<Object> create(@AuthenticationPrincipal AppUser appUser, @RequestBody Post post) {
+    @PostMapping("/{locationId}/{speciesId}")
+    public ResponseEntity<Object> create(@AuthenticationPrincipal AppUser appUser, @RequestBody Post post,
+                                         @PathVariable int locationId, @PathVariable int speciesId) {
+        Location location = new Location();
+        location.setLocationId(locationId);
+        Species species = new Species();
+        species.setSpeciesId(speciesId);
         Profile poster = new Profile();
         poster.setAppUserId(appUser.getId());
         post.setPosterProfile(poster);
+        post.setPostLocation(location);
+        post.setSpecies(species);
         Result<Post> result = service.create(post);
         if (result.isSuccess()) {
             return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
@@ -106,11 +113,21 @@ public class PostController {
         return ErrorResponse.build(result);
     }
 
-    @PutMapping("/{postId}")
-    public ResponseEntity<Object> update(@AuthenticationPrincipal AppUser appUser, @PathVariable int postId, @RequestBody Post post) {
-        if (appUser.getId() != post.getPosterProfile().getAppUserId() || appUser.getId() != postId) {
+    @PutMapping("/{postId}/{locationId}/{speciesId}")
+    public ResponseEntity<Object> update(@AuthenticationPrincipal AppUser appUser, @PathVariable int postId, @RequestBody Post post,
+                                         @PathVariable int locationId, @PathVariable int speciesId) {
+        if (postId != post.getPostId() || service.findByPostId(postId).getPosterProfile().getAppUserId() != appUser.getId()) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
+        Profile poster = new Profile();
+        poster.setAppUserId(appUser.getId());
+        Location location = new Location();
+        location.setLocationId(locationId);
+        Species species = new Species();
+        species.setSpeciesId(speciesId);
+        post.setSpecies(species);
+        post.setPostLocation(location);
+        post.setPosterProfile(poster);
         Result<Post> result = service.update(post);
         if (result.isSuccess()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

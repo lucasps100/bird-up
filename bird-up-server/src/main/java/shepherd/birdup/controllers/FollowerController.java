@@ -8,6 +8,7 @@ import shepherd.birdup.domain.FollowerService;
 import shepherd.birdup.domain.Result;
 import shepherd.birdup.models.AppUser;
 import shepherd.birdup.models.Follower;
+import shepherd.birdup.models.Profile;
 
 @RestController
 @RequestMapping("/api/birdup/follower")
@@ -19,16 +20,19 @@ public class FollowerController {
         this.service = service;
     }
 
-    @GetMapping
-    public Follower findByIds(@RequestParam int followerId, @RequestParam int followeeId) {
+    @GetMapping("/{followerId}/{followeeId}")
+    public Follower findByIds(@PathVariable int followerId, @PathVariable int followeeId) {
         return service.findByIds(followerId, followeeId);
     }
 
-    @PostMapping
-    public ResponseEntity<Object> create(@AuthenticationPrincipal AppUser appUser, @RequestBody Follower follower) {
-        if (follower.getFollower().getAppUserId() != appUser.getId()) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+    @PostMapping("/{followeeId}")
+    public ResponseEntity<Object> create(@AuthenticationPrincipal AppUser appUser, @PathVariable int followeeId, @RequestBody Follower follower) {
+        Profile followerProfile = new Profile();
+        followerProfile.setAppUserId(appUser.getId());
+        follower.setFollower(followerProfile);
+        Profile followeeProfile = new Profile();
+        followeeProfile.setAppUserId(followeeId);
+        follower.setFollowee(followeeProfile);
         Result<Follower> result = service.create(follower);
         if (result.isSuccess()) {
             return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);

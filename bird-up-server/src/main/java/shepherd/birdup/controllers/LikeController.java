@@ -8,6 +8,7 @@ import shepherd.birdup.domain.LikeService;
 import shepherd.birdup.domain.Result;
 import shepherd.birdup.models.AppUser;
 import shepherd.birdup.models.Like;
+import shepherd.birdup.models.Profile;
 
 import java.util.List;
 
@@ -27,9 +28,9 @@ public class LikeController {
 
     @PostMapping
     public ResponseEntity<Object> create(@AuthenticationPrincipal AppUser appUser, @RequestBody Like like) {
-        if (appUser.getId() != like.getLikerAccount().getAppUserId()) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+        Profile liker = new Profile();
+        liker.setAppUserId(appUser.getId());
+        like.setLikerAccount(liker);
         Result<Like> result = service.create(like);
         if (result.isSuccess()) {
             return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
@@ -37,12 +38,12 @@ public class LikeController {
         return ErrorResponse.build(result);
     }
 
-    @DeleteMapping("/{likeId}/{postId}")
-    public ResponseEntity<Void> delete(@AuthenticationPrincipal AppUser appUser, @PathVariable int appUserId, @PathVariable int postId) {
-        if (appUserId != appUser.getId()) {
+    @DeleteMapping("/{likerId}/{postId}")
+    public ResponseEntity<Void> delete(@AuthenticationPrincipal AppUser appUser, @PathVariable int likerId, @PathVariable int postId) {
+        if (likerId != appUser.getId()) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        Result<Like> result = service.deleteByIds(appUserId, postId);
+        Result<Like> result = service.deleteByIds(likerId, postId);
         if (result.isSuccess()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
