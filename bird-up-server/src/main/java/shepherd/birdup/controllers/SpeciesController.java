@@ -17,8 +17,11 @@ public class SpeciesController {
     }
 
     @GetMapping
-    public List<Species> findAll() {
-        return service.findAll();
+    public List<Species> findAll(@RequestParam(value = "partialName",required = false) String partialName) {
+        if(partialName == null) {
+            return service.findAll();
+        }
+        return service.findByPartialName(partialName);
     }
 
     @GetMapping("/{speciesId}")
@@ -26,13 +29,13 @@ public class SpeciesController {
         return service.findById(speciesId);
     }
 
-    @GetMapping
-    public List<Species> findByPartialName(@RequestParam String partialName) {
-        return service.findByPartialName(partialName);
-    }
+//    @GetMapping
+//    public List<Species> findByPartialName(@RequestParam String partialName) {
+//        return service.findByPartialName(partialName);
+//    }
 
-    @GetMapping
-    public Species findByName(@RequestParam String speciesName) {
-        return service.findByShortName(speciesName);
-    }
+//    @GetMapping
+//    public Species findByName(@RequestParam String speciesName) {
+//        return service.findByShortName(speciesName);
+//    }
 }

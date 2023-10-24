@@ -7,7 +7,7 @@ import shepherd.birdup.models.State;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/birdup/state")
+@RequestMapping("/api/birdup/state")
 public class StateController {
 
     private final StateService service;
@@ -25,8 +25,8 @@ public class StateController {
         return service.findByStateId(stateId);
     }
 
-    @GetMapping
-    public State findByStateAbbrv(@RequestParam String stateAbbrv) {
-        return service.findByStateAbbrv(stateAbbrv);
-    }
+//    @GetMapping
+//    public State findByStateAbbrv(@RequestParam String stateAbbrv) {
+//        return service.findByStateAbbrv(stateAbbrv);
+//    }
 }

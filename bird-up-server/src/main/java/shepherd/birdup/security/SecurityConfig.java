@@ -26,16 +26,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationConfiguration authConfig) throws Exception {
-        // we're not using HTML forms in our app
-        //so disable CSRF (Cross Site Request Forgery)
+
         http.csrf().disable();
 
-        // this configures Spring Security to allow
-        //CORS related requests (such as preflight checks)
         http.cors();
 
-        // the order of the antMatchers() method calls is important
-        // as they're evaluated in the order that they're added
+
         http.authorizeRequests()
                 .antMatchers("/api/birdup/authenticate").permitAll()
                 .antMatchers("/api/birdup/register").permitAll()
@@ -44,7 +40,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.GET,
                         "/api/birdup/post", "/api/birdup/post/*", "/api/birdup/profile/*", "/api/birdup/location", "/api/birdup/location/*", "/api/birdup/state", "/api/birdup/state/*", "/api/birdup/species", "/api/birdup/species/*").permitAll()
                 .antMatchers(HttpMethod.POST,
-                        "/api/birdup/post", "/api/birdup/like", "/api/birdup/comment", "/api/birdup/follow", "api/birdup/profile").hasAnyAuthority("USER", "ADMIN")
+                        "/api/birdup/post", "/api/birdup/like", "/api/birdup/comment", "/api/birdup/follow", "/api/birdup/profile").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers(HttpMethod.PUT,
                         "/api/birdup/post/*", "/api/birdup/profile/*", "/api/birdup/comment/*").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers(HttpMethod.DELETE,

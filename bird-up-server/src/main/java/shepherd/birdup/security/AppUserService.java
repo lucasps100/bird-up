@@ -84,7 +84,6 @@ public class AppUserService implements UserDetailsService {
                 result.addMessage(ResultType.INVALID,"the provided username already exists");
             }
         } catch (UsernameNotFoundException e) {
-            // good!
         }
 
         return result;

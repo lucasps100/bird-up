@@ -24,8 +24,37 @@ public class PostController {
     }
 
     @GetMapping
-    public List<Post> findAll() {
-        return service.findAll();
+    public List<Post> findAll(@RequestParam(value = "posterId", required = false) int posterId,
+                              @RequestParam(value = "stateAbbrv", required = false) String stateAbbrv,
+                              @RequestParam(value = "species", required = false) String species,
+                              @RequestParam(value = "postalCode", required = false) String postalCode,
+                              @RequestParam(value = "likerId", required = false) int likerId,
+                              @RequestParam(value = "followerId", required = false) int followerId,
+                              @RequestParam(value = "city", required = false) String city
+
+                              ) {
+       if(stateAbbrv != null && city != null) {
+           return service.findByCityAndStateAbbrv(city, stateAbbrv);
+       }
+       if(stateAbbrv != null) {
+           return service.findByStateAbbrv(stateAbbrv);
+       }
+       if(species != null) {
+           return service.findBySpeciesShortName(species);
+       }
+       if(postalCode != null) {
+           return service.findByPostalCode(postalCode);
+       }
+       if(posterId > 0) {
+           return service.findByAppUserId(posterId);
+       }
+       if(likerId > 0 ) {
+           return service.findLikedPostsByLikerId(likerId);
+       }
+       if(followerId > 0 ) {
+           return service.findFolloweePostsByFollowerId(followerId);
+       }
+       return service.findAll();
     }
 
     @GetMapping("/{postId}")
@@ -33,40 +62,40 @@ public class PostController {
         return service.findByPostId(postId);
     }
 
-    @GetMapping
-    public List<Post> findByAppUserId(@RequestParam int appUserId) {
-        return service.findByAppUserId(appUserId);
-    }
+//    @GetMapping
+//    public List<Post> findByAppUserId(@RequestParam int appUserId) {
+//        return service.findByAppUserId(appUserId);
+//    }
 
-    @GetMapping
-    public List<Post> findByStateAbbrv(@RequestParam String stateAbbrv) {
-        return service.findByStateAbbrv(stateAbbrv);
-    }
+//    @GetMapping
+//    public List<Post> findByStateAbbrv(@RequestParam String stateAbbrv) {
+//        return service.findByStateAbbrv(stateAbbrv);
+//    }
 
-    @GetMapping
-    public List<Post> findBySpecies(@RequestParam String species) {
-        return service.findBySpeciesShortName(species);
-    }
+//    @GetMapping
+//    public List<Post> findBySpecies(@RequestParam String species) {
+//        return service.findBySpeciesShortName(species);
+//    }
 
-    @GetMapping
-    public List<Post> findByPostalCode(@RequestParam String postalCode) {
-        return service.findByPostalCode(postalCode);
-    }
+//    @GetMapping
+//    public List<Post> findByPostalCode(@RequestParam String postalCode) {
+//        return service.findByPostalCode(postalCode);
+//    }
 
-    @GetMapping
-    public List<Post> findLikedPosts(@RequestParam int likerId) {
-        return service.findLikedPostsByLikerId(likerId);
-    }
+//    @GetMapping
+//    public List<Post> findLikedPosts(@RequestParam int likerId) {
+//        return service.findLikedPostsByLikerId(likerId);
+//    }
 
-    @GetMapping
-    public List<Post> findFolloweePosts(@RequestParam int followerId) {
-        return service.findFolloweePostsByFollowerId(followerId);
-    }
+//    @GetMapping
+//    public List<Post> findFolloweePosts(@RequestParam int followerId) {
+//        return service.findFolloweePostsByFollowerId(followerId);
+//    }
 
-    @GetMapping
-    public List<Post> findFolloweePosts(@RequestParam String city, @RequestParam String stateAbbrv) {
-        return service.findByCityAndStateAbbrv(city, stateAbbrv);
-    }
+//    @GetMapping
+//    public List<Post> findByCityAndState(@RequestParam String city, @RequestParam String stateAbbrv) {
+//        return service.findByCityAndStateAbbrv(city, stateAbbrv);
+//    }
 
     @PostMapping
     public ResponseEntity<Object> create(@AuthenticationPrincipal AppUser appUser, @RequestBody Post post) {

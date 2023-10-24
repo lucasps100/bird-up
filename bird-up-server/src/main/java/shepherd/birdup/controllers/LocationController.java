@@ -16,7 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/birdup/location")
 public class LocationController {
-
     private final LocationService service;
 
     public LocationController(LocationService service) {
@@ -24,8 +23,15 @@ public class LocationController {
     }
 
     @GetMapping
-    public List<Location> findAll() {
-        return service.findAll();
+    public List<Location> findList(@RequestParam(value = "partialName", required = false) String partialName,
+                                   @RequestParam(value = "stateAbbrv", required = false) String stateAbbrv) {
+        if(partialName == null && stateAbbrv == null) {
+            return service.findAll();
+        }
+        if(stateAbbrv == null) {
+            return service.findByPartialName(partialName);
+        }
+        return service.findByStateAbbrv(stateAbbrv);
     }
 
     @GetMapping("/{locationId}")
@@ -33,15 +39,15 @@ public class LocationController {
         return service.findById(locationId);
     }
 
-    @GetMapping
-    public List<Location> findByStateAbbrv(@RequestParam String stateAbbrv) {
-        return service.findByStateAbbrv(stateAbbrv);
-    }
-
-    @GetMapping
-    public List<Location> findByPartialName(@RequestParam String partialName) {
-        return service.findByPartialName(partialName);
-    }
+//    @GetMapping("/search")
+//    public List<Location> findByStateAbbrv(@RequestParam(value = "stateAbbrv", required = false) String stateAbbrv) {
+//        return service.findByStateAbbrv(stateAbbrv);
+//    }
+//
+//    @GetMapping("/search")
+//    public List<Location> findByPartialName(@RequestParam(value = "partialName", required = false) String partialName) {
+//        return service.findByPartialName(partialName);
+//    }
 
     @PostMapping
     public ResponseEntity<Object> create(@AuthenticationPrincipal AppUser appUser, @RequestBody Location location) {

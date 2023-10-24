@@ -20,7 +20,6 @@ public class Profile {
     private String firstName;
 
     private String lastName;
-    @NotNull
     private String bio;
     private List<Post> posts;
     private List<Profile> followers;
