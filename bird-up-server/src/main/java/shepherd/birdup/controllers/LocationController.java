@@ -6,10 +6,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import shepherd.birdup.domain.LocationService;
 import shepherd.birdup.domain.Result;
-import shepherd.birdup.models.AppUser;
-import shepherd.birdup.models.Follower;
-import shepherd.birdup.models.Location;
-import shepherd.birdup.models.Profile;
+import shepherd.birdup.models.*;
 
 import java.util.List;
 
@@ -49,8 +46,9 @@ public class LocationController {
 //        return service.findByPartialName(partialName);
 //    }
 
-    @PostMapping
-    public ResponseEntity<Object> create(@AuthenticationPrincipal AppUser appUser, @RequestBody Location location) {
+    @PostMapping("/{stateId}")
+    public ResponseEntity<Object> create(@AuthenticationPrincipal AppUser appUser, @PathVariable int stateId, @RequestBody Location location) {
+        location.setState(new State(stateId, null, null));
         Result<Location> result = service.create(location);
         if (result.isSuccess()) {
             return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);

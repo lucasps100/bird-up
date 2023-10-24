@@ -6,10 +6,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import shepherd.birdup.domain.PostService;
 import shepherd.birdup.domain.Result;
-import shepherd.birdup.models.AppUser;
-import shepherd.birdup.models.Follower;
-import shepherd.birdup.models.Location;
-import shepherd.birdup.models.Post;
+import shepherd.birdup.models.*;
 
 import java.util.List;
 
@@ -99,9 +96,9 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<Object> create(@AuthenticationPrincipal AppUser appUser, @RequestBody Post post) {
-        if (post.getPosterProfile().getAppUserId() != appUser.getId()) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+        Profile poster = new Profile();
+        poster.setAppUserId(appUser.getId());
+        post.setPosterProfile(poster);
         Result<Post> result = service.create(post);
         if (result.isSuccess()) {
             return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);

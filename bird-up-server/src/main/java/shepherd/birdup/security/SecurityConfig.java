@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.GET,
                         "/api/birdup/post", "/api/birdup/post/*", "/api/birdup/profile/*", "/api/birdup/location", "/api/birdup/location/*", "/api/birdup/state", "/api/birdup/state/*", "/api/birdup/species", "/api/birdup/species/*").permitAll()
                 .antMatchers(HttpMethod.POST,
-                        "/api/birdup/post", "/api/birdup/like", "/api/birdup/comment", "/api/birdup/follow", "/api/birdup/profile").hasAnyAuthority("USER", "ADMIN")
+                        "/api/birdup/post", "/api/birdup/like", "/api/birdup/comment", "/api/birdup/follow", "/api/birdup/profile", "/api/birdup/location/*").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers(HttpMethod.PUT,
                         "/api/birdup/post/*", "/api/birdup/profile/*", "/api/birdup/comment/*").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers(HttpMethod.DELETE,
