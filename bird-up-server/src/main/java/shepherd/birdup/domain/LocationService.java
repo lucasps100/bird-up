@@ -56,7 +56,7 @@ public class LocationService {
         return result;
     }
 
-    Result<Location> update(Location location) {
+    public Result<Location> update(Location location) {
         Result<Location> result = new Result<>();
         if (location == null) {
             result.addMessage(ResultType.INVALID, "nothing to update");

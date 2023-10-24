@@ -42,13 +42,15 @@ public class SecurityConfig {
                 .antMatchers("/api/birdup/login").permitAll()
                 .antMatchers("/api/birdup/refresh_token").authenticated()
                 .antMatchers(HttpMethod.GET,
-                        "/api/birdup/post", "/api/birdup/post/*", "/api/birdup/post/*", "/api/birdup/profile/*").permitAll()
+                        "/api/birdup/post", "/api/birdup/post/*", "/api/birdup/profile/*", "/api/birdup/location", "/api/birdup/location/*", "/api/birdup/state", "/api/birdup/state/*", "/api/birdup/species", "/api/birdup/species/*").permitAll()
                 .antMatchers(HttpMethod.POST,
                         "/api/birdup/post", "/api/birdup/like", "/api/birdup/comment", "/api/birdup/follow", "api/birdup/profile").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers(HttpMethod.PUT,
                         "/api/birdup/post/*", "/api/birdup/profile/*", "/api/birdup/comment/*").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers(HttpMethod.DELETE,
-                        "/api/birdup/like/*", "/api/birdup/comment/*").hasAnyAuthority("ADMIN", "USER")
+                        "/api/birdup/like/*", "/api/birdup/comment/*", "/api/birdup/profile/*", "/api/birdup/post/*").hasAnyAuthority("ADMIN", "USER")
+                .antMatchers(HttpMethod.PUT, "/api/birdup/location").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/birdup/location").hasAuthority("ADMIN")
                 .antMatchers("/**").denyAll()
                 .and()
                 .addFilter(new JwtRequestFilter(authenticationManager(authConfig), converter))

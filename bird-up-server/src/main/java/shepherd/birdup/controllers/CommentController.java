@@ -2,16 +2,15 @@ package shepherd.birdup.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import shepherd.birdup.domain.CommentService;
 import shepherd.birdup.domain.Result;
+import shepherd.birdup.models.AppUser;
 import shepherd.birdup.models.Comment;
 
-import java.security.Principal;
-
 @RestController
-@RequestMapping("/api/bird-up/comment")
+@RequestMapping("/api/birdup/comment")
 public class CommentController {
     private final CommentService service;
 
@@ -25,17 +24,20 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> create(@RequestBody Comment comment) {
+    public ResponseEntity<Object> create(@AuthenticationPrincipal AppUser appUser, @RequestBody Comment comment) {
+        if (comment.getCommenterProfile().getAppUserId() != appUser.getId()) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
         Result<Comment> result = service.create(comment);
-        if(result.isSuccess()) {
+        if (result.isSuccess()) {
             return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
         }
         return ErrorResponse.build(result);
     }
 
     @PutMapping("/{commentId}")
-    public ResponseEntity<Object> update(@PathVariable int commentId, @RequestBody Comment comment) {
-        if (commentId != comment.getCommentId()) {
+    public ResponseEntity<Object> update(@AuthenticationPrincipal AppUser appUser, @PathVariable int commentId, @RequestBody Comment comment) {
+        if (commentId != comment.getCommentId() || appUser.getId() != comment.getCommentId()) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
@@ -47,10 +49,12 @@ public class CommentController {
     }
 
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<Void> delete(@PathVariable int commentId, Principal principal) {
+    public ResponseEntity<Void> delete(@AuthenticationPrincipal AppUser appUser, @PathVariable int commentId) {
+        if (service.findById(commentId).getCommenterProfile().getAppUserId() != appUser.getId()) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
         Result<Comment> result = service.deleteByCommentId(commentId);
-        System.out.println(principal.getName());
-        if(result.isSuccess()) {
+        if (result.isSuccess()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
