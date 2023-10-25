@@ -12,24 +12,22 @@ import java.util.List;
 import java.util.Objects;
 
 public class Post implements HasPostId {
-    @ProfileExists(message = "poster profile must exist")
+//    @ProfileExists(message = "poster profile must exist")
     private Profile posterProfile;
     private int postId;
-    //@NotNull(message = "an image is required")
+
     private Blob image;
-//    @NotNull
-//    @LocationExists
     private Location postLocation;
     //read only
     private LocalDateTime createdAt;
-    @NotNull(message = "a species label is required")
-    @SpeciesExists
+//    @NotNull(message = "a species label is required")
+//    @SpeciesExists
     private Species species;
 
     private List<Like> likes;
 
     private List<Comment> comments;
-    @Size(max = 255)
+//    @Size(max = 255)
     private String postText;
 
     public Post() {

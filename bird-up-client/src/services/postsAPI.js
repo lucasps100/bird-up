@@ -39,7 +39,7 @@ export async function savePost(post, speciesId) {
       }
     } else {
       init.method = "POST";
-      const response = await fetch(`${url}/${speciesId}`, init);
+      const response = await fetch(url + '/' + speciesId, init);
       if (response.status === 201) {
         return response.json();
       } else if (response.status === 400) {

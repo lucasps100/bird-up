@@ -37,23 +37,6 @@ create table `profile` (
 		references app_user(app_user_id)
 );
 
-create table state (
-	state_id int primary key auto_increment,
-    state_name varchar(50),
-    state_abbrv varchar(3)
-);
-
-
-create table location (
-	location_id int primary key auto_increment,
-    city varchar(250),
-    state_id int,
-    postal_code varchar(5),
-    constraint fk_state_id
-		foreign key (state_id)
-        references state(state_id)
-);
-
 create table species (
 	species_id int primary key auto_increment,
     species_short_name varchar(250),
@@ -62,7 +45,6 @@ create table species (
 
 create table post (
 	post_id INT PRIMARY KEY auto_increment,
-    location_id int not null,
 	app_poster_id int not null,
 	post_body VARCHAR(255),
 	image BLOB,
@@ -71,8 +53,6 @@ create table post (
     enabled boolean not null default(true),
 	foreign key (app_poster_id)
 		references app_user(app_user_id),
-	foreign key (location_id)
-		references location(location_id),
 	foreign key (species_id)
 		references species(species_id)
 );
@@ -109,57 +89,6 @@ create table follower (
     PRIMARY KEY(follower_id, followee_id)
 );
 
-insert into state(state_name, state_abbrv) values
-	('Alabama','AL'),
-	('Alaska','AK'),
-	('Arizona','AZ'),
-	('Arkansas','AR'),
-	('California','CA'),
-	('Colorado','CO'),
-	('Connecticut','CT'),
-	('Delaware','DE'),
-	('Florida','FL'),
-	('Georgia','GA'),
-	('Hawaii','HI'),
-	('Idaho','ID'),
-	('Illinois','IL'),
-	('Indiana','IN'),
-	('Iowa','IA'),
-	('Kansas','KS'),
-	('Kentucky','KY'),
-	('Louisiana','LA'),
-	('Maine','ME'),
-	('Maryland','MD'),
-	('Massachusetts','MA'),
-	('Michigan','MI'),
-	('Minnesota','MN'),
-	('Mississippi','MS'),
-	('Missouri','MO'),
-	('Montana','MT'),
-	('Nebraska','NE'),
-	('Nevada','NV'),
-	('New Hampshire','NH'),
-	('New Jersey','NJ'),
-	('New Mexico','NM'),
-	('New York','NY'),
-	('North Carolina','NC'),
-	('North Dakota','ND'),
-	('Ohio','OH'),
-	('Oklahoma','OK'),
-	('Oregon','OR'),
-	('Pennsylvania','PA'),
-	('Rhode Island','RI'),
-	('South Carolina','SC'),
-	('South Dakota','SD'),
-	('Tennessee','TN'),
-	('Texas','TX'),
-	('Utah','UT'),
-	('Vermont','VT'),
-	('Virginia','VA'),
-	('Washington','WA'),
-	('West Virginia','WV'),
-	('Wisconsin','WI'),
-	('Wyoming','WY');
     
 insert into app_role (`name`) values
     ('USER'),
@@ -168,7 +97,7 @@ insert into app_role (`name`) values
 -- passwords are set to "P@ssw0rd!"
 insert into app_user (username, password_hash, enabled)
     values
-    ('jane@doe.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 2),
+    ('jane@doe.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1),
     ('fred@herbert.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1),
     ('jon@aol.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1),
     ('bob@aol.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1);
@@ -188,11 +117,9 @@ begin
     delete from post_like;
     delete from post_comment;
     delete from post;
-	delete from location;
 	delete from species;
     
 	alter table `profile` auto_increment=1;
-	alter table location auto_increment=1;
 	alter table species auto_increment=1;
     alter table post auto_increment=1;
 	alter table post_like auto_increment=1;
@@ -205,11 +132,7 @@ begin
         (2, 'Fred', 'Herbert', 'Birds R cool.', timestamp("2010-10-10", "01:01:01")),
         (3, 'Jon', 'Jonson', 'Testing 123', timestamp("2021-05-05", "05:05:05"));
         
-	insert into location (city, postal_code, state_id) values
-		('Las Vegas', '04468', 28),
-		('Hilton Head Island', '29926', 40),
-        ("Kennebunk", "04043", 19);
-    
+
     insert into follower (follower_id, followee_id, created_at) values 
     (1, 2, timestamp("2022-01-01", "02:02:02")),
     (2, 1, timestamp("2023-01-01", "04:04:04")),
@@ -220,10 +143,10 @@ begin
     ("Pigeon", "Pigeus Maximus"),
     ("Seagull", "Flying Beach Rat");
     
-    insert into post(location_id, app_poster_id, post_body, created_at, species_id, enabled) values
-    (1, 1, "Test text", timestamp("2023-09-09", "02:02:02"), 1, false),
-    (2, 1, "Test text", timestamp("2023-09-10", "07:07:07"), 2, true),
-    (2, 2, "Test text", timestamp("2023-09-10", "08:08:08"), 3, true);
+    insert into post(app_poster_id, post_body, created_at, species_id, enabled) values
+    ( 1, "Test text", timestamp("2023-09-09", "02:02:02"), 1, false),
+    ( 1, "Test text", timestamp("2023-09-10", "07:07:07"), 2, true),
+    ( 2, "Test text", timestamp("2023-09-10", "08:08:08"), 3, true);
     
     insert into post_like (user_liker_id, post_id) values
     (1, 1),

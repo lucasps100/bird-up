@@ -29,17 +29,17 @@ public class PostService {
         return repository.findByAppUserId(appUserId);
     }
 
-    public List<Post> findByStateAbbrv(String stateAbbrv) {
-        return repository.findByStateAbbrv(stateAbbrv);
-    }
+//    public List<Post> findByStateAbbrv(String stateAbbrv) {
+//        return repository.findByStateAbbrv(stateAbbrv);
+//    }
 
     public List<Post> findBySpeciesShortName(String speciesShortName) {
         return repository.findBySpeciesShortName(speciesShortName);
     }
 
-    public List<Post> findByPostalCode(String postalCode) {
-        return repository.findByPostalCode(postalCode);
-    }
+//    public List<Post> findByPostalCode(String postalCode) {
+//        return repository.findByPostalCode(postalCode);
+//    }
 
     public List<Post> findLikedPostsByLikerId(int likerId) {
         return repository.findLikedPostsByLikerId(likerId);
@@ -49,9 +49,9 @@ public class PostService {
         return repository.findFolloweePostsByFollowerId(followerId);
     }
 
-    public List<Post> findByCityAndStateAbbrv(String city, String stateAbbrv) {
-        return repository.findByCityAndStateAbbrv(city, stateAbbrv);
-    }
+//    public List<Post> findByCityAndStateAbbrv(String city, String stateAbbrv) {
+//        return repository.findByCityAndStateAbbrv(city, stateAbbrv);
+//    }
 
     public Post findByPostId(int postId) {
         return repository.findByPostId(postId);

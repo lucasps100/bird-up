@@ -36,23 +36,6 @@ create table `profile` (
 		references app_user(app_user_id)
 );
 
-create table state (
-	state_id int primary key auto_increment,
-    state_name varchar(50),
-    state_abbrv varchar(3)
-);
-
-
-create table location (
-	location_id int primary key auto_increment,
-    city varchar(250) not null,
-    state_id int,
-    postal_code varchar(5),
-    constraint fk_state_id
-		foreign key (state_id)
-        references state(state_id)
-);
-
 create table species (
 	species_id int primary key auto_increment,
     species_short_name varchar(250),
@@ -61,7 +44,6 @@ create table species (
 
 create table post (
 	post_id INT PRIMARY KEY auto_increment,
-    location_id int not null,
 	app_poster_id int not null,
 	post_body VARCHAR(255),
 	image BLOB,
@@ -70,8 +52,6 @@ create table post (
     enabled boolean not null default(true),
 	foreign key (app_poster_id)
 		references app_user(app_user_id),
-	foreign key (location_id)
-		references location(location_id),
 	foreign key (species_id)
 		references species(species_id)
 );
@@ -108,61 +88,10 @@ create table follower (
     PRIMARY KEY(follower_id, followee_id)
 );
 
-insert into state(state_name, state_abbrv) values
-	('Alabama','AL'),
-	('Alaska','AK'),
-	('Arizona','AZ'),
-	('Arkansas','AR'),
-	('California','CA'),
-	('Colorado','CO'),
-	('Connecticut','CT'),
-	('Delaware','DE'),
-	('Florida','FL'),
-	('Georgia','GA'),
-	('Hawaii','HI'),
-	('Idaho','ID'),
-	('Illinois','IL'),
-	('Indiana','IN'),
-	('Iowa','IA'),
-	('Kansas','KS'),
-	('Kentucky','KY'),
-	('Louisiana','LA'),
-	('Maine','ME'),
-	('Maryland','MD'),
-	('Massachusetts','MA'),
-	('Michigan','MI'),
-	('Minnesota','MN'),
-	('Mississippi','MS'),
-	('Missouri','MO'),
-	('Montana','MT'),
-	('Nebraska','NE'),
-	('Nevada','NV'),
-	('New Hampshire','NH'),
-	('New Jersey','NJ'),
-	('New Mexico','NM'),
-	('New York','NY'),
-	('North Carolina','NC'),
-	('North Dakota','ND'),
-	('Ohio','OH'),
-	('Oklahoma','OK'),
-	('Oregon','OR'),
-	('Pennsylvania','PA'),
-	('Rhode Island','RI'),
-	('South Carolina','SC'),
-	('South Dakota','SD'),
-	('Tennessee','TN'),
-	('Texas','TX'),
-	('Utah','UT'),
-	('Vermont','VT'),
-	('Virginia','VA'),
-	('Washington','WA'),
-	('West Virginia','WV'),
-	('Wisconsin','WI'),
-	('Wyoming','WY');
-
 -- Upload Species csv data with Table Data Import Wizard (right click on schema)
 
 insert into app_role (`name`) values
     ('USER'),
     ('ADMIN');
     
+select * from species;

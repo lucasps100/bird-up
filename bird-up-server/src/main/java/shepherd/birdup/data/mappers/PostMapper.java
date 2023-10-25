@@ -30,17 +30,17 @@ public class PostMapper implements RowMapper<Post> {
         profile.setBio(rs.getString("bio"));
         post.setPosterProfile(profile);
 
-        State state = new State();
-        state.setStateId(rs.getInt("state_id"));
-        state.setStateAbbrv(rs.getString("state_abbrv"));
-        state.setStateName(rs.getString("state_name"));
-
-        Location location = new Location();
-        location.setState(state);
-        location.setLocationId(rs.getInt("location_id"));
-        location.setCity(rs.getString("city"));
-        location.setPostalCode(rs.getString("postal_code"));
-        post.setPostLocation(location);
+//        State state = new State();
+//        state.setStateId(rs.getInt("state_id"));
+//        state.setStateAbbrv(rs.getString("state_abbrv"));
+//        state.setStateName(rs.getString("state_name"));
+//
+//        Location location = new Location();
+//        location.setState(state);
+//        location.setLocationId(rs.getInt("location_id"));
+//        location.setCity(rs.getString("city"));
+//        location.setPostalCode(rs.getString("postal_code"));
+//        post.setPostLocation(location);
 
         return post;
     }

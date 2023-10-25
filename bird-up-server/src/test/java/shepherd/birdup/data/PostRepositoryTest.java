@@ -44,12 +44,12 @@ public class PostRepositoryTest {
         assertEquals(2, actual.get(0).getPostId());
     }
 
-    @Test
-    void shouldFindByStateAbbrv() {
-        List<Post> actual = repository.findByStateAbbrv("SC");
-        assertEquals(2, actual.size());
-        assertEquals(3, actual.get(0).getPostId());
-    }
+//    @Test
+//    void shouldFindByStateAbbrv() {
+//        List<Post> actual = repository.findByStateAbbrv("SC");
+//        assertEquals(2, actual.size());
+//        assertEquals(3, actual.get(0).getPostId());
+//    }
 
     @Test
     void shouldFindBySpeciesShortName() {
@@ -58,12 +58,12 @@ public class PostRepositoryTest {
         assertEquals(2, actual.get(0).getPostId());
     }
 
-    @Test
-    void shouldFindByPostalCode() {
-        List<Post> actual = repository.findByPostalCode("29926");
-        assertEquals(2, actual.size());
-        assertEquals(3, actual.get(0).getPostId());
-    }
+//    @Test
+//    void shouldFindByPostalCode() {
+//        List<Post> actual = repository.findByPostalCode("29926");
+//        assertEquals(2, actual.size());
+//        assertEquals(3, actual.get(0).getPostId());
+//    }
 
     @Test
     void shouldFindByLikerId() {
@@ -79,15 +79,16 @@ public class PostRepositoryTest {
         assertEquals(3, actual.get(0).getPostId());
     }
 
-    @Test
-    void shouldFindByCityAndStateAbbrv() {
-        List<Post> actual = repository.findByCityAndStateAbbrv("Hilton Head Island", "SC");
-        assertEquals(2, actual.size());
-    }
+//    @Test
+//    void shouldFindByCityAndStateAbbrv() {
+//        List<Post> actual = repository.findByCityAndStateAbbrv("Hilton Head Island", "SC");
+//        assertEquals(2, actual.size());
+//    }
 
     @Test
     void shouldCreate() {
         Post arg = th.createPost(0);
+        arg.setPostLocation(null);
         Post actual = repository.create(arg);
         arg.setPostId(NEXT_ID);
         assertEquals(arg, actual);

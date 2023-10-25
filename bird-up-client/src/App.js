@@ -15,6 +15,7 @@ import Register from "./components/Register.js";
 import PostForm from "./components/PostForm";
 
 import { refreshToken, logout } from "./services/authAPI.js";
+// Import the functions you need from the SDKs you need
 
 
 const TIMEOUT_MILLISECONDS = 14 * 60 * 1000;

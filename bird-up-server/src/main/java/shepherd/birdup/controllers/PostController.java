@@ -22,25 +22,11 @@ public class PostController {
 
     @GetMapping("/{posterId}/{likerId}/{followerId}")
     public List<Post> findAll(@PathVariable int posterId,
-                              @RequestParam(value = "stateAbbrv", required = false) String stateAbbrv,
                               @RequestParam(value = "species", required = false) String species,
-                              @RequestParam(value = "postalCode", required = false) String postalCode,
                               @PathVariable int likerId,
-                              @PathVariable int followerId,
-                              @RequestParam(value = "city", required = false) String city
-
-                              ) {
-       if(stateAbbrv != null && city != null) {
-           return service.findByCityAndStateAbbrv(city, stateAbbrv);
-       }
-       if(stateAbbrv != null) {
-           return service.findByStateAbbrv(stateAbbrv);
-       }
+                              @PathVariable int followerId) {
        if(species != null) {
            return service.findBySpeciesShortName(species);
-       }
-       if(postalCode != null) {
-           return service.findByPostalCode(postalCode);
        }
        if(posterId > 0) {
            return service.findByAppUserId(posterId);
@@ -97,18 +83,13 @@ public class PostController {
     @PostMapping("/{speciesId}")
     public ResponseEntity<Object> create(@AuthenticationPrincipal AppUser appUser, @RequestBody Post post,
                                          @PathVariable int speciesId) {
-
-        //removed location and state pathvariable
-
-//        Location location = new Location();
-//        location.setLocationId(locationId);
         Species species = new Species();
         species.setSpeciesId(speciesId);
         Profile poster = new Profile();
         poster.setAppUserId(appUser.getId());
         post.setPosterProfile(poster);
-//        post.setPostLocation(location);
         post.setSpecies(species);
+        System.out.println(post);
         Result<Post> result = service.create(post);
         if (result.isSuccess()) {
             return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);

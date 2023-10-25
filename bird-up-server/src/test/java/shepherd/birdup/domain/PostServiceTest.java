@@ -50,11 +50,11 @@ public class PostServiceTest {
         assertEquals(List.of(th.createPost(1)), service.findByAppUserId(1));
     }
 
-    @Test
-    void shouldFindByStateAbbrv() {
-        when(repository.findByStateAbbrv("ME")).thenReturn(List.of(th.createPost(1)));
-        assertEquals(List.of(th.createPost(1)), service.findByStateAbbrv("ME"));
-    }
+//    @Test
+//    void shouldFindByStateAbbrv() {
+//        when(repository.findByStateAbbrv("ME")).thenReturn(List.of(th.createPost(1)));
+//        assertEquals(List.of(th.createPost(1)), service.findByStateAbbrv("ME"));
+//    }
 
     @Test
     void shouldFindBySpeciesShortName() {
@@ -62,11 +62,11 @@ public class PostServiceTest {
         assertEquals(List.of(th.createPost(1)), service.findBySpeciesShortName("duck"));
     }
 
-    @Test
-    void shouldFindByPostalCode() {
-        when(repository.findByPostalCode(any())).thenReturn(List.of(th.createPost(1)));
-        assertEquals(List.of(th.createPost(1)), service.findByPostalCode("11111"));
-    }
+//    @Test
+//    void shouldFindByPostalCode() {
+//        when(repository.findByPostalCode(any())).thenReturn(List.of(th.createPost(1)));
+//        assertEquals(List.of(th.createPost(1)), service.findByPostalCode("11111"));
+//    }
 
     @Test
     void shouldFindByLikerId() {
@@ -80,11 +80,11 @@ public class PostServiceTest {
         assertEquals(List.of(th.createPost(1)), service.findFolloweePostsByFollowerId(1));
     }
 
-    @Test
-    void shouldFindByCityAndState() {
-        when(repository.findByCityAndStateAbbrv(any(), any())).thenReturn(List.of(th.createPost(1)));
-        assertEquals(List.of(th.createPost(1)), service.findByCityAndStateAbbrv("Old Town", "ME"));
-    }
+//    @Test
+//    void shouldFindByCityAndState() {
+//        when(repository.findByCityAndStateAbbrv(any(), any())).thenReturn(List.of(th.createPost(1)));
+//        assertEquals(List.of(th.createPost(1)), service.findByCityAndStateAbbrv("Old Town", "ME"));
+//    }
 
     @Test
     void shouldFindById() {
