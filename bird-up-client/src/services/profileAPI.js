@@ -27,3 +27,12 @@ export async function createProfile(profile) {
     }
 
 }
+
+export async function getProfileByUsername(username) {
+    const response = await fetch(`${url}/${username}`);
+    if (response.status === 200) {
+      return response.json();
+    } else {
+      return Promise.reject("Unexpected error, oops.");
+    }    
+}

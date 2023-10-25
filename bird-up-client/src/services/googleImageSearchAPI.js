@@ -9,7 +9,11 @@ export async function findBirdImage(birdName) {
     if (response.status === 200) {
         const j =  await response.json();
         return j;
-    } else {
+    } else if (response.status === 429) {
+        console.log("Past usage limit.")
+        return {"items": [{"link": "question-mark.jpg"}]}
+    } 
+    else {
         return Promise.reject("Unexpected error.")
     }
 }

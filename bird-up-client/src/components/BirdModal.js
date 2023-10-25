@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import {findBirdImage} from "../services/googleImageSearchAPI.js";
+import { getBirdDescription } from '../services/openAiAPI.js';
 
 export default function BirdModal({birdName, onClose}) {
     
     const [isLoading, setIsLoading] = useState(false);
     const [birdImage, setBirdImage] = useState();
-
+    const [birdDescription, setBirdDescription] = useState(null);
 
     useEffect(() => {
         console.log('Received Bird Name:', birdName);
@@ -15,8 +16,11 @@ export default function BirdModal({birdName, onClose}) {
           setIsLoading(true);
           try {
             findBirdImage(birdName).then(r => setBirdImage(r.items[0].link))
+            console.log(birdImage);
+            // getBirdDescription(birdName).then(setBirdDescription);
+            console.log(birdDescription);
           } catch (error) {
-            console.error('Failed to fetch bird image', error);
+            console.error('Failed to fetch bird image and description.', error);
           } finally {
             setIsLoading(false);
           }
@@ -34,7 +38,7 @@ return (
           <div>
             <h1>{birdName}</h1>
             <img src={birdImage} alt={birdName} height="300"></img>
-            
+            {/* <p id ="birdDescription">{birdDescription}</p> */}
             <button onClick={onClose}>Close</button>
           </div>
         )

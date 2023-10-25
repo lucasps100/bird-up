@@ -21,9 +21,9 @@ public class ProfileController {
         this.service = service;
     }
 
-    @GetMapping("/{appUserId}")
-    public Profile getByUsername(@PathVariable int appUserId) {
-        return service.findById(appUserId);
+    @GetMapping("/{username}")
+    public Profile getByUsername(@PathVariable String username) {
+        return service.findByUsername(username);
     }
 
     @GetMapping

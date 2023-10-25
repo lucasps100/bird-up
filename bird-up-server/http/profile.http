@@ -2,7 +2,7 @@
 
 ###
 
-GET {{url}}/1 HTTP/1.1
+GET {{url}}/jim@john.org HTTP/1.1
 
 ###
 

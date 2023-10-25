@@ -8,8 +8,8 @@ export default function PostDeck({posts}) {
 
 
     const onBirdClick = (birdName) => {
-        setSelectedBird(birdName);
         setModalOpen(true);
+        setSelectedBird(birdName);
       };
     
       const closeModal = () => {
@@ -21,7 +21,7 @@ export default function PostDeck({posts}) {
     return ( 
         // render image from BLOB
         <div className="row justify-content-center">
-            <div className="col-2">
+            <div className="col-4">
                 {posts.map(post => (
                 <div class="card mb-3" key={post.postId}>
                 <div class="card-body">

@@ -45,7 +45,7 @@ public class ProfileJdbcTemplateRepository implements ProfileRepository {
     @Override
     public Profile findById(int appUserId) {
         final String sql = """
-                select a.app_user_id, username, first_name, last_name, bio, created_at
+                select a.app_user_id, username, first_name, last_name, bio, p.created_at
                 from profile p
                 join app_user a
                 on p.app_user_id = a.app_user_id
@@ -63,7 +63,7 @@ public class ProfileJdbcTemplateRepository implements ProfileRepository {
 
     private void addFollowers(Profile profile) {
         final String sql = """
-                select a.app_user_id, username, first_name, last_name, bio, created_at
+                select a.app_user_id, username, first_name, last_name, bio, p.created_at
                 from profile p
                 join app_user a
                 on p.app_user_id = a.app_user_id
@@ -94,7 +94,7 @@ public class ProfileJdbcTemplateRepository implements ProfileRepository {
     @Override
     public List<Profile> findByPartialName(String partialName) {
         final String sql = """
-                select a.app_user_id, username, first_name, last_name, bio, created_at
+                select a.app_user_id, username, first_name, last_name, bio, p.created_at
                 from profile p
                 join app_user a
                 on p.app_user_id = a.app_user_id

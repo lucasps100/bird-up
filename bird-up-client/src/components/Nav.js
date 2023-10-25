@@ -24,6 +24,7 @@ export default function Nav() {
         <header>
         <nav className="navbar navbar-expand-lg" id="nav">
             <NavLink id="title" to="/" className="navbar-brand">
+                <img src="bird-up-logo.png" alt="bird up logo" height="50" className="logo mx-2"></img>
                 Bird Up
                 </NavLink>
             <ul className="navbar-nav mr-auto">        
@@ -36,13 +37,14 @@ export default function Nav() {
                     </form>
                 </div>
                 <li className='nav-item'>
-                    <NavLink id='linkList' className="nav-link" to='/'>Explore</NavLink>
+                    <NavLink id='linkList' className="nav-link" to='/'>
+                        Explore</NavLink>
                 </li>
             {user ? (
                 <>
-                <li className="nav-item">
-                Welcome {user.username}
-                </li>
+                {/* <li className="nav-item">
+                    Welcome {user.username}!
+                </li> */}
                 <li className="nav-item">
                     <NavLink id="linkPost" to="/post" className="nav-link">Upload</NavLink>
                 </li>
