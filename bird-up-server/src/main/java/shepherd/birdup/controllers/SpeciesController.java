@@ -24,9 +24,9 @@ public class SpeciesController {
         return service.findByPartialName(partialName);
     }
 
-    @GetMapping("/{speciesId}")
-    public Species findById(@PathVariable int speciesId) {
-        return service.findById(speciesId);
+    @GetMapping("/{speciesName}")
+    public Species findByName(@PathVariable String speciesName) {
+        return service.findByShortName(speciesName.replace("_", " "));
     }
 
 //    @GetMapping

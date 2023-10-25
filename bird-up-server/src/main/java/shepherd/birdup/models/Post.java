@@ -17,8 +17,8 @@ public class Post implements HasPostId {
     private int postId;
     //@NotNull(message = "an image is required")
     private Blob image;
-    @NotNull
-    @LocationExists
+//    @NotNull
+//    @LocationExists
     private Location postLocation;
     //read only
     private LocalDateTime createdAt;

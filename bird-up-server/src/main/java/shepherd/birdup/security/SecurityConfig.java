@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.POST,
                         "/api/birdup/post/**", "/api/birdup/like", "/api/birdup/comment", "/api/birdup/follower/*", "/api/birdup/profile", "/api/birdup/location/*").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers(HttpMethod.PUT,
-                        "/api/birdup/post/*/*/*", "/api/birdup/profile/*", "/api/birdup/comment/*").hasAnyAuthority("USER", "ADMIN")
+                        "/api/birdup/post/*/*", "/api/birdup/profile/*", "/api/birdup/comment/*").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers(HttpMethod.DELETE,
                         "/api/birdup/like/*/*", "/api/birdup/follower/*/*", "/api/birdup/comment/*", "/api/birdup/profile/*", "/api/birdup/post/*").hasAnyAuthority("ADMIN", "USER")
                 .antMatchers(HttpMethod.PUT, "/api/birdup/location").hasAuthority("ADMIN")

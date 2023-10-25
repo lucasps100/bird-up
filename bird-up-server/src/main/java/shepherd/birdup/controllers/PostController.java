@@ -94,17 +94,20 @@ public class PostController {
 //        return service.findByCityAndStateAbbrv(city, stateAbbrv);
 //    }
 
-    @PostMapping("/{locationId}/{speciesId}")
+    @PostMapping("/{speciesId}")
     public ResponseEntity<Object> create(@AuthenticationPrincipal AppUser appUser, @RequestBody Post post,
-                                         @PathVariable int locationId, @PathVariable int speciesId) {
-        Location location = new Location();
-        location.setLocationId(locationId);
+                                         @PathVariable int speciesId) {
+
+        //removed location and state pathvariable
+
+//        Location location = new Location();
+//        location.setLocationId(locationId);
         Species species = new Species();
         species.setSpeciesId(speciesId);
         Profile poster = new Profile();
         poster.setAppUserId(appUser.getId());
         post.setPosterProfile(poster);
-        post.setPostLocation(location);
+//        post.setPostLocation(location);
         post.setSpecies(species);
         Result<Post> result = service.create(post);
         if (result.isSuccess()) {
@@ -113,20 +116,20 @@ public class PostController {
         return ErrorResponse.build(result);
     }
 
-    @PutMapping("/{postId}/{locationId}/{speciesId}")
+    @PutMapping("/{postId}/{speciesId}")
     public ResponseEntity<Object> update(@AuthenticationPrincipal AppUser appUser, @PathVariable int postId, @RequestBody Post post,
-                                         @PathVariable int locationId, @PathVariable int speciesId) {
+                                         @PathVariable int speciesId) {
         if (postId != post.getPostId() || service.findByPostId(postId).getPosterProfile().getAppUserId() != appUser.getId()) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         Profile poster = new Profile();
         poster.setAppUserId(appUser.getId());
-        Location location = new Location();
-        location.setLocationId(locationId);
+//        Location location = new Location();
+//        location.setLocationId(locationId);
         Species species = new Species();
         species.setSpeciesId(speciesId);
         post.setSpecies(species);
-        post.setPostLocation(location);
+//        post.setPostLocation(location);
         post.setPosterProfile(poster);
         Result<Post> result = service.update(post);
         if (result.isSuccess()) {

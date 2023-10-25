@@ -33,10 +33,7 @@ public class ProfileController {
 
     @PostMapping
     public ResponseEntity<Object> create(@AuthenticationPrincipal AppUser appUser, @RequestBody Profile profile) {
-        if (appUser.getId() != profile.getAppUserId()) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-
+        profile.setAppUserId(appUser.getId());
         Result<Profile> result = service.create(profile);
         if (result.isSuccess()) {
             return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
