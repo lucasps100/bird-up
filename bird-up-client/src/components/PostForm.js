@@ -5,6 +5,7 @@ import Select from "react-select";
 import {savePost} from "../services/postsAPI";
 import { findAllSpecies } from "../services/speciesAPI";
 import ValidationSummary from "./ValidationSummary";
+import BirdModal from "./BirdModal.js";
 
 const INITIAL_POST = {
     postId: 0,
@@ -17,8 +18,15 @@ export default function CreatePost() {
     const [species, setSpecies] = useState([]);
     const [selectedSpecies, setSelectedSpecies] = useState();
     const [errors, setErrors] = useState([]);
+    const [modalOpen, setModalOpen] = useState(false);
+
 
     const navigate = useNavigate();
+
+  
+    const closeModal = () => {
+      setModalOpen(false);
+    };
 
     useEffect(() => {
         findAllSpecies().then(setSpecies);
@@ -34,6 +42,7 @@ export default function CreatePost() {
       const handleSelectChange= (s)  => {
         console.log(s)
         setSelectedSpecies(s);
+        setModalOpen(true);
       };
 
 
@@ -51,12 +60,12 @@ export default function CreatePost() {
       };
 
       return (
-        <div>
+        <div className="row">
           <ValidationSummary errors={errors} />
           <h2 className="modal-title">
                 "New Sighting"
               </h2>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="col-4">
             <div>
               <div className="form-row">
                 <div className="col form-group">
@@ -91,6 +100,9 @@ export default function CreatePost() {
               </div>
             </div>
           </form>
+          <div className="col-3">
+          {modalOpen && <BirdModal birdName={selectedSpecies.label} onClose={closeModal} />}
+          </div>
         </div>
       );
 
