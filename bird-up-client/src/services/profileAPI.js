@@ -23,15 +23,17 @@ export async function createProfile(profile) {
     const result = await response.json();
     return { errors: result.messages };
   } else {
-    return Promise.reject("Unexpected error, oops.");
+    return Promise.reject("Unexpected error.");
   }
 }
 
 export async function getProfileByUsername(username) {
   const response = await fetch(`${url}/${username}`);
   if (response.status === 200) {
-    return response.json();
+    const j = await response.json();
+    console.log(j);
+    return j;
   } else {
-    return Promise.reject("Unexpected error, oops.");
+    return Promise.reject("Unexpected error.");
   }
 }

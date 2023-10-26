@@ -35,7 +35,7 @@ public class ProfileJdbcTemplateRepository implements ProfileRepository {
         Profile profile = jdbcTemplate.query(sql, new ProfileMapper(), username).stream().findFirst().orElse(null);
         if (profile != null) {
             profile.setPosts(postJdbcTemplateRepository.findByAppUserId(profile.getAppUserId()));
-            addFollowees(profile);
+            addFollowers(profile);
             addFollowees(profile);
         }
         return profile;

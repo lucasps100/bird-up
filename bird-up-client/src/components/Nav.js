@@ -16,6 +16,11 @@ export default function Nav() {
     navigate(`/search/${query}`);
   }
 
+  function handleLogout(evt) {
+    logout();
+    navigate("/");
+  }
+
   return (
     <header>
       <nav className="navbar navbar-expand-lg" id="nav">
@@ -77,7 +82,7 @@ export default function Nav() {
                 </NavLink>
               </li>
               <li className="nav-item">
-                <button onClick={logout} className="nav-link">
+                <button onClick={handleLogout} className="nav-link">
                   Logout
                 </button>
               </li>

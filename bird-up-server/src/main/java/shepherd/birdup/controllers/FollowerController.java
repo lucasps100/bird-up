@@ -20,9 +20,9 @@ public class FollowerController {
         this.service = service;
     }
 
-    @GetMapping("/{followerId}/{followeeId}")
-    public Follower findByIds(@PathVariable int followerId, @PathVariable int followeeId) {
-        return service.findByIds(followerId, followeeId);
+    @GetMapping("/{followeeId}")
+    public Follower findByIds(@AuthenticationPrincipal AppUser appUser, @PathVariable int followeeId) {
+        return service.findByIds(appUser.getId(), followeeId);
     }
 
     @PostMapping("/{followeeId}")
@@ -40,14 +40,11 @@ public class FollowerController {
         return ErrorResponse.build(result);
     }
 
-    @DeleteMapping("/{followerId}/{followeeId}")
+    @DeleteMapping("/{followeeId}")
     public ResponseEntity<Void> delete(@AuthenticationPrincipal AppUser appUser,
-                                       @PathVariable int followerId,
                                        @PathVariable int followeeId) {
-        if (followerId != appUser.getId()) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-        Result<Follower> result = service.deleteByIds(followerId, followeeId);
+
+        Result<Follower> result = service.deleteByIds(appUser.getId(), followeeId);
         if (result.isSuccess()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

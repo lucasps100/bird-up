@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import BirdModal from "./BirdModal";
 import AuthContext from "../context/AuthContext";
 import { createLike, deleteLike } from "../services/likeAPI";
@@ -25,7 +26,6 @@ export default function PostDeck({ posts }) {
 
   const unlikePost = (postId) => {
     deleteLike(postId);
-    console.log("dislike" + postId);
   };
 
   return (
@@ -33,7 +33,17 @@ export default function PostDeck({ posts }) {
       <div className="col-4">
         {posts.map((post) => (
           <div className="card bg-dark text-white mb-3" key={post.postId}>
-            <div className="card-header">{post.posterProfile.username}</div>
+            <div className="card-header d-flex justify-content-between">
+              <Link to={`/profile/${post.posterProfile.username}`}>
+                {post.posterProfile.username}
+              </Link>
+              {user && user.username == post.posterProfile.username && (
+                <div className="btn-group">
+                  <button className="btn btn-secondary px-3">Edit Post</button>
+                  <button className="btn btn-danger">Delete post</button>
+                </div>
+              )}
+            </div>
             <div className="card-body">
               <div className="card-title">
                 <strong>
@@ -80,9 +90,11 @@ export default function PostDeck({ posts }) {
                 <p>
                   <strong>{post.comments.length}</strong> Comments
                 </p>
-                <button className="btn btn-secondary btn-sm">
-                  Add Comment
-                </button>
+                {user && (
+                  <button className="btn btn-secondary btn-sm">
+                    Add Comment
+                  </button>
+                )}
               </div>
               <div className="comments col">
                 {post.comments.map((comment) => {

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import PostDeck from "./PostDeck";
 // import AuthContext from "../context/AuthContext.js";
 
-import { findAllPosts, findPostsBySpecies } from "../services/postsAPI.js";
+import { findAllPosts } from "../services/postsAPI.js";
 
 export default function Explore() {
   const navigate = useNavigate();

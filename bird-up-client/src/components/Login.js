@@ -36,7 +36,7 @@ function LoginForm() {
   };
 
   return (
-    <div>
+    <div className="background">
       <ValidationSummary errors={errors} />
       <form onSubmit={handleSubmit}>
         <div>

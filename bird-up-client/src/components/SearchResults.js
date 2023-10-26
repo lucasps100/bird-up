@@ -8,18 +8,16 @@ import { findPostsBySpecies } from "../services/postsAPI.js";
 export default function SearchResults() {
   const navigate = useNavigate();
   const { query } = useParams();
-
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    console.log(query);
     findPostsBySpecies(query)
       .then(setPosts)
       .catch((error) => {
         console.error(error);
         navigate("/error", { state: { error } });
       });
-  }, [query]);
+  }, [posts]);
   return (
     <div className="background">
       {posts.length == 0 ? (

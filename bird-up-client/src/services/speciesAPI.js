@@ -14,8 +14,8 @@ export async function findSpeciesById(id) {
   if (response.status === 200) {
     return response.json();
   } else if (response.status === 404) {
-    return Promise.reject(`Species game id: ${id} could not be found.`);
+    return Promise.reject(`Species id: ${id} could not be found.`);
   } else {
-    return Promise.reject("Unexpected error, oops.");
+    return Promise.reject("Unexpected error.");
   }
 }

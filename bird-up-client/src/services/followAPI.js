@@ -1,6 +1,6 @@
-const url = "http://localhost:8080/api/birdup/like";
+const url = "http://localhost:8080/api/birdup/follower";
 
-export async function createLike(id) {
+export async function createFollow(id) {
   const jwtToken = localStorage.getItem("jwt_token");
   if (!jwtToken) {
     return Promise.reject("Unauthorized.");
@@ -12,10 +12,10 @@ export async function createLike(id) {
       Accept: "application/json",
       Authorization: "Bearer " + jwtToken,
     },
-    body: JSON.stringify({ postId: id, userId: 0 }),
+    body: JSON.stringify({}),
   };
   init.method = "POST";
-  const response = await fetch(url, init);
+  const response = await fetch(`${url}/${id}`, init);
   if (response.status === 201) {
     return response.json();
   } else if (response.status === 400) {
@@ -26,7 +26,7 @@ export async function createLike(id) {
   }
 }
 
-export async function deleteLike(id) {
+export async function deleteFollow(id) {
   const jwtToken = localStorage.getItem("jwt_token");
   if (!jwtToken) {
     return Promise.reject("Unauthorized.");
@@ -43,6 +43,28 @@ export async function deleteLike(id) {
   } else if (response.status === 404) {
     const result = await response.json();
     return { errors: result.messages };
+  } else {
+    return Promise.reject("Unexpected error.");
+  }
+}
+
+export async function findFollowByFolloweeId(followeeId) {
+  const jwtToken = localStorage.getItem("jwt_token");
+  if (!jwtToken) {
+    return Promise.reject("Unauthorized.");
+  }
+  const init = {
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwtToken,
+    },
+  };
+  init.method = "GET";
+  const response = await fetch(`${url}/${followeeId}`, init);
+  if (response.status === 200) {
+    return response.json();
+  } else if (response.status === 404) {
+    return null;
   } else {
     return Promise.reject("Unexpected error.");
   }
