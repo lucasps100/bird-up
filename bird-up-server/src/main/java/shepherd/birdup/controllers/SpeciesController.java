@@ -17,8 +17,8 @@ public class SpeciesController {
     }
 
     @GetMapping
-    public List<Species> findAll(@RequestParam(value = "partialName",required = false) String partialName) {
-        if(partialName == null) {
+    public List<Species> findAll(@RequestParam(value = "partialName", required = false) String partialName) {
+        if (partialName == null) {
             return service.findAll();
         }
         return service.findByPartialName(partialName);

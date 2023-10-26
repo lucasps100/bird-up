@@ -6,7 +6,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import shepherd.birdup.domain.LocationService;
 import shepherd.birdup.domain.Result;
-import shepherd.birdup.models.*;
+import shepherd.birdup.models.AppUser;
+import shepherd.birdup.models.Location;
+import shepherd.birdup.models.State;
 
 import java.util.List;
 
@@ -22,10 +24,10 @@ public class LocationController {
     @GetMapping
     public List<Location> findList(@RequestParam(value = "partialName", required = false) String partialName,
                                    @RequestParam(value = "stateAbbrv", required = false) String stateAbbrv) {
-        if(partialName == null && stateAbbrv == null) {
+        if (partialName == null && stateAbbrv == null) {
             return service.findAll();
         }
-        if(stateAbbrv == null) {
+        if (stateAbbrv == null) {
             return service.findByPartialName(partialName);
         }
         return service.findByStateAbbrv(stateAbbrv);

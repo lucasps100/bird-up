@@ -1,9 +1,6 @@
 package shepherd.birdup.security;
 
 
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -60,7 +57,7 @@ public class AppUserService implements UserDetailsService {
         }
 
         if (password == null || password.isBlank()) {
-            result.addMessage(ResultType.INVALID,"password is required");
+            result.addMessage(ResultType.INVALID, "password is required");
         }
 
         if (!result.isSuccess()) {
@@ -68,11 +65,11 @@ public class AppUserService implements UserDetailsService {
         }
 
         if (username.length() > 50) {
-            result.addMessage(ResultType.INVALID,"username must be 50 characters max");
+            result.addMessage(ResultType.INVALID, "username must be 50 characters max");
         }
 
         if (!validatePassword(password)) {
-            result.addMessage(ResultType.INVALID,"password must be at least 8 character and contain a digit, a letter, and a non-digit/non-letter");
+            result.addMessage(ResultType.INVALID, "password must be at least 8 character and contain a digit, a letter, and a non-digit/non-letter");
         }
 
         if (!result.isSuccess()) {
@@ -81,7 +78,7 @@ public class AppUserService implements UserDetailsService {
 
         try {
             if (loadUserByUsername(username) != null) {
-                result.addMessage(ResultType.INVALID,"the provided username already exists");
+                result.addMessage(ResultType.INVALID, "the provided username already exists");
             }
         } catch (UsernameNotFoundException e) {
         }

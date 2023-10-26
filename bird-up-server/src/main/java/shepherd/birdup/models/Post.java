@@ -1,18 +1,12 @@
 package shepherd.birdup.models;
 
-import shepherd.birdup.validation.LocationExists;
-import shepherd.birdup.validation.ProfileExists;
-import shepherd.birdup.validation.SpeciesExists;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
 public class Post implements HasPostId {
-//    @ProfileExists(message = "poster profile must exist")
+    //    @ProfileExists(message = "poster profile must exist")
     private Profile posterProfile;
     private int postId;
 
@@ -20,14 +14,14 @@ public class Post implements HasPostId {
     private Location postLocation;
     //read only
     private LocalDateTime createdAt;
-//    @NotNull(message = "a species label is required")
+    //    @NotNull(message = "a species label is required")
 //    @SpeciesExists
     private Species species;
 
     private List<Like> likes;
 
     private List<Comment> comments;
-//    @Size(max = 255)
+    //    @Size(max = 255)
     private String postText;
 
     public Post() {

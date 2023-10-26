@@ -21,6 +21,7 @@ public interface AppUserRepository {
     void updateRoles(AppUser user);
 
     List<String> getRolesByUsername(String username);
+
     List<String> getRolesById(int id);
 
 

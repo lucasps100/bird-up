@@ -1,48 +1,44 @@
 import { useState } from "react";
-import {createProfile} from "../services/profileAPI";
+import { createProfile } from "../services/profileAPI";
 import ValidationSummary from "./ValidationSummary";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateProfileForm() {
+  const { errors, setErrors } = useState([]);
+  const navigate = useNavigate();
 
-    const{errors, setErrors} = useState([]);
-    const navigate = useNavigate();
+  const INITIAL_PROFILE = {
+    firstName: "",
+    lastName: "",
+    bio: "",
+  };
 
-    const INITIAL_PROFILE = {
-        firstName: "",
-        lastName: "",
-        bio: "",
-      };
-    
-    const [profile, setProfile] = useState(INITIAL_PROFILE);
-    
-    const handleChange = (evt) => {
-        const nextProfile = { ...profile };
-        nextProfile[evt.target.name] = evt.target.value;
-        setProfile(nextProfile);
-      };
+  const [profile, setProfile] = useState(INITIAL_PROFILE);
 
-      const handleSubmit = (evt) => {
-        evt.preventDefault();
-        createProfile(profile)
-        .then((data) => {
-          if (data?.errors) {
-            setErrors(data.errors);
-          } else {
-            navigate("/");
-          }
-        });
-      };
+  const handleChange = (evt) => {
+    const nextProfile = { ...profile };
+    nextProfile[evt.target.name] = evt.target.value;
+    setProfile(nextProfile);
+  };
 
-      return (
-        <div>
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    createProfile(profile).then((data) => {
+      if (data?.errors) {
+        setErrors(data.errors);
+      } else {
+        navigate("/");
+      }
+    });
+  };
+
+  return (
+    <div>
       <ValidationSummary errors={errors} />
 
       <form onSubmit={handleSubmit}>
         <div>
-          <h2 className="modal-title">
-            New Profile
-          </h2>
+          <h2 className="modal-title">New Profile</h2>
           <div className="form-group">
             <label htmlFor="firstName">First Name:</label>
             <input
@@ -86,7 +82,5 @@ export default function CreateProfileForm() {
         </div>
       </form>
     </div>
-
   );
-
 }

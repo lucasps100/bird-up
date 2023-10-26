@@ -2,7 +2,6 @@ package shepherd.birdup.domain;
 
 import org.springframework.stereotype.Service;
 import shepherd.birdup.data.ProfileRepository;
-import shepherd.birdup.models.Post;
 import shepherd.birdup.models.Profile;
 
 import javax.validation.ConstraintViolation;
@@ -23,7 +22,7 @@ public class ProfileService {
         this.validator = validator;
     }
 
-    public Profile findById(int appUserId){
+    public Profile findById(int appUserId) {
         return repository.findById(appUserId);
     }
 
@@ -45,7 +44,7 @@ public class ProfileService {
             result.addMessage(ResultType.INVALID, "profile id should be set");
             return result;
         }
-        if(repository.findById(profile.getAppUserId()) != null) {
+        if (repository.findById(profile.getAppUserId()) != null) {
             result.addMessage(ResultType.INVALID, "profile already exists for this account");
             return result;
         }

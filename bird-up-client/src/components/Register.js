@@ -5,7 +5,7 @@ import { useContext } from "react";
 import CreateProfileForm from "./CreateProfileForm";
 import ValidationSummary from "./ValidationSummary";
 import AuthContext from "../context/AuthContext";
-import {login} from "../services/authAPI";
+import { login } from "../services/authAPI";
 
 function Register() {
   const [errors, setErrors] = useState([]);
@@ -14,7 +14,7 @@ function Register() {
     password: "",
     confirmPassword: "",
   });
-  const {handleLoggedIn} = useContext(AuthContext);
+  const { handleLoggedIn } = useContext(AuthContext);
   const [success, setSuccess] = useState(false);
 
   const handleChange = (evt) => {
@@ -35,13 +35,13 @@ function Register() {
         setErrors(data.errors);
       } else {
         login(credentials)
-        .then(user => {
-        handleLoggedIn(user);
-        setSuccess(true);
-      })
-      .catch(err => {
-        setErrors(['Invalid username/password.']);
-      });
+          .then((user) => {
+            handleLoggedIn(user);
+            setSuccess(true);
+          })
+          .catch((err) => {
+            setErrors(["Invalid username/password."]);
+          });
       }
     });
   };

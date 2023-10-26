@@ -157,7 +157,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 and a.enabled = true
                 order by po.created_at DESC;
                 """;
-        List<Post> posts = jdbcTemplate.query(sql, new PostMapper(), speciesShortName);
+        List<Post> posts = jdbcTemplate.query(sql, new PostMapper(), "%" + speciesShortName + "%");
         posts.forEach(p -> {
             p.setComments(commentRepository.findByPostId(p.getPostId()));
             p.setLikes(likeRepository.findByPostId(p.getPostId()));

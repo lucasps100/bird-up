@@ -1,7 +1,7 @@
-const url = 'http://localhost:8080/api/birdup/profile';
+const url = "http://localhost:8080/api/birdup/profile";
 
 export async function createProfile(profile) {
-    const jwtToken = localStorage.getItem("jwt_token");
+  const jwtToken = localStorage.getItem("jwt_token");
   if (!jwtToken) {
     return Promise.reject("Unauthorized.");
   }
@@ -16,23 +16,22 @@ export async function createProfile(profile) {
   };
 
   init.method = "POST";
-    const response = await fetch(url, init);
-    if (response.status === 201) {
-      return response.json();
-    } else if (response.status < 500) {
-      const result = await response.json();
-      return { errors: result.messages };
-    } else {
-      return Promise.reject("Unexpected error, oops.");
-    }
-
+  const response = await fetch(url, init);
+  if (response.status === 201) {
+    return response.json();
+  } else if (response.status < 500) {
+    const result = await response.json();
+    return { errors: result.messages };
+  } else {
+    return Promise.reject("Unexpected error, oops.");
+  }
 }
 
 export async function getProfileByUsername(username) {
-    const response = await fetch(`${url}/${username}`);
-    if (response.status === 200) {
-      return response.json();
-    } else {
-      return Promise.reject("Unexpected error, oops.");
-    }    
+  const response = await fetch(`${url}/${username}`);
+  if (response.status === 200) {
+    return response.json();
+  } else {
+    return Promise.reject("Unexpected error, oops.");
+  }
 }

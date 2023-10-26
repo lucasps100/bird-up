@@ -1,5 +1,10 @@
-import './App.css';
-import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
+import "./App.css";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 
 import AuthContext from "./context/AuthContext";
@@ -17,12 +22,9 @@ import PostForm from "./components/PostForm";
 import { refreshToken, logout } from "./services/authAPI.js";
 // Import the functions you need from the SDKs you need
 
-
 const TIMEOUT_MILLISECONDS = 14 * 60 * 1000;
 
-
 export default function App() {
-
   const [user, setUser] = useState();
   const [initialized, setInitialized] = useState(false);
 
@@ -76,21 +78,22 @@ export default function App() {
         <Router>
           <Nav />
           <Routes>
-            <Route path="/" element={<Explore />}/>
-             <Route path="/flock" element={<Flock />}/>
-            <Route path="/error" element= { <Error />}/>
-            <Route path="/*" element={ <NotFound />} />
-            <Route path="/search/:query" element={<SearchResults/>} />
-            <Route path="/login" element={!user ? <Login/> : <Navigate to="/" replace={true} />}  />
-            <Route path="/register" element={<Register/>}/>
-            <Route path="/profile" element={<Profile />}/> 
-            <Route path="/post" element={<PostForm />}/> 
-
-
+            <Route path="/" element={<Explore />} />
+            <Route path="/flock" element={<Flock />} />
+            <Route path="/error" element={<Error />} />
+            <Route path="/*" element={<NotFound />} />
+            <Route path="/explore/:query" element={<Explore />} />
+            <Route
+              path="/login"
+              element={!user ? <Login /> : <Navigate to="/" replace={true} />}
+            />
+            <Route path="/explore/:query" element={<SearchResults />}></Route>
+            <Route path="/register" element={<Register />} />
+            <Route path="/profile/:username" element={<Profile />} />
+            <Route path="/post" element={<PostForm />} />
           </Routes>
         </Router>
       </AuthContext.Provider>
     </>
   );
 }
-

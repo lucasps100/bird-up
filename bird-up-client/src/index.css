@@ -11,3 +11,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.background {
+  background-color: skyblue;
+}
+
+#nav {
+  background-color: rgb(59, 168, 59);
+}
+html,body{
+  height:100%;
+}

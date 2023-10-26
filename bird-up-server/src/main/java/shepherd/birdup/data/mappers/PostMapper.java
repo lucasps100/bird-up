@@ -1,7 +1,9 @@
 package shepherd.birdup.data.mappers;
 
 import org.springframework.jdbc.core.RowMapper;
-import shepherd.birdup.models.*;
+import shepherd.birdup.models.Post;
+import shepherd.birdup.models.Profile;
+import shepherd.birdup.models.Species;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

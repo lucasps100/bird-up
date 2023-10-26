@@ -1,45 +1,108 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import BirdModal from "./BirdModal";
+import AuthContext from "../context/AuthContext";
+import { createLike, deleteLike } from "../services/likeAPI";
 
-export default function PostDeck({posts}) {
+export default function PostDeck({ posts }) {
+  const [selectedBird, setSelectedBird] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
-    const [selectedBird, setSelectedBird] = useState(null);
-    const [modalOpen, setModalOpen] = useState(false);
+  const { user } = useContext(AuthContext);
 
+  const onBirdClick = (birdName) => {
+    setModalOpen(true);
+    setSelectedBird(birdName);
+  };
 
-    const onBirdClick = (birdName) => {
-        setModalOpen(true);
-        setSelectedBird(birdName);
-      };
-    
-      const closeModal = () => {
-        setModalOpen(false);
-        setSelectedBird(null);
-      };
+  const closeModal = () => {
+    setModalOpen(false);
+    setSelectedBird(null);
+  };
 
+  const likePost = (postId) => {
+    createLike(postId);
+  };
 
-    return ( 
-        // render image from BLOB
-        <div className="row justify-content-center">
-            <div className="col-4">
-                {posts.map(post => (
-                <div class="card mb-3" key={post.postId}>
-                <div class="card-body">
-                  <button class="card-title" onClick={() => onBirdClick(post.species.speciesShortName)}>Sighting: {post.species.speciesShortName} </button>
-                  <p class="card-text">{post.postText}</p>
-                  <p class="card-text">{post.posterProfile.username} | {post.createdAt.split("T")[0]}  <small class="text-muted"></small></p>
-                </div>
+  const unlikePost = (postId) => {
+    deleteLike(postId);
+    console.log("dislike" + postId);
+  };
+
+  return (
+    <div className="row justify-content-center">
+      <div className="col-4">
+        {posts.map((post) => (
+          <div className="card bg-dark text-white mb-3" key={post.postId}>
+            <div className="card-header">{post.posterProfile.username}</div>
+            <div className="card-body">
+              <div className="card-title">
+                <strong>
+                  Sighting:
+                  <button
+                    className="card-title btn btn-link"
+                    onClick={() => onBirdClick(post.species.speciesShortName)}
+                  >
+                    {post.species.speciesShortName}{" "}
+                  </button>
+                </strong>
               </div>
-            ))}
+              <p className="card-text">{post.postText}</p>
+              <p className="card-text">
+                {" "}
+                {post.createdAt.split("T")[0].split("-")[1]}/
+                {post.createdAt.split("T")[0].split("-")[2]}/
+                {post.createdAt.split("T")[0].split("-")[0]}{" "}
+                <small class="text-muted"></small>
+              </p>
+              <div className="d-flex flex-row justify-content-evenly">
+                <p>
+                  <strong>{post.likes.length}</strong> Likes
+                </p>
+                {user &&
+                  (post.likes
+                    .flatMap((l) => l.likerAccount.username)
+                    .includes(user.username) ? (
+                    <button
+                      className="btn btn-primary btn-sm"
+                      onClick={() => unlikePost(post.postId)}
+                    >
+                      Unlike
+                    </button>
+                  ) : (
+                    <button
+                      className="btn btn-light btn-sm px-3"
+                      onClick={() => likePost(post.postId)}
+                    >
+                      Like
+                    </button>
+                  ))}
+
+                <p>
+                  <strong>{post.comments.length}</strong> Comments
+                </p>
+                <button className="btn btn-secondary btn-sm">
+                  Add Comment
+                </button>
+              </div>
+              <div className="comments col">
+                {post.comments.map((comment) => {
+                  <p className="card-text">
+                    <small>{comment.commenterProfile.username}</small>
+                    {comment.commentText}
+                  </p>;
+                })}
+              </div>
             </div>
+            {/* <CommentForm /> */}
+          </div>
+        ))}
+      </div>
 
-            <div className="col-3">
-            {modalOpen && <BirdModal birdName={selectedBird} onClose={closeModal} />}
-            </div>
-
-
-        </div>
-        
-
-    );
+      <div className="col-3">
+        {modalOpen && (
+          <BirdModal birdName={selectedBird} onClose={closeModal} />
+        )}
+      </div>
+    </div>
+  );
 }

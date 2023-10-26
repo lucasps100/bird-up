@@ -56,7 +56,7 @@ public class ProfileController {
 
     @DeleteMapping("/{appUserId}")
     public ResponseEntity<Void> softDelete(@AuthenticationPrincipal AppUser appUser, @PathVariable int appUserId) {
-        if(appUserId != appUser.getId()) {
+        if (appUserId != appUser.getId()) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         Result<Profile> result = service.softDeleteById(appUserId);

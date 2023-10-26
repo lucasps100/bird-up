@@ -6,7 +6,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import shepherd.birdup.domain.PostService;
 import shepherd.birdup.domain.Result;
-import shepherd.birdup.models.*;
+import shepherd.birdup.models.AppUser;
+import shepherd.birdup.models.Post;
+import shepherd.birdup.models.Profile;
+import shepherd.birdup.models.Species;
 
 import java.util.List;
 
@@ -25,19 +28,19 @@ public class PostController {
                               @RequestParam(value = "species", required = false) String species,
                               @PathVariable int likerId,
                               @PathVariable int followerId) {
-       if(species != null) {
-           return service.findBySpeciesShortName(species);
-       }
-       if(posterId > 0) {
-           return service.findByAppUserId(posterId);
-       }
-       if(likerId > 0 ) {
-           return service.findLikedPostsByLikerId(likerId);
-       }
-       if(followerId > 0 ) {
-           return service.findFolloweePostsByFollowerId(followerId);
-       }
-       return service.findAll();
+        if (species != null) {
+            return service.findBySpeciesShortName(species.replace("_", " "));
+        }
+        if (posterId > 0) {
+            return service.findByAppUserId(posterId);
+        }
+        if (likerId > 0) {
+            return service.findLikedPostsByLikerId(likerId);
+        }
+        if (followerId > 0) {
+            return service.findFolloweePostsByFollowerId(followerId);
+        }
+        return service.findAll();
     }
 
 //    @GetMapping("/{postId}")
@@ -121,7 +124,7 @@ public class PostController {
 
     @DeleteMapping("/{postId}")
     public ResponseEntity<Void> delete(@AuthenticationPrincipal AppUser appUser, @PathVariable int postId) {
-        if(service.findByPostId(postId).getPosterProfile().getAppUserId() != appUser.getId()) {
+        if (service.findByPostId(postId).getPosterProfile().getAppUserId() != appUser.getId()) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         Result<Post> result = service.softDeleteById(postId);

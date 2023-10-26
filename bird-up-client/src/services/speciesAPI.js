@@ -1,16 +1,16 @@
-const url = "http://localhost:8080/api/birdup/species"
+const url = "http://localhost:8080/api/birdup/species";
 
 export async function findAllSpecies() {
-    const response = await fetch(url);
-    if (response.status === 200) {
-        return response.json();
-    } else {
-        return Promise.reject("Unexpected error.")
-    }
+  const response = await fetch(url);
+  if (response.status === 200) {
+    return response.json();
+  } else {
+    return Promise.reject("Unexpected error.");
+  }
 }
 
 export async function findSpeciesById(id) {
-    const response = await fetch(`${url}/${id}`);
+  const response = await fetch(`${url}/${id}`);
   if (response.status === 200) {
     return response.json();
   } else if (response.status === 404) {

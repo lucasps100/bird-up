@@ -9,7 +9,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiaXJkLXVwIiwic3ViIjoia2V2a
 }
 ###
 
-DELETE {{url}}/4/2 HTTP/1.1
+DELETE {{url}}/4 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiaXJkLXVwIiwic3ViIjoia2V2aW5Ac21pdGgub3JnIiwiYXBwX3VzZXJfaWQiOjQsImF1dGhvcml0aWVzIjoiVVNFUiIsImV4cCI6MTY5ODE2Mzk1MH0.7YWFeg9fxFK1sanpGUS2r214cjvy6FG_HxBePAhMVz0
 

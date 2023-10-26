@@ -38,11 +38,9 @@ public class LikeController {
         return ErrorResponse.build(result);
     }
 
-    @DeleteMapping("/{likerId}/{postId}")
-    public ResponseEntity<Void> delete(@AuthenticationPrincipal AppUser appUser, @PathVariable int likerId, @PathVariable int postId) {
-        if (likerId != appUser.getId()) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> delete(@AuthenticationPrincipal AppUser appUser, @PathVariable int postId) {
+        int likerId = appUser.getId();
         Result<Like> result = service.deleteByIds(likerId, postId);
         if (result.isSuccess()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

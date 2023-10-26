@@ -1,9 +1,6 @@
 package shepherd.birdup.validation;
 
-import shepherd.birdup.models.Profile;
-
 import javax.validation.Constraint;
-import javax.validation.ConstraintValidator;
 import javax.validation.Payload;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -17,7 +14,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Constraint(validatedBy = {AppUserExistsValidator.class})
 @Documented
-public @interface AppUserExists{
+public @interface AppUserExists {
     String message() default "app user not found";
 
     Class<?>[] groups() default {};

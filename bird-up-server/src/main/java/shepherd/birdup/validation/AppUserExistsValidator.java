@@ -15,7 +15,7 @@ public class AppUserExistsValidator implements ConstraintValidator<AppUserExists
 
     @Override
     public boolean isValid(Profile profile, ConstraintValidatorContext constraintValidatorContext) {
-        if(profile == null) {
+        if (profile == null) {
             return false;
         }
         AppUser existing = repository.findById(profile.getAppUserId());
