@@ -1,7 +1,4 @@
-const CX = "70ec685dde49b4e2d";
-const KEY = "AIzaSyDoBYXegCeEFBpIFNg6eBiqhs0BARKHNnE";
-
-const URL = `https://www.googleapis.com/customsearch/v1?key=${KEY}&cx=${CX}&searchType=image&q=`;
+const URL = `https://www.googleapis.com/customsearch/v1?key=${process.env.REACT_APP_GOOGLE_KEY}&cx=${process.env.REACT_APP_GOOGLE_CX}&searchType=image&q=`;
 
 export async function findBirdImage(birdName) {
   const response = await fetch(`${URL}${birdName.replace(" ", "+")}+bird`);

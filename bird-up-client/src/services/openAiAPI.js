@@ -1,10 +1,9 @@
 import OpenAI from "openai";
 
-const KEY = "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";
-// set apiKey by running command in console:
-// setx OPENAI_API_KEY "your-api-key-here"
-
-const openai = new OpenAI({ apiKey: KEY, dangerouslyAllowBrowser: true });
+const openai = new OpenAI({
+  apiKey: process.env.REACT_APP_OPEN_AI_KEY,
+  dangerouslyAllowBrowser: true,
+});
 
 export async function getBirdDescription(birdName) {
   const completion = await openai.chat.completions.create({

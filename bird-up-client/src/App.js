@@ -24,6 +24,10 @@ import { refreshToken, logout } from "./services/authAPI.js";
 
 const TIMEOUT_MILLISECONDS = 14 * 60 * 1000;
 
+export const OPEN_AI_KEY = process.env.REACT_APP_OPEN_AI_KEY;
+export const GOOGLE_KEY = process.env.REACT_APP_GOOGLE_KEY;
+export const GOOGLE_CX = process.env.REACT_APP_GOOGLE_CX;
+
 export default function App() {
   const [user, setUser] = useState();
   const [initialized, setInitialized] = useState(false);
