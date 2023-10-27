@@ -42,7 +42,7 @@ export async function savePost(post, speciesId) {
     } else if (response.status === 404) {
       return Promise.reject(`Post id: ${post.postId} could not be found.`);
     } else if (response.status !== 204) {
-      return Promise.reject("Unexpected error, oops.");
+      return Promise.reject("Unexpected error.");
     }
   } else {
     init.method = "POST";
@@ -53,7 +53,29 @@ export async function savePost(post, speciesId) {
       const result = await response.json();
       return { errors: result.messages };
     } else {
-      return Promise.reject("Unexpected error, oops.");
+      return Promise.reject("Unexpected error.");
     }
+  }
+}
+
+export async function deletePost(id) {
+  const jwtToken = localStorage.getItem("jwt_token");
+  if (!jwtToken) {
+    return Promise.reject("Unauthorized.");
+  }
+  const init = {
+    headers: {
+      Authorization: "Bearer " + jwtToken,
+    },
+  };
+  init.method = "DELETE";
+  const response = await fetch(`${url}/${id}`, init);
+  if (response.status === 204) {
+    return;
+  } else if (response.status === 404) {
+    const result = await response.json();
+    return { errors: result.messages };
+  } else {
+    return Promise.reject("Unexpected error.");
   }
 }

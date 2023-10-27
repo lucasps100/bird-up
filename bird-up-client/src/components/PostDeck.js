@@ -3,12 +3,54 @@ import { Link } from "react-router-dom";
 import BirdModal from "./BirdModal";
 import AuthContext from "../context/AuthContext";
 import { createLike, deleteLike } from "../services/likeAPI";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
+import { deletePost } from "../services/postsAPI";
+import Success from "./Success";
 
 export default function PostDeck({ posts }) {
   const [selectedBird, setSelectedBird] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-
+  const [msg, setMsg] = useState();
   const { user } = useContext(AuthContext);
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
+  async function msgWithTimeout(msg) {
+    setMsg(msg);
+    await delay(10000);
+    setMsg("");
+  }
+
+  const createDeleteUI = (post) => {
+    const deleteDialog = ({ onClose }) => {
+      const handleClickedNo = () => {
+        onClose();
+      };
+      const handleClickedYes = () => {
+        deletePost(post.postId);
+        msgWithTimeout(`Post ${post.postId} deleted.`);
+        onClose();
+      };
+
+      return (
+        <div className="add-dialog">
+          <h3>Delete Sighting</h3>
+          <p>Sighting: {post.species.speciesShortName}</p>
+          <p>Text: {post.postText}</p>
+          <p>
+            Created At: {post.createdAt.split("T")[0].split("-")[1]}/
+            {post.createdAt.split("T")[0].split("-")[2]}/
+            {post.createdAt.split("T")[0].split("-")[0]}
+          </p>
+          <div className="add-dialog-buttons">
+            <button onClick={handleClickedNo}>No</button>
+            <button onClick={handleClickedYes}>Yes, delete sighting.</button>
+          </div>
+        </div>
+      );
+    };
+    return deleteDialog;
+  };
 
   const onBirdClick = (birdName) => {
     setModalOpen(true);
@@ -21,16 +63,21 @@ export default function PostDeck({ posts }) {
   };
 
   const likePost = (postId) => {
-    createLike(postId);
+    if (user) {
+      createLike(postId);
+    }
   };
 
   const unlikePost = (postId) => {
-    deleteLike(postId);
+    if (user) {
+      deleteLike(postId);
+    }
   };
 
   return (
     <div className="row justify-content-center">
-      <div className="col-4">
+      <Success msg={msg} />
+      <div className="col-5">
         {posts.map((post) => (
           <div className="card bg-dark text-white mb-3" key={post.postId}>
             <div className="card-header d-flex justify-content-between">
@@ -38,10 +85,14 @@ export default function PostDeck({ posts }) {
                 {post.posterProfile.username}
               </Link>
               {user && user.username == post.posterProfile.username && (
-                <div className="btn-group">
-                  <button className="btn btn-secondary px-3">Edit Post</button>
-                  <button className="btn btn-danger">Delete post</button>
-                </div>
+                <button
+                  className="btn btn-danger"
+                  onClick={() =>
+                    confirmAlert({ customUI: createDeleteUI(post) })
+                  }
+                >
+                  Delete post
+                </button>
               )}
             </div>
             <div className="card-body">
@@ -87,10 +138,10 @@ export default function PostDeck({ posts }) {
                     </button>
                   ))}
 
-                <p>
+                {/* <p>
                   <strong>{post.comments.length}</strong> Comments
-                </p>
-                {user && (
+                </p> 
+                 {user && (
                   <button className="btn btn-secondary btn-sm">
                     Add Comment
                   </button>
@@ -102,7 +153,7 @@ export default function PostDeck({ posts }) {
                     <small>{comment.commenterProfile.username}</small>
                     {comment.commentText}
                   </p>;
-                })}
+                })} */}
               </div>
             </div>
             {/* <CommentForm /> */}

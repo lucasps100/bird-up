@@ -43,6 +43,7 @@ export default function BirdModal({ birdName, onClose }) {
               id="bird-img"
               alt={birdName}
               height="300"
+              className="mb-3"
             ></img>
             <p id="birdDescription">{birdDescription}</p>
             <div className="d-flex justify-content-center">

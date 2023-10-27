@@ -4,7 +4,6 @@ import {
   Routes,
   Route,
   Navigate,
-  useNavigate,
 } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 
@@ -19,9 +18,9 @@ import Nav from "./components/Nav.js";
 import Login from "./components/Login.js";
 import Register from "./components/Register.js";
 import PostForm from "./components/PostForm";
+import EditProfileForm from "./components/EditProfileForm";
 
 import { refreshToken, logout } from "./services/authAPI.js";
-// Import the functions you need from the SDKs you need
 
 const TIMEOUT_MILLISECONDS = 14 * 60 * 1000;
 
@@ -64,15 +63,6 @@ export default function App() {
     return null;
   }
 
-  // const renderWithAuthority = (Component, ...authorities) => {
-  //   for (let authority of authorities) {
-  //     if (auth.hasAuthority(authority)) {
-  //       return <Component />;
-  //     }
-  //   }
-  //   return <Error />;
-  // };
-
   return (
     <>
       <AuthContext.Provider value={auth}>
@@ -80,7 +70,10 @@ export default function App() {
           <Nav />
           <Routes>
             <Route path="/" element={<Explore />} />
-            <Route path="/flock" element={<Flock />} />
+            <Route
+              path="/flock"
+              element={user ? <Flock /> : <Navigate to="/" replace={true} />}
+            />
             <Route path="/error" element={<Error />} />
             <Route path="/*" element={<NotFound />} />
             <Route path="/explore/:query" element={<SearchResults />} />
@@ -90,8 +83,13 @@ export default function App() {
             />
             <Route path="/search/:query" element={<SearchResults />}></Route>
             <Route path="/register" element={<Register />} />
+
             <Route path="/profile/:username" element={<Profile />} />
-            <Route path="/post" element={<PostForm />} />
+            <Route
+              path="/post"
+              element={user ? <PostForm /> : <Navigate to="/" replace={true} />}
+            />
+            <Route path="/update" element={<EditProfileForm />} />
           </Routes>
         </Router>
       </AuthContext.Provider>

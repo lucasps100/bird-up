@@ -25,15 +25,19 @@ export default function Profile() {
   );
 
   async function unfollow(followeeId) {
-    deleteFollow(followeeId);
-    await delay(100);
-    setClicked(clicked + 1);
+    if (user) {
+      deleteFollow(followeeId);
+      await delay(100);
+      setClicked(clicked + 1);
+    }
   }
 
   async function follow(followeeId) {
-    createFollow(followeeId);
-    await delay(100);
-    setClicked(clicked + 1);
+    if (user) {
+      createFollow(followeeId);
+      await delay(100);
+      setClicked(clicked + 1);
+    }
   }
 
   return (
@@ -68,7 +72,12 @@ export default function Profile() {
                   </button>
                 ))
               ) : (
-                <button>Edit Profile</button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => navigate("/update")}
+                >
+                  Edit Profile
+                </button>
               )}
             </div>
           </div>

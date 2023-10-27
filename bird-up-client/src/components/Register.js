@@ -51,59 +51,61 @@ function Register() {
   };
 
   return (
-    <div>
+    <div className="background">
       <ValidationSummary errors={errors} />
       {success ? (
         <CreateProfileForm />
       ) : (
-        <form onSubmit={handleSubmit}>
-          <div>
-            <div className="form-group">
-              <label htmlFor="label">Username</label>
-              <input
-                type="text"
-                className="form-control"
-                id="username"
-                name="username"
-                value={credentials.username}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="label">Password</label>
-              <input
-                type="password"
-                className="form-control"
-                id="password"
-                name="password"
-                value={credentials.password}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="label">Confirm password</label>
-              <input
-                type="password"
-                className="form-control"
-                id="confirmPassword"
-                name="confirmPassword"
-                value={credentials.confirmPassword}
-                onChange={handleChange}
-                required
-              />
-            </div>
+        <div className="col-3">
+          <form onSubmit={handleSubmit} className="mx-3">
             <div>
-              <Link to="/" className="btn btn-secondary">
-                Cancel
-              </Link>
-              <button type="submit" className="btn btn-primary">
-                Sign up
-              </button>
+              <div className="form-group">
+                <label htmlFor="label">Username</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="username"
+                  name="username"
+                  value={credentials.username}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="label">Password</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="password"
+                  name="password"
+                  value={credentials.password}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="label">Confirm password</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={credentials.confirmPassword}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="d-flex flex-row justify-content-evenly my-3">
+                <Link to="/" className="btn btn-secondary">
+                  Cancel
+                </Link>
+                <button type="submit" className="btn btn-primary">
+                  Sign up
+                </button>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       )}
     </div>
   );

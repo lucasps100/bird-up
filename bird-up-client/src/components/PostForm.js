@@ -60,7 +60,7 @@ export default function CreatePost() {
       <div className="row">
         <ValidationSummary errors={errors} />
         <h2 className="modal-title">"New Sighting"</h2>
-        <form onSubmit={handleSubmit} className="col-4">
+        <form onSubmit={handleSubmit} className="col-4 mx-3">
           <div>
             <div className="form-row">
               <div className="col form-group">
@@ -85,6 +85,7 @@ export default function CreatePost() {
                 className="form-control"
                 name="postText"
                 id="postText"
+                rows="10"
                 value={post.postText}
                 onChange={handleTextChange}
               />

@@ -1,29 +1,52 @@
-import { useState } from "react";
-import { createProfile } from "../services/profileAPI";
+import { useState, useEffect, useParams, useContext } from "react";
+import { editProfile } from "../services/profileAPI";
 import ValidationSummary from "./ValidationSummary";
 import { useNavigate } from "react-router-dom";
+import { getProfileByUsername } from "../services/profileAPI";
+import AuthContext from "../context/AuthContext";
 
-export default function CreateProfileForm() {
+export default function EditProfileForm() {
   const { errors, setErrors } = useState([]);
   const navigate = useNavigate();
 
-  const INITIAL_PROFILE = {
-    firstName: "",
-    lastName: "",
-    bio: "",
-  };
+  const { user } = useContext(AuthContext);
 
-  const [profile, setProfile] = useState(INITIAL_PROFILE);
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [bio, setBio] = useState();
+
+  useEffect(() => {
+    getProfileByUsername(user.username)
+      .then((p) => {
+        setFirstName(p.firstName);
+        setLastName(p.lastName);
+        setBio(p.bio);
+      })
+      .catch((err) =>
+        navigate("/error", {
+          state: { message: err },
+        })
+      );
+  }, []);
 
   const handleChange = (evt) => {
-    const nextProfile = { ...profile };
-    nextProfile[evt.target.name] = evt.target.value;
-    setProfile(nextProfile);
+    if (evt.target.name === "fistName") {
+      setFirstName(evt.target.value);
+    } else if (evt.target.name === "lastName") {
+      setLastName(evt.target.value);
+    } else {
+      setBio(evt.target.value);
+    }
   };
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    createProfile(profile).then((data) => {
+    const profile = {
+      firstName,
+      lastName,
+      bio,
+    };
+    editProfile(profile).then((data) => {
       if (data?.errors) {
         setErrors(data.errors);
       } else {
@@ -46,7 +69,7 @@ export default function CreateProfileForm() {
               type="text"
               name="firstName"
               id="firstName"
-              value={profile.firstName}
+              value={firstName}
               onChange={handleChange}
             />
           </div>
@@ -58,7 +81,7 @@ export default function CreateProfileForm() {
                 type="text"
                 name="lastName"
                 id="lastName"
-                value={profile.lastName}
+                value={lastName}
                 onChange={handleChange}
               />
             </div>
@@ -70,7 +93,7 @@ export default function CreateProfileForm() {
                 name="bio"
                 rows="10"
                 id="bio"
-                value={profile.bio}
+                value={bio}
                 onChange={handleChange}
               />
             </div>

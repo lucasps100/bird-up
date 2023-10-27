@@ -34,8 +34,8 @@ export default function Nav() {
           Bird Up
         </NavLink>
         <ul className="navbar-nav mr-auto">
-          <div class="search nav-item form-inline">
-            <form onSubmit={handleSubmit} className="form-inline my-2 my-lg-0">
+          <div class="search nav-item ">
+            <form onSubmit={handleSubmit} className="form-inline my-2">
               <input
                 id="query"
                 type="text"
@@ -44,31 +44,34 @@ export default function Nav() {
                 onChange={handleChange}
               ></input>
               <button type="submit">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-search"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                </svg>
+                <img
+                  src="binoculars.svg"
+                  width="22"
+                  id="binoculars"
+                  alt="binoculars search icon"
+                ></img>
               </button>
             </form>
           </div>
           <li className="nav-item">
-            <NavLink id="linkList" className="nav-link" to="/">
+            <NavLink
+              id="linkList"
+              className="nav-link"
+              to="/"
+              activeClassName="underline"
+            >
               Explore
             </NavLink>
           </li>
           {user ? (
             <>
-              {/* <li className="nav-item">
-                    Welcome {user.username}!
-                </li> */}
               <li className="nav-item">
-                <NavLink id="linkPost" to="/post" className="nav-link">
+                <NavLink
+                  id="linkPost"
+                  to="/post"
+                  className="nav-link"
+                  activeClassName="underline"
+                >
                   Share Sighting
                 </NavLink>
               </li>
@@ -77,6 +80,7 @@ export default function Nav() {
                   id="linkProfile"
                   to={`/profile/${user.username}`}
                   className="nav-link"
+                  activeClassName="underline"
                 >
                   Profile
                 </NavLink>
@@ -90,12 +94,22 @@ export default function Nav() {
           ) : (
             <>
               <li className="nav-item">
-                <NavLink id="login" className="nav-link" to="/login">
+                <NavLink
+                  id="login"
+                  className="nav-link"
+                  to="/login"
+                  activeClassName="underline"
+                >
                   Log In
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink id="register" className="nav-link" to="/register">
+                <NavLink
+                  id="register"
+                  className="nav-link"
+                  to="/register"
+                  activeClassName="underline"
+                >
                   Sign Up
                 </NavLink>
               </li>

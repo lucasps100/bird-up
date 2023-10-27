@@ -41,12 +41,9 @@ public class ProfileController {
         return ErrorResponse.build(result);
     }
 
-    @PutMapping("/{appUserId}")
-    public ResponseEntity<Object> update(@AuthenticationPrincipal AppUser appUser, @PathVariable int appUserId, @RequestBody Profile profile) {
-        if (appUserId != profile.getAppUserId() || appUser.getId() != profile.getAppUserId()) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-
+    @PutMapping
+    public ResponseEntity<Object> update(@AuthenticationPrincipal AppUser appUser, @RequestBody Profile profile) {
+        profile.setAppUserId(appUser.getId());
         Result<Profile> result = service.update(profile);
         if (result.isSuccess()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -54,12 +51,9 @@ public class ProfileController {
         return ErrorResponse.build(result);
     }
 
-    @DeleteMapping("/{appUserId}")
-    public ResponseEntity<Void> softDelete(@AuthenticationPrincipal AppUser appUser, @PathVariable int appUserId) {
-        if (appUserId != appUser.getId()) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-        Result<Profile> result = service.softDeleteById(appUserId);
+    @DeleteMapping
+    public ResponseEntity<Void> softDelete(@AuthenticationPrincipal AppUser appUser) {
+        Result<Profile> result = service.softDeleteById(appUser.getId());
         if (result.isSuccess()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
