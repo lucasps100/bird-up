@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .antMatchers("/api/birdup/login").permitAll()
                 .antMatchers("/api/birdup/refresh-token").authenticated()
                 .antMatchers(HttpMethod.GET,
-                        "/api/birdup/post", "/api/birdup/post/*/*/*", "/api/birdup/profile/*", "/api/birdup/location", "/api/birdup/location/*", "/api/birdup/state", "/api/birdup/state/*", "/api/birdup/species", "/api/birdup/species/*", "/api/birdup/comment", "/api/birdup/comment/*").permitAll()
+                        "/api/birdup/post", "/api/birdup/post/*/*/*", "/api/birdup/profile/*", "/api/birdup/location", "/api/birdup/location/*", "/api/birdup/state", "/api/birdup/state/*", "/api/birdup/species", "/api/birdup/species/*", "/api/birdup/comment", "/api/birdup/comment/*", "/api/birdup/post/id/*").permitAll()
                 .antMatchers(HttpMethod.GET,
                         "/api/birdup/follower/**").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers(HttpMethod.POST,

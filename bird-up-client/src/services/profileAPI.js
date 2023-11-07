@@ -64,3 +64,25 @@ export async function getProfileByUsername(username) {
     return Promise.reject("Unexpected error.");
   }
 }
+
+export async function deleteProfile() {
+  const jwtToken = localStorage.getItem("jwt_token");
+  if (!jwtToken) {
+    return Promise.reject("Unauthorized.");
+  }
+  const init = {
+    headers: {
+      Authorization: "Bearer " + jwtToken,
+    },
+  };
+  init.method = "DELETE";
+  const response = await fetch(`${url}`, init);
+  if (response.status === 204) {
+    return;
+  } else if (response.status === 404) {
+    const result = await response.json();
+    return { errors: result.messages };
+  } else {
+    return Promise.reject("Unexpected error.");
+  }
+}

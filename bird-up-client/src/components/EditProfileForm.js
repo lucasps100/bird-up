@@ -56,7 +56,7 @@ export default function EditProfileForm() {
   };
 
   return (
-    <div>
+    <div class="background">
       <ValidationSummary errors={errors} />
 
       <form onSubmit={handleSubmit} className="mx-3">

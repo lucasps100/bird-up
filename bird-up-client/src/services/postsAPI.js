@@ -1,5 +1,14 @@
 const url = "http://localhost:8080/api/birdup/post";
 
+export async function findPostById(postId) {
+  const response = await fetch(`${url}/id/${postId}`);
+  if (response.status === 200) {
+    return response.json();
+  } else {
+    return Promise.reject("Unexpected error, oops.");
+  }
+}
+
 export async function findAllPosts() {
   const response = await fetch(`${url}/0/0/0`);
   if (response.status === 200) {

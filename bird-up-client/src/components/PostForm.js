@@ -1,8 +1,8 @@
 import { useEffect, useState, React } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 
-import { savePost } from "../services/postsAPI";
+import { savePost, findPostById } from "../services/postsAPI";
 import { findAllSpecies } from "../services/speciesAPI";
 import ValidationSummary from "./ValidationSummary";
 import BirdModal from "./BirdModal.js";
@@ -18,12 +18,27 @@ export default function CreatePost() {
   const [selectedSpecies, setSelectedSpecies] = useState();
   const [errors, setErrors] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-
+  const { postId } = useParams();
   const navigate = useNavigate();
 
   const closeModal = () => {
     setModalOpen(false);
   };
+
+  useEffect(() => {
+    if (postId) {
+      findPostById(postId)
+        .then((data) => {
+          setSelectedSpecies(`${data.species.speciesId}`);
+          setPost(data);
+        })
+        .catch((err) =>
+          navigate("/error", {
+            state: { message: err },
+          })
+        );
+    }
+  }, [postId, navigate]);
 
   useEffect(() => {
     findAllSpecies().then(setSpecies);

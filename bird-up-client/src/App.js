@@ -93,6 +93,10 @@ export default function App() {
               path="/post"
               element={user ? <PostForm /> : <Navigate to="/" replace={true} />}
             />
+            <Route
+              path="/edit/:postId"
+              element={user ? <PostForm /> : <Navigate to="/" replace={true} />}
+            />
             <Route path="/update" element={<EditProfileForm />} />
           </Routes>
         </Router>

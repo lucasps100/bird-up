@@ -85,14 +85,22 @@ export default function PostDeck({ posts }) {
                 {post.posterProfile.username}
               </Link>
               {user && user.username == post.posterProfile.username && (
-                <button
-                  className="btn btn-danger"
-                  onClick={() =>
-                    confirmAlert({ customUI: createDeleteUI(post) })
-                  }
-                >
-                  Delete post
-                </button>
+                <>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() =>
+                      confirmAlert({ customUI: createDeleteUI(post) })
+                    }
+                  >
+                    Delete post
+                  </button>
+                  <Link
+                    className="btn btn-secondary"
+                    to={`/edit/${post.postId}`}
+                  >
+                    Edit
+                  </Link>
+                </>
               )}
             </div>
             <div className="card-body">
