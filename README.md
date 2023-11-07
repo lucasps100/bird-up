@@ -10,7 +10,7 @@ These days, social media platforms tend to be hub of vanity, pretention and vitr
 Bird Up: a social media for bird watchers, with AI powered bird recognition, location specific species discovery, and platform for sharing and discussing your latest discoveries.
 
 
-## 3. High Level Requirments
+## 3. High Level Requirments (in progress)
 * Cloud hosted server and client 🔜
 * Sign up a user (with limited role) ✔️
 * Login ✔️
