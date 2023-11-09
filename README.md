@@ -25,6 +25,6 @@ Bird Up: a social media for bird watchers, with AI powered bird recognition, loc
 * A map of bird sightings 🔜
 
 ## 4. APIs
-* Spring Boot Back-End API
+* Spring Boot Internal Bird Up API
 * OpenAI API - for species descriptions
 * Google's Custom Search JSON API - for species reference image
