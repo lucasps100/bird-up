@@ -12,10 +12,7 @@ public class Post implements HasPostId {
 
     private Blob image;
     private Location postLocation;
-    //read only
     private LocalDateTime createdAt;
-    //    @NotNull(message = "a species label is required")
-//    @SpeciesExists
     private Species species;
 
     private List<Like> likes;
